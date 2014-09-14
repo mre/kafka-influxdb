@@ -1,6 +1,5 @@
 from kafka.client import KafkaClient
 from kafka.consumer import SimpleConsumer
-from kafka.producer import SimpleProducer, KeyedProducer
 from influxdb import InfluxDBClient
 import json
 import argparse
