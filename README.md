@@ -11,7 +11,8 @@ All messages sent to Kafka on a certain topic will be relayed to influxdb.
 ## Options
 
     kafka_influxdb.py [-h] [--kafka_host KAFKA_HOST]
-                           [--kafka_port KAFKA_PORT] [--kafka_topic KAFKA_TOPIC]
+                           [--kafka_port KAFKA_PORT] 
+                           [--kafka_topic KAFKA_TOPIC]
                            [--kafka_group KAFKA_GROUP]
                            [--influxdb_host INFLUXDB_HOST]
                            [--influxdb_port INFLUXDB_PORT]
