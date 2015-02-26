@@ -14,8 +14,8 @@ class InfluxDBData09(object):
 		self.retentionPolicy = retention_policy
 		self.points = []
 
-	def add_points(self, points): # TODO pointers?
-		self.points.append(points)
+	def add_points(self, points):
+		self.points = self.points + points
 
 	def to_json(self):
 		return json.dumps(self.__dict__)
@@ -33,7 +33,7 @@ class InfluxDBData(object):
 		self.points.append(list(point))
 	
 	def to_json(self):
-		return json.dumps(self.__dict__)
+		return json.dumps([self.__dict__])
 
 	def reset(self):
 		self.points = []
@@ -64,14 +64,17 @@ def main(config):
 	i = 0
 	for message in consumer:
 		i = i + 1
+		if config.verbose:
+			print "Loop %d of buffer size %d" % (i, config.buffer_size)
 		val = message.message.value
 		if version_0_9:
 			stats.add_points(transform_to_0_9(val))
 		else:
 			stats.add_point(val)
 		if i == config.buffer_size or config.buffer_size == 0:
-			data = json.dumps([stats.__dict__])
-			print data # TODO remove
+			data = stats.to_json()
+			print "bar"
+			print  data # TODO remove
 			client.write_points(data)
 			stats.reset()
 			exit() # todo remove
@@ -119,9 +122,10 @@ def parse_args():
 	parser.add_argument('--influxdb_dbname', type=str, default='kafka', required=False)
 	parser.add_argument('--influxdb_data_name', type=str, default='statsd', required=False)
 	parser.add_argument('--influxdb_columns', type=str, default=['counter'], required=False)
-	parser.add_argument('--influxdb_version', type=str, default=[DB_VERSION_DEFAULT], required=False)
-	parser.add_argument('--buffer_size', type=int, default=[1000], required=False)
-	parser.add_argument('--influxdb_retention_policy', type=str, default=['365d'], required=False)
+	parser.add_argument('--influxdb_version', type=str, default=DB_VERSION_DEFAULT, required=False)
+	parser.add_argument('--buffer_size', type=int, default=1000, required=False)
+	parser.add_argument('--influxdb_retention_policy', type=str, default='365d', required=False)
+	parser.add_argument('--verbose', type=bool, default=False, required=False)
 	return parser.parse_args()
 
 if __name__ == '__main__':
