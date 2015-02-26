@@ -25,7 +25,7 @@ class InfluxDBData09(object):
 
 class InfluxDBData(object):
 	def __init__(self, name, columns):
-		self.TODOname = name	
+		self.name = name	
 		self.columns = columns
 		self.points = []
 
@@ -98,9 +98,9 @@ def transform_to_0_9(kafka_message): # TODO add error handling
 			tags['type'] = json_obj['type']
 		for i in range (0, len(json_obj['values'])):
 			# TODO check that range is defined correctly (borders)
-			new_point = {}
+			new_point = {"precision":"s"}
 			new_point["name"] = json_obj['plugin']
-			new_point["timestamp"] = timestamp
+			new_point["timestamp"] = int(timestamp)
 			new_point["tags"] = tags
 			# TODO append i indexed dstype and dsvalue if not empty to tags and check that that really works
 			new_point["fields"] = {"value" : json_obj['values'][i]}
