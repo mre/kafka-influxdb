@@ -26,11 +26,11 @@ def main(config):
 				config.influxdb_password,
 				config.influxdb_dbname)
 
-	stats = InfluxDBData(config.influxdb_data_name, config.influxdb_columns)
 
 	# Consume messages
 	consumer = SimpleConsumer(kafka, config.kafka_group, config.kafka_topic)
 	for message in consumer:
+		stats = InfluxDBData(config.influxdb_data_name, config.influxdb_columns)
 		val = message.message.value
 		stats.add_point(val)
 		data = json.dumps([stats.__dict__])
