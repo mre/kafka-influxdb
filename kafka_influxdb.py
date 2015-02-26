@@ -3,6 +3,7 @@ from kafka.consumer import SimpleConsumer
 from influxdb import InfluxDBClient
 import json
 import argparse
+from collections import defaultdict
 
 DB_VERSION_DEFAULT = 0.8
 DB_VERSION_APICHANGE = 0.9
