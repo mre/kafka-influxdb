@@ -35,5 +35,5 @@ Supports influxdb version >= 0.9 (set the respective flag)
 * offset management
 * retention policy is not sent
 * support config files and maybe remove flags
-* improve error management
 * add remaining tags
+* create error log
