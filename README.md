@@ -32,3 +32,8 @@ Supports influxdb version >= 0.9 (set the respective flag)
 ## TODOs
 
 * flush buffer if not full but some period has elapsed (safety net for low frequency input)
+* offset management
+* retention policy is not sent
+* support config files and maybe remove flags
+* improve error management
+* add remaining tags
