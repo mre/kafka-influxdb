@@ -119,6 +119,8 @@ class KafkaListener(object):
 def main(config):
 	if config.configfile is not None and config.configfile != u'':
 		read_config_file(config)
+		if config.verbose:
+			log("Config read: %s" % config)
 
 	kafka = KafkaClient("{0}:{1}".format(config.kafka_host, config.kafka_port))
 
