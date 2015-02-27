@@ -2,7 +2,8 @@ kafka-InfluxDB
 ==============
 
 A Kafka consumer for InfluxDB.
-All messages sent to Kafka on a certain topic will be relayed to influxdb.
+All messages sent to Kafka on a certain topic will be relayed to influxdb. 
+Supports influxdb version >= 0.9 (set the respective flag)
 
 ## Example Usage
 
@@ -21,5 +22,13 @@ All messages sent to Kafka on a certain topic will be relayed to influxdb.
                            [--influxdb_dbname INFLUXDB_DBNAME]
                            [--influxdb_data_name INFLUXDB_DATA_NAME]
                            [--influxdb_columns INFLUXDB_COLUMNS]
+                           [--influxdb_version DB_VERSION]
+                           [--buffer_size BUFFER_SIZE]
+                           [--influxdb_retention_policy RETENTION_POLICY]
+                           [--verbose BOOLEAN]
+                           [--statistics BOOLEAN]
 
 
+## TODOs
+
+* flush buffer if not full but some period has elapsed (safety net for low frequency input)
