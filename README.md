@@ -35,8 +35,13 @@ or
 
 Command line settings have precedence over config file provided settings. We provided a sample config.yaml for your convenience.
 
+## DEPENDENCIES
+
+See requirements.txt
+Please note also that you must install the version of the influxdb python client matching your influxdb version (for 0.9 see https://github.com/influxdb/influxdb-python/tree/0.9.0_support )
+
+
 ## TODOs
-* test if < 0.9 still works
 * test results in database, especially the multivalues-tags, test if retention policy works
 * flush buffer if not full but some period has elapsed (safety net for low frequency input)
 * offset management

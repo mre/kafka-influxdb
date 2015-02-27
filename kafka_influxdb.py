@@ -76,7 +76,9 @@ class KafkaListener(object):
 				if self.config.statistics:
 					self.count_datapoints = self.count_datapoints + len(transformed)	
 			else:
-				stats.add_point(val)
+				self.stats.add_point(val)
+				if self.config.statistics:
+					self.count_datapoints = self.count_datapoints + 1
 			if i == self.config.buffer_size or self.config.buffer_size == 0 or self.aborted:
 				self.flush()				
 				if self.config.statistics:
