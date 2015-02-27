@@ -99,7 +99,7 @@ def main(config):
 				kafka_per_sec = kafka_per_ms * 1000
 				if config.verbose:
 					print "Count kafka: %d / %d = %d * 1000 = %d" % (count_kafka, time_elapsed_ms , kafka_per_ms, kafka_per_sec)
-				print "Flush %d. Buffer size %d. Parsed %d kafka into %d datapoints. Speed: %d kafka/sec" % (count_flush, config.buffer_size, count_kafka, count_datapoints, kafka_per_sec)
+				print "Flush %d. Buffer size %d. Parsed %d kafka mes. into %d datapoints. Speed: %d kafka mes./sec" % (count_flush, config.buffer_size, count_kafka, count_datapoints, kafka_per_sec)
 			i = 0
 			stats.reset()
 			
