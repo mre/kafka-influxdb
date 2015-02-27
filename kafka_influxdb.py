@@ -1,6 +1,6 @@
 from kafka.client import KafkaClient
 from kafka.consumer import SimpleConsumer
-from influxdb import InfluxDBClient
+from influxdb import InfluxDBClient # TODO import dynamically. If version 0.9 we have different requirements!
 import json
 import argparse
 from collections import defaultdict
@@ -8,6 +8,8 @@ from collections import defaultdict
 DB_VERSION_DEFAULT = 0.8
 DB_VERSION_APICHANGE = 0.9
 
+#	python kafka_influxdb.py --kafka_topic perfmonspring1 --influxdb_user root --influxdb_password root --influxdb_dbname mydb --influxdb_version 0.9 --kafka_host 10.1.3.234 --influxdb_host springfield02.local --buffer_size 2
+# TODO remove ^
 # TODO test if old version still works
 
 class InfluxDBData09(object):
@@ -60,44 +62,37 @@ def main(config):
 	else:
 		stats = InfluxDBData(config.influxdb_data_name, config.influxdb_columns)
 	i = 0
+	j = 0
+	print "Version 9: %s" % version_0_9
 	for message in consumer:
 		i = i + 1
-		if config.verbose:
-			print "Loop %d of buffer size %d" % (i, config.buffer_size)
+		#print "Loop %d" %i # TODO remove
 		val = message.message.value
 		if version_0_9:
 			stats.add_points(transform_to_0_9(val))
 		else:
 			stats.add_point(val)
 		if i == config.buffer_size or config.buffer_size == 0:
-			#data = stats.to_json()
-			data = [stats.__dict__]
-			print  data # TODO remove
-			print "Data type: {0}".format(type(data))  # TODO remove
+			if version_0_9:
+				data = stats.points		
+			else:
+				data = [stats.__dict__]
+			#print data # TODO remove
+			#print "Data type: {0}".format(type(data))	# TODO remove
 			client.write_points(data)
 			stats.reset()
-			exit() # todo remove
+			i = 0
+			j = j + 1
+			if config.verbose:
+				print "Flush %d w/ buffer size %d" % (j, config.buffer_size)
 	kafka.close()
 
-"""
-def get_example_json():  # TODO remove
-	return [{
-    "points": [
-        ["1", 1, 1.0],
-        ["2", 2, 2.0]
-    ],
-    "name": "foo",
-    "columns": ["column_one", "column_two", "column_three"]
-}]
-"""
+
+
 
 def transform_to_0_9(kafka_message): # TODO add error handling
-	#print "Original kafka input:" # TODO remove
-	#print kafka_message # TODO remove
 	results = []
 	for json_obj in json.loads(kafka_message):
-		#print "Tuple element: "  # TODO remove
-		#print json_obj # TODO remove
 		timestamp = int(json_obj['time'])
 		tags = {}
 		tags['host'] = json_obj['host']
@@ -121,7 +116,7 @@ def transform_to_0_9(kafka_message): # TODO add error handling
 
 def parse_args():
 	parser = argparse.ArgumentParser(description='A Kafka consumer for InfluxDB',
-			    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+					formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 	parser.add_argument('--kafka_host', type=str, default='localhost', required=False)
 	parser.add_argument('--kafka_port', type=int, default=9092, required=False)
 	parser.add_argument('--kafka_topic', type=str, default='test', required=False)
