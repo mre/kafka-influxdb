@@ -1,0 +1,20 @@
+--- 
+kafka:
+	host: "localhost"
+	port: 9092
+	topic: "test"
+	group: "mygroup"
+influxdb:
+	host: "localhost"
+	port: 8086
+	user: ''
+	password: ''
+	dbname': 'kafka'
+	data_name: 'statsd'
+	columns: ['counter']
+	version: 0.8
+	retention_policy: "my_rp"
+settings:
+	buffer_size: 1000
+	verbose: false
+	statistics: false

@@ -4,6 +4,7 @@ from influxdb import InfluxDBClient # TODO import dynamically. If version 0.9 we
 import json
 import argparse
 import time
+import yaml
 from collections import defaultdict
 
 DB_VERSION_DEFAULT = 0.8
@@ -116,6 +117,9 @@ class KafkaListener(object):
 			error_log("Exception caught while flushing: %s" % inst)
 
 def main(config):
+	if config.configfile is not None and config.configfile != u'':
+		read_config_file(config)
+
 	kafka = KafkaClient("{0}:{1}".format(config.kafka_host, config.kafka_port))
 
 	client = InfluxDBClient(config.influxdb_host,
@@ -132,11 +136,21 @@ def main(config):
 		error_log("Shutdown.")
 		listener.abort()
 
+def read_config_file(*config):
+	try:
+		f = open(config.configfile)
+		values = yaml.safe_load(f)
+		f.close()
+	except:
+		error_log("Could not open config file %s" % config.configfile, True)
+
 def log(msg):
 	print msg # TODO
 	
-def error_log(msg):
+def error_log(msg, die=False):
 	print msg # TODO
+	if die:
+		exit()
 
 def get_millis():
 	return int(round(time.time() * 1000))
@@ -194,6 +208,7 @@ def parse_args():
 	parser.add_argument('--influxdb_retention_policy', type=str, default='', required=False)
 	parser.add_argument('--verbose', type=bool, default=False, required=False)
 	parser.add_argument('--statistics', type=bool, default=False, required=False)
+	parser.add_argument('--configfile', type=str, default=None, required=False)
 	return parser.parse_args()
 
 if __name__ == '__main__':
