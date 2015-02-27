@@ -70,7 +70,7 @@ class KafkaListener(object):
 		self.aborted = False
 		starttime = get_millis()
 		
-		print "Listening." # TODO remove
+		log( "Listening.")
 
 		for message in self.consumer:
 			i = i + 1
@@ -101,26 +101,27 @@ class KafkaListener(object):
 		now = get_millis()
 		time_elapsed_ms = (now - starttime)
 		if self.config.verbose:
-			print "Time elapsed: %d - %d = %d" % (now, starttime, time_elapsed_ms)
+			log( "Time elapsed: %d - %d = %d" % (now, starttime, time_elapsed_ms))
 		kafka_per_ms = (float(self.count_kafka) / time_elapsed_ms)
 		kafka_per_sec = kafka_per_ms * 1000
 		if self.config.verbose:
-			print "Count kafka: %d / %d = %d * 1000 = %d" % (self.count_kafka, time_elapsed_ms , kafka_per_ms, kafka_per_sec)
-		print "Flush %d. Buffer size %d. Parsed %d kafka mes. into %d datapoints. Speed: %d kafka mes./sec" % (self.count_flush, self.config.buffer_size, self.count_kafka, self.count_datapoints, kafka_per_sec)
+			log( "Count kafka: %d / %d = %d * 1000 = %d" % (self.count_kafka, time_elapsed_ms , kafka_per_ms, kafka_per_sec))
+		log( "Flush %d. Buffer size %d. Parsed %d kafka mes. into %d datapoints. Speed: %d kafka mes./sec" % (self.count_flush, self.config.buffer_size, self.count_kafka, self.count_datapoints, kafka_per_sec))
 
 	def abort(self):
 		self.aborted = True
 
 	def flush(self):
-		if self.version_0_9:
-			data = self.stats.points		
-		else:
-			data = [self.stats.__dict__]
-		self.client.write_points(data)
-
+		try:
+			if self.version_0_9:
+				data = self.stats.points		
+			else:
+				data = [self.stats.__dict__]
+			self.client.write_points(data)
+		except Exception as inst:
+			error_log("Exception caught while flushing: %s" % inst)
 
 def main(config):
-	# Kafka settings
 	kafka = KafkaClient("{0}:{1}".format(config.kafka_host, config.kafka_port))
 
 	client = InfluxDBClient(config.influxdb_host,
@@ -131,13 +132,14 @@ def main(config):
 
 	listener = KafkaListener(kafka, client, config)
 	
-	try:
-	
+	try:	
 		listener.listen()
 	except KeyboardInterrupt:
-		error_log("Received Ctrl-C. Shutdown")
+		error_log("Shutdown.")
 		listener.abort()
 
+def log(msg):
+	print msg # TODO
 	
 def error_log(msg):
 	print msg # TODO
