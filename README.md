@@ -9,6 +9,10 @@ Supports influxdb version >= 0.9 (set the respective flag)
 
     python kafka_influxdb.py --influxdb_host 127.0.0.1 --influxdb_port 8086
 
+or 
+
+    python kafka_influxdb.py --configfile my_config.yaml
+
 ## Options
 
     kafka_influxdb.py [-h] [--kafka_host KAFKA_HOST]
@@ -23,15 +27,17 @@ Supports influxdb version >= 0.9 (set the respective flag)
                            [--influxdb_data_name INFLUXDB_DATA_NAME]
                            [--influxdb_columns INFLUXDB_COLUMNS]
                            [--influxdb_version DB_VERSION]
-                           [--buffer_size BUFFER_SIZE]
                            [--influxdb_retention_policy RETENTION_POLICY]
+                           [--buffer_size BUFFER_SIZE]
                            [--verbose BOOLEAN]
                            [--statistics BOOLEAN]
+                           [--configfile CONFIG_FILE]
 
+Command line settings have precedence over config file provided settings. We provided a sample config.yaml for your convenience.
 
 ## TODOs
+* test if < 0.9 still works
 * test results in database, especially the multivalues-tags, test if retention policy works
 * flush buffer if not full but some period has elapsed (safety net for low frequency input)
 * offset management
-* support config files and maybe remove flags
 * create error log
