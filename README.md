@@ -30,9 +30,8 @@ Supports influxdb version >= 0.9 (set the respective flag)
 
 
 ## TODOs
-
+* test results in database, especially the multivalues-tags, test if retention policy works
 * flush buffer if not full but some period has elapsed (safety net for low frequency input)
 * offset management
-* retention policy is not sent
 * support config files and maybe remove flags
 * create error log

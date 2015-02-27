@@ -9,17 +9,8 @@ from collections import defaultdict
 DB_VERSION_DEFAULT = 0.8
 DB_VERSION_APICHANGE = 0.9
 
-
-
-#	python kafka_influxdb.py --kafka_topic perfmonspring1 --influxdb_user root --influxdb_password root --influxdb_dbname mydb --influxdb_version 0.9 --kafka_host 10.1.3.234 --influxdb_host springfield02.local --buffer_size 2
-# TODO remove ^
-
-
 class InfluxDBData09(object):
-	def __init__(self, database, retention_policy):
-		self.database = database
-		if retention_policy != u'':
-			self.retentionPolicy = retention_policy
+	def __init__(self):
 		self.points = []
 
 	def add_points(self, points):
@@ -51,13 +42,15 @@ class KafkaListener(object):
 		self.client = influxdb_client
 		self.config = config
 		self.consumer = SimpleConsumer(self.kafka, self.config.kafka_group, self.config.kafka_topic)
+		
+
 		try:
 			db_version = float(self.config.influxdb_version)
 			self.version_0_9 = db_version >= DB_VERSION_APICHANGE
 		except:
 			self.version_0_9 = False
 		if self.version_0_9:
-			self.stats = InfluxDBData09(self.config.influxdb_dbname, self.config.influxdb_retention_policy)
+			self.stats = InfluxDBData09()
 		else:
 			self.stats = InfluxDBData(self.config.influxdb_data_name, self.config.influxdb_columns)
 
@@ -117,7 +110,8 @@ class KafkaListener(object):
 				data = self.stats.points		
 			else:
 				data = [self.stats.__dict__]
-			self.client.write_points(data)
+			self.client.write_points(data, "s", self.config.influxdb_dbname, self.config.influxdb_retention_policy)
+			
 		except Exception as inst:
 			error_log("Exception caught while flushing: %s" % inst)
 
@@ -151,7 +145,6 @@ def transform_to_0_9(kafka_message):
 	results = []
 	try:
 		for json_obj in json.loads(kafka_message):
-			print json_obj
 			timestamp = int(json_obj['time'])
 			tags = {}
 			tags['host'] = json_obj['host']
