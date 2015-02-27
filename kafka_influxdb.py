@@ -149,8 +149,9 @@ def get_millis():
 
 def transform_to_0_9(kafka_message):
 	results = []
-	for json_obj in json.loads(kafka_message):
-		try:
+	try:
+		for json_obj in json.loads(kafka_message):
+			print json_obj
 			timestamp = int(json_obj['time'])
 			tags = {}
 			tags['host'] = json_obj['host']
@@ -161,16 +162,24 @@ def transform_to_0_9(kafka_message):
 			if json_obj['type'] != u'':
 				tags['type'] = json_obj['type']
 			for i in range (0, len(json_obj['values'])):
-				# TODO check that range is defined correctly (borders)
+				
+				if json_obj['dstypes'][i] != u'':
+					tags['ds_type'] = json_obj['dstypes'][i]
+				else:
+					del tags['ds_type'] #in case this has been set in a previous loop iteration
+				if json_obj['dsnames'][i] != u'':
+					tags['ds_name'] = json_obj['dsnames'][i]
+				else:
+					del tags['ds_name'] #in case this has been set in a previous loop iteration
 				new_point = {"precision":"s"}
 				new_point["name"] = json_obj['plugin']
 				new_point["timestamp"] = timestamp
 				new_point["tags"] = tags
-				# TODO append i indexed dstype and dsvalue if not empty to tags and check that that really works
+				
 				new_point["fields"] = {"value" : json_obj['values'][i]}
 				results.append(new_point)
-		except Exception as inst:
-			error_log("Exception caught in json transformation: %s" % inst)
+	except Exception as inst:
+		error_log("Exception caught in json transformation: %s" % inst)
 	return results
 
 def parse_args():
