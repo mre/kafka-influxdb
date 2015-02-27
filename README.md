@@ -42,7 +42,6 @@ Please note also that you must install the version of the influxdb python client
 
 
 ## TODOs
-* test results in database, especially the multivalues-tags, test if retention policy works
 * flush buffer if not full but some period has elapsed (safety net for low frequency input)
-* offset management
+* offset management, if not already supported in kafka client
 * create error log
