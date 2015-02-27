@@ -119,6 +119,9 @@ class KafkaListener(object):
 def main(config):
 	if config.configfile is not None and config.configfile != u'':
 		read_config_file(config)
+		print "Updated config: " # TODO remove
+		print config
+		exit() # TODO remove
 
 	kafka = KafkaClient("{0}:{1}".format(config.kafka_host, config.kafka_port))
 
@@ -136,14 +139,40 @@ def main(config):
 		error_log("Shutdown.")
 		listener.abort()
 
-def read_config_file(*config):
+def read_config_file(config):
+	values = None
 	try:
 		f = open(config.configfile)
 		values = yaml.safe_load(f)
 		f.close()
-	except:
-		error_log("Could not open config file %s" % config.configfile, True)
+		set_config_values(config, values)
 
+	except Exception as inst:
+		error_log("Could not open config file %s : %s" % (config.configfile, inst), True)
+
+def set_config_values(config, values, prefix = ''):
+	print "Enter config loop with prefix %s" % prefix # TODO remove
+	"""
+	mappings = [ 	# TODO come up with a better way to do this. Maybe read from the dict itself
+			('kafka','host'),
+			('kafka','port'),
+			('kafka','topic'),
+			('kafka','group'),
+			('influxdb','host'),
+			('influxdb','port'), # TODO add others
+			('statistics'),
+			('verbose'),
+			('buffer_size'),
+		]
+	"""
+	for key, value in values.iteritems() :
+		print key, value, type(value)
+		if type(value) == type(dict()):
+			set_config_values(config, value, "%s_" % key)
+		elif value != u'':
+			setattr(config, "%s%s" % (prefix, key), value)
+			print "Setting %s to %s" % ("%s%s" % (prefix, key), value) # TODO remove
+		
 def log(msg):
 	print msg # TODO
 	

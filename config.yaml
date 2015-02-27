@@ -1,20 +1,16 @@
 --- 
 kafka:
-	host: "localhost"
-	port: 9092
-	topic: "test"
-	group: "mygroup"
+  host: "10.1.3.235"
+  port: 9092
+  topic: "perfmonspring1"
 influxdb:
-	host: "localhost"
-	port: 8086
-	user: ''
-	password: ''
-	dbname': 'kafka'
-	data_name: 'statsd'
-	columns: ['counter']
-	version: 0.8
-	retention_policy: "my_rp"
-settings:
-	buffer_size: 1000
-	verbose: false
-	statistics: false
+  host: "springfield02.local"
+  port: 8086
+  user: 'root'
+  password: 'root'
+  dbname: 'mydb'
+  version: 0.9
+  retention_policy: "my_rp"
+buffer_size: 1000
+verbose: false
+statistics: true
