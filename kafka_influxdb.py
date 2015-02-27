@@ -70,14 +70,17 @@ class KafkaListener(object):
 		self.aborted = False
 		starttime = get_millis()
 		
+		print "Listening." # TODO remove
+
 		for message in self.consumer:
 			i = i + 1
+			
 			val = message.message.value
 			if self.version_0_9:
 				transformed = transform_to_0_9(val)
 				self.stats.add_points(transformed)
 				if self.config.statistics:
-					count_datapoints = count_datapoints + len(transformed)	
+					self.count_datapoints = self.count_datapoints + len(transformed)	
 			else:
 				stats.add_point(val)
 			if i == self.config.buffer_size or self.config.buffer_size == 0 or self.aborted:
@@ -127,7 +130,9 @@ def main(config):
 				config.influxdb_dbname)
 
 	listener = KafkaListener(kafka, client, config)
+	
 	try:
+	
 		listener.listen()
 	except KeyboardInterrupt:
 		error_log("Received Ctrl-C. Shutdown")
