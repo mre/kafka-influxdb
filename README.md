@@ -2,7 +2,7 @@ Kafka-InfluxDB
 ==============
 
 A Kafka consumer for InfluxDB written in Python.  
-All messages sent to Kafka on a certain topic will be relayed to Influxdb. 
+All messages sent to Kafka on a certain topic will be relayed to Influxdb.   
 Supports Influxdb 0.8.x and 0.9.x.
 
 ## Example Usage
