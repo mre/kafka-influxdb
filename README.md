@@ -1,9 +1,9 @@
 kafka-InfluxDB
 ==============
 
-A Kafka consumer for InfluxDB.
-All messages sent to Kafka on a certain topic will be relayed to influxdb. 
-Supports influxdb version >= 0.9 (set the respective flag)
+A Kafka consumer for InfluxDB.  
+All messages sent to Kafka on a certain topic will be relayed to Influxdb. 
+Supports Influxdb 0.8.x and 0.9.x.
 
 ## Example Usage
 
@@ -33,15 +33,13 @@ or
                            [--statistics BOOLEAN]
                            [--configfile CONFIG_FILE]
 
-Command line settings have precedence over config file provided settings. We provided a sample config.yaml for your convenience.
+Command line settings have precedence over config file provided settings. See the sample at `config.yaml` to get an idea on the format.
 
-## DEPENDENCIES
+## Dependencies
 
-See requirements.txt
-Please note also that you must install the version of the influxdb python client matching your influxdb version (for 0.9 see https://github.com/influxdb/influxdb-python/tree/0.9.0_support )
+Please note that you must install the version of the influxdb python client matching your influxdb version (for 0.9 see https://github.com/influxdb/influxdb-python/tree/0.9.0_support )
 
-
-## TODOs
+## Todo
 * flush buffer if not full but some period has elapsed (safety net for low frequency input)
 * offset management, if not already supported in kafka client
 * create error log
