@@ -1,16 +1,21 @@
---- 
+---
 kafka:
-  host: "10.1.3.235"
+  host: "kafka"
   port: 9092
-  topic: "perfmonspring1"
+  topic: "metrics"
 influxdb:
-  host: "springfield02.local"
+  host: "influxdb"
   port: 8086
-  user: 'root'
-  password: 'root'
-  dbname: 'mydb'
+  user: "root"
+  password: "root"
+  dbname: "metrics"
+  # Todo: remove and replace with output format
   version: 0.9
   retention_policy: "my_rp"
+# Possible input formats: graphite, collectd_json
+input_format: "graphite"
+# Possible output values: influxdb, influxdb_legacy
+output_format: "influxdb"
 buffer_size: 1000
 verbose: false
 statistics: true
