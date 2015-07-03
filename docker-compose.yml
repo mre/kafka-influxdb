@@ -1,0 +1,29 @@
+# Creates the following container setup:
+# collectd -> Kafka -> kafka-influxdb -> InfluxDB
+zookeeper:
+  image: wurstmeister/zookeeper
+  ports:
+    - 2181
+kafka:
+  image: wurstmeister/kafka
+  ports:
+    - 9092
+  links:
+    - zookeeper:zk
+  environment:
+    KAFKA_ADVERTISED_HOST_NAME: 192.168.99.100
+    KAFKA_CREATE_TOPICS: "collectd:1:1"
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+influxdb:
+  image: tutum/influxdb:0.9
+  environment:
+    PRE_CREATE_DB: "metrics"
+  ports:
+   - 8083
+   - 8086
+collectd:
+ image: mre0/collectd
+ links:
+   - kafka
+   - influxdb
