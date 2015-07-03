@@ -6,36 +6,12 @@ import argparse
 import time
 import yaml
 from collections import defaultdict
-from lib.kafkalistener import KafkaListener
+from clients.influxdbdata09 import InfluxDBData09
+from clients.influxdbdata import InfluxDBData
+from clients.kafkalistener import KafkaListener
 
 DB_VERSION_DEFAULT = 0.8
 DB_VERSION_APICHANGE = 0.9
-
-class InfluxDBData09(object):
-	def __init__(self):
-		self.points = []
-
-	def add_points(self, points):
-		self.points = self.points + points
-
-
-	def reset(self):
-		self.points = []
-
-class InfluxDBData(object):
-	def __init__(self, name, columns):
-		self.name = name	
-		self.columns = columns
-		self.points = []
-
-	def add_point(self, *point):
-		self.points.append(list(point))
-	
-	def reset(self):
-		self.points = []
-
-
-
 
 
 def main(config):
