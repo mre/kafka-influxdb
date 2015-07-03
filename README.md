@@ -11,11 +11,11 @@ Supports Influxdb 0.8.x and 0.9.x.
 
 To run a simple test, you can provide config flags on the commandline like so:
 
-    python kafka_influxdb.py --influxdb_host 127.0.0.1 --influxdb_port 8086
+    python kafka-influxdb.py --influxdb_host 127.0.0.1 --influxdb_port 8086
 
 You can also specify a config file which is more convenient for running as a daemon: 
 
-    python kafka_influxdb.py --configfile my_config.yaml
+    python kafka-influxdb.py --configfile my_config.yaml
 
 ## Configuration
 

@@ -13,7 +13,6 @@ from clients.kafkalistener import KafkaListener
 DB_VERSION_DEFAULT = 0.8
 DB_VERSION_APICHANGE = 0.9
 
-
 def main(config):
 	if config.configfile is not None and config.configfile != u'':
 		read_config_file(config)
@@ -29,8 +28,8 @@ def main(config):
 				config.influxdb_dbname)
 
 	listener = KafkaListener(kafka, client, config)
-	
-	try:	
+
+	try:
 		listener.listen()
 	except KeyboardInterrupt:
 		error_log("Shutdown.")
@@ -53,11 +52,11 @@ def set_config_values(config, values, prefix = ''):
 			set_config_values(config, value, "%s_" % key)
 		elif value != u'':
 			setattr(config, "%s%s" % (prefix, key), value)
-			
-		
+
+
 def log(msg):
 	print msg # maybe redirect to logfile
-	
+
 def error_log(msg, die=False):
 	print msg # TODO
 	if die:
