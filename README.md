@@ -7,6 +7,8 @@ Supports Influxdb 0.8.x and 0.9.x.
 
 ## Usage
 
+    pip install -r requirements.txt
+
 To run a simple test, you can provide config flags on the commandline like so:
 
     python kafka_influxdb.py --influxdb_host 127.0.0.1 --influxdb_port 8086
