@@ -1,0 +1,21 @@
+---
+kafka:
+  host: "kafkahost"
+  port: 1234
+  topic: "kafkatopic"
+influxdb:
+  host: "influxdbhost"
+  port: 9999
+  user: "hans"
+  password: "hans"
+  dbname: "influxdbname"
+  # Todo: remove and replace with output format
+  version: 0.9
+  retention_policy: "my_rp"
+# Possible input formats: graphite, collectd_json
+input_format: "graphite"
+# Possible output values: influxdb, influxdb_legacy
+output_format: "influxdb"
+buffer_size: 1000
+verbose: false
+statistics: true

@@ -2,7 +2,7 @@ Kafka-InfluxDB
 ==============
 
 A Kafka consumer for InfluxDB written in Python.  
-All messages sent to Kafka on a certain topic will be relayed to Influxdb.   
+All messages sent to Kafka on a certain topic will be relayed to Influxdb.
 Supports Influxdb 0.8.x and 0.9.x.
 
 ## Usage
@@ -11,16 +11,16 @@ Supports Influxdb 0.8.x and 0.9.x.
 
 To run a simple test, you can provide config flags on the commandline like so:
 
-    python kafka-influxdb.py --influxdb_host 127.0.0.1 --influxdb_port 8086
+    python kafka_influxdb.py --influxdb_host 127.0.0.1 --influxdb_port 8086
 
-You can also specify a config file which is more convenient for running as a daemon: 
+You can also specify a config file which is more convenient for running as a daemon:
 
-    python kafka-influxdb.py --configfile my_config.yaml
+    python kafka_influxdb.py --configfile my_config.yaml
 
 ## Configuration
 
     kafka_influxdb.py [-h] [--kafka_host KAFKA_HOST]
-                           [--kafka_port KAFKA_PORT] 
+                           [--kafka_port KAFKA_PORT]
                            [--kafka_topic KAFKA_TOPIC]
                            [--kafka_group KAFKA_GROUP]
                            [--influxdb_host INFLUXDB_HOST]
