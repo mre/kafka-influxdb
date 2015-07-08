@@ -25,7 +25,7 @@ influxdb:
 collectd:
   image: mre0/collectd
   volumes:
-    - collectd.conf:/etc/collectd.conf
+    - contrib/collectd.conf:/etc/collectd.conf
   links:
     - kafka
 kafkainfluxdb:
