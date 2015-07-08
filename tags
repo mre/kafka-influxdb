@@ -5081,9 +5081,11 @@ TestDir	virtualenv/lib/python2.7/site-packages/nose/suite.py	/^class TestDir:$/;
 TestDistInfo	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_dist_info.py	/^class TestDistInfo(unittest.TestCase):$/;"	c
 TestDummyOutput	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_sdist.py	/^class TestDummyOutput(environment.ZippedEnvironment):$/;"	c
 TestEasyInstallTest	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_easy_install.py	/^class TestEasyInstallTest(unittest.TestCase):$/;"	c
+TestEchoEncoder	test/encoder/test_echo_encoder.py	/^class TestEchoEncoder(unittest.TestCase):$/;"	c
 TestEggInfo	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_egg_info.py	/^class TestEggInfo(unittest.TestCase):$/;"	c
 TestFindPackages	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_find_packages.py	/^class TestFindPackages(unittest.TestCase):$/;"	c
 TestId	virtualenv/lib/python2.7/site-packages/nose/plugins/testid.py	/^class TestId(Plugin):$/;"	c
+TestInfluxDB09Encoder	test/encoder/test_influxdb09_encoder.py	/^class TestInfluxDB09Encoder(unittest.TestCase):$/;"	c
 TestInfluxDBClient	virtualenv/lib/python2.7/site-packages/tests/influxdb/client_test.py	/^class TestInfluxDBClient(unittest.TestCase):$/;"	c
 TestInfluxDBClient	virtualenv/lib/python2.7/site-packages/tests/influxdb/influxdb08/client_test.py	/^class TestInfluxDBClient(unittest.TestCase):$/;"	c
 TestInfluxDBClusterClient	virtualenv/lib/python2.7/site-packages/tests/influxdb/client_test.py	/^class TestInfluxDBClusterClient(unittest.TestCase):$/;"	c
@@ -6171,7 +6173,7 @@ __iand__	virtualenv/lib/python2.7/_abcoll.py	/^    def __iand__(self, it):$/;"	m
 __iand__	virtualenv/lib/python2.7/_weakrefset.py	/^    def __iand__(self, other):$/;"	m	class:WeakSet	file:
 __init__	encoder/output/influxdbdata.py	/^	def __init__(self, name, columns):$/;"	m	class:InfluxDBData
 __init__	encoder/output/influxdbdata09.py	/^	def __init__(self):$/;"	m	class:InfluxDBData09
-__init__	kafka_influxdb.py	/^	def __init__(self, config):$/;"	m	class:KafkaInfluxDB
+__init__	kafka_influxdb.py	/^	def __init__(self, reader, writer, config):$/;"	m	class:KafkaInfluxDB
 __init__	reader/kafka_reader.py	/^	def __init__(self, host, port, group, topic):$/;"	m	class:KafkaReader
 __init__	test/test_config.py	/^    def __init__(self, configfile):$/;"	m	class:Config
 __init__	test/test_config.py	/^    def __init__(self, kafka):$/;"	m	class:ParsedConfig
@@ -9169,6 +9171,7 @@ check_empty_document	virtualenv/lib/python2.7/site-packages/yaml/emitter.py	/^  
 check_empty_mapping	virtualenv/lib/python2.7/site-packages/yaml/emitter.py	/^    def check_empty_mapping(self):$/;"	m	class:Emitter
 check_empty_sequence	virtualenv/lib/python2.7/site-packages/yaml/emitter.py	/^    def check_empty_sequence(self):$/;"	m	class:Emitter
 check_enableusersite	virtualenv/lib/python2.7/site.py	/^def check_enableusersite():$/;"	f
+check_encode	test/encoder/test_echo_encoder.py	/^    def check_encode(self, msg):$/;"	m	class:TestEchoEncoder
 check_entry_points	virtualenv/lib/python2.7/site-packages/setuptools/dist.py	/^def check_entry_points(dist, attr, value):$/;"	f
 check_error	virtualenv/lib/python2.7/site-packages/kafka/common.py	/^def check_error(response):$/;"	f
 check_error	virtualenv/lib/python2.7/site-packages/kafka/context.py	/^from kafka.common import check_error, OffsetCommitRequest, OffsetOutOfRangeError$/;"	i
@@ -9276,7 +9279,6 @@ clear_cache	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/locators.
 clear_cache	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/locators.py	/^    def clear_cache(self):$/;"	m	class:Locator
 clear_extension_cache	virtualenv/lib/python2.7/copy_reg.py	/^def clear_extension_cache():$/;"	f
 clearcache	virtualenv/lib/python2.7/linecache.py	/^def clearcache():$/;"	f
-client	kafka_influxdb.py	/^	client = KafkaInfluxDB(config)$/;"	v
 client	virtualenv/lib/python2.7/site-packages/tests/influxdb/helper_test.py	/^                client = InfluxDBClient()$/;"	v	class:TestSeriesHelper.test_auto_commit.AutoCommitTest.Meta
 client	virtualenv/lib/python2.7/site-packages/tests/influxdb/helper_test.py	/^                client = TestSeriesHelper.client$/;"	v	class:TestSeriesHelper.setUpClass.MySeriesHelper.Meta
 client	virtualenv/lib/python2.7/site-packages/tests/influxdb/helper_test.py	/^                client = TestSeriesHelper.client$/;"	v	class:TestSeriesHelper.testWarnBulkSizeZero.WarnBulkSizeZero.Meta
@@ -9750,7 +9752,6 @@ compose_sequence_node	virtualenv/lib/python2.7/site-packages/yaml/composer.py	/^
 compound_stmt	virtualenv/include/python2.7/graminit.h	/^#define compound_stmt /;"	d
 comprehension	virtualenv/include/python2.7/Python-ast.h	/^#define comprehension(/;"	d
 comprehension_ty	virtualenv/include/python2.7/Python-ast.h	/^typedef struct _comprehension *comprehension_ty;$/;"	t	typeref:struct:_comprehension
-config	kafka_influxdb.py	/^	config = parse_args()$/;"	v
 config	virtualenv/lib/python2.7/site-packages/nose/loader.py	/^    config = None$/;"	v	class:TestLoader
 config	virtualenv/lib/python2.7/site-packages/nose/plugins/manager.py	/^import nose.config$/;"	i
 config_file	virtualenv/lib/python2.7/site-packages/setuptools/command/alias.py	/^from setuptools.command.setopt import edit_config, option_base, config_file$/;"	i
@@ -10860,6 +10861,7 @@ easy_install_pkg	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_de
 easy_install_pkg	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_easy_install.py	/^from setuptools.command import easy_install as easy_install_pkg$/;"	i
 easy_install_pkg	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_test.py	/^from setuptools.command import easy_install as easy_install_pkg$/;"	i
 easy_install_script	virtualenv/lib/python2.7/site-packages/pip/wheel.py	/^    easy_install_script = console.pop('easy_install', None)$/;"	v
+echo_encoder	test/encoder/test_echo_encoder.py	/^from encoder import echo_encoder$/;"	i
 edit_config	virtualenv/lib/python2.7/site-packages/setuptools/command/alias.py	/^from setuptools.command.setopt import edit_config, option_base, config_file$/;"	i
 edit_config	virtualenv/lib/python2.7/site-packages/setuptools/command/egg_info.py	/^        from setuptools.command.setopt import edit_config$/;"	i
 edit_config	virtualenv/lib/python2.7/site-packages/setuptools/command/saveopts.py	/^from setuptools.command.setopt import edit_config, option_base$/;"	i
@@ -12175,6 +12177,7 @@ get_confidence	virtualenv/lib/python2.7/site-packages/requests/packages/chardet/
 get_confidence	virtualenv/lib/python2.7/site-packages/requests/packages/chardet/sbcharsetprober.py	/^    def get_confidence(self):$/;"	m	class:SingleByteCharSetProber
 get_confidence	virtualenv/lib/python2.7/site-packages/requests/packages/chardet/sjisprober.py	/^    def get_confidence(self):$/;"	m	class:SJISProber
 get_confidence	virtualenv/lib/python2.7/site-packages/requests/packages/chardet/utf8prober.py	/^    def get_confidence(self):$/;"	m	class:UTF8Prober
+get_config	kafka_influxdb.py	/^	def get_config(self):$/;"	m	class:KafkaInfluxDB
 get_config_files	virtualenv/lib/python2.7/site-packages/pip/baseparser.py	/^    def get_config_files(self):$/;"	m	class:ConfigOptionParser
 get_config_h_filename	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/_backport/sysconfig.py	/^def get_config_h_filename():$/;"	f
 get_config_section	virtualenv/lib/python2.7/site-packages/pip/baseparser.py	/^    def get_config_section(self, name):$/;"	m	class:ConfigOptionParser
@@ -13102,6 +13105,7 @@ indexbytes	virtualenv/lib/python2.7/site-packages/six.py	/^    indexbytes = oper
 inf_value	virtualenv/lib/python2.7/site-packages/yaml/constructor.py	/^    inf_value = 1e300$/;"	v	class:SafeConstructor
 inf_value	virtualenv/lib/python2.7/site-packages/yaml/representer.py	/^    inf_value = 1e300$/;"	v	class:SafeRepresenter
 influxdb	writer/influxdb_writer.py	/^import influxdb$/;"	i
+influxdb09_encoder	test/encoder/test_influxdb09_encoder.py	/^from encoder import influxdb09_encoder$/;"	i
 influxdb_bin_path	virtualenv/lib/python2.7/site-packages/tests/influxdb/client_test_with_server.py	/^            influxdb_bin_path = '\/opt\/influxdb\/influxd'$/;"	v
 influxdb_bin_path	virtualenv/lib/python2.7/site-packages/tests/influxdb/client_test_with_server.py	/^            influxdb_bin_path = subprocess.check_output($/;"	v
 influxdb_bin_path	virtualenv/lib/python2.7/site-packages/tests/influxdb/client_test_with_server.py	/^        influxdb_bin_path = distutils.spawn.find_executable('influxd')$/;"	v
@@ -13753,7 +13757,7 @@ loadTestsFromTestClass	virtualenv/lib/python2.7/site-packages/nose/loader.py	/^ 
 loadTestsFromTestClass	virtualenv/lib/python2.7/site-packages/nose/plugins/base.py	/^    def loadTestsFromTestClass(self, cls):$/;"	m	class:IPluginInterface
 load_all	virtualenv/lib/python2.7/site-packages/yaml/__init__.py	/^def load_all(stream, Loader=Loader):$/;"	f
 load_cert_chain	virtualenv/lib/python2.7/site-packages/requests/packages/urllib3/util/ssl_.py	/^        def load_cert_chain(self, certfile, keyfile):$/;"	m	class:SSLContext
-load_encoder	kafka_influxdb.py	/^	def load_encoder(self, encoder_name):$/;"	m	class:KafkaInfluxDB
+load_encoder	kafka_influxdb.py	/^def load_encoder(encoder_name):$/;"	f
 load_entry_point	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^    def load_entry_point(self, group, name):$/;"	m	class:Distribution
 load_entry_point	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^def load_entry_point(dist, group, name):$/;"	f
 load_entry_point	virtualenv/lib/python2.7/site-packages/pkg_resources.py	/^    def load_entry_point(self, group, name):$/;"	m	class:Distribution
@@ -13974,6 +13978,7 @@ macCyrillic_CharToOrderMap	virtualenv/lib/python2.7/site-packages/requests/packa
 macosVersionString	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^macosVersionString = re.compile(r"macosx-(\\d+)\\.(\\d+)-(.*)")$/;"	v
 macosVersionString	virtualenv/lib/python2.7/site-packages/pkg_resources.py	/^macosVersionString = re.compile(r"macosx-(\\d+)\\.(\\d+)-(.*)")$/;"	v
 magic	virtualenv/include/python2.7/pyexpat.h	/^    char* magic; \/* set to PyExpat_CAPI_MAGIC *\/$/;"	m	struct:PyExpat_CAPI
+main	kafka_influxdb.py	/^def main():$/;"	f
 main	virtualenv/bin/easy_install	/^from setuptools.command.easy_install import main$/;"	i
 main	virtualenv/bin/easy_install-2.7	/^from setuptools.command.easy_install import main$/;"	i
 main	virtualenv/bin/pip	/^from pip import main$/;"	i
@@ -14839,6 +14844,8 @@ output_difference	virtualenv/lib/python2.7/site-packages/nose/ext/dtcompat.py	/^
 output_difference	virtualenv/lib/python2.7/site-packages/setuptools/tests/doctest.py	/^    def output_difference(self, example, got, optionflags):$/;"	m	class:OutputChecker
 output_package_listing	virtualenv/lib/python2.7/site-packages/pip/commands/list.py	/^    def output_package_listing(self, installed_packages):$/;"	m	class:ListCommand
 overwrite_arg	virtualenv/lib/python2.7/site-packages/setuptools/command/egg_info.py	/^def overwrite_arg(cmd, basename, filename):$/;"	f
+overwrite_config_values	kafka_influxdb.py	/^def overwrite_config_values(config, values, prefix = ""):$/;"	f
+overwrite_config_values	test/test_config.py	/^from kafka_influxdb import parse_configfile, overwrite_config_values$/;"	i
 package	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_resources.py	/^            self.fail("Setuptools tried to import the parent namespace package")$/;"	i
 packageSetup	virtualenv/lib/python2.7/site-packages/nose/suite.py	/^    packageSetup = ('setup_package', 'setupPackage', 'setUpPackage')$/;"	v	class:ContextSuite
 packageTeardown	virtualenv/lib/python2.7/site-packages/nose/suite.py	/^    packageTeardown = ('teardown_package', 'teardownPackage',$/;"	v	class:ContextSuite
@@ -14892,7 +14899,8 @@ parse_block_sequence_entry	virtualenv/lib/python2.7/site-packages/yaml/parser.py
 parse_block_sequence_first_entry	virtualenv/lib/python2.7/site-packages/yaml/parser.py	/^    def parse_block_sequence_first_entry(self):$/;"	m	class:Parser
 parse_command_line	virtualenv/lib/python2.7/site-packages/setuptools/dist.py	/^    def parse_command_line(self):$/;"	m	class:Distribution
 parse_config_h	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/_backport/sysconfig.py	/^def parse_config_h(fp, vars=None):$/;"	f
-parse_configfile	kafka_influxdb.py	/^	def parse_configfile(self, configfile):$/;"	m	class:KafkaInfluxDB
+parse_configfile	kafka_influxdb.py	/^def parse_configfile(configfile):$/;"	f
+parse_configfile	test/test_config.py	/^from kafka_influxdb import parse_configfile, overwrite_config_values$/;"	i
 parse_credentials	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/locators.py	/^from .util import (cached_property, parse_credentials, ensure_slash,$/;"	i
 parse_credentials	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/util.py	/^def parse_credentials(netloc):$/;"	f
 parse_credentials	virtualenv/lib/python2.7/site-packages/pip/download.py	/^    def parse_credentials(self, netloc):$/;"	m	class:MultiDomainBasicAuth
@@ -15588,7 +15596,6 @@ read	virtualenv/lib/python2.7/site-packages/setuptools/svn_utils.py	/^    def re
 read1	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/_backport/tarfile.py	/^    read1 = read$/;"	v	class:ExFileObject
 readChunk	virtualenv/lib/python2.7/site-packages/pip/_vendor/html5lib/inputstream.py	/^    def readChunk(self, chunkSize=None):$/;"	m	class:HTMLUnicodeInputStream
 read_chunked	virtualenv/lib/python2.7/site-packages/requests/packages/urllib3/response.py	/^    def read_chunked(self, amt=None, decode_content=None):$/;"	m	class:HTTPResponse
-read_config_file	test/test_config.py	/^from kafka_influxdb import read_config_file, set_config_values$/;"	i
 read_configuration	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/index.py	/^    def read_configuration(self):$/;"	m	class:PackageIndex
 read_exports	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/database.py	/^    def read_exports(self):$/;"	m	class:InstalledDistribution
 read_exports	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/util.py	/^def read_exports(stream):$/;"	f
@@ -16354,6 +16361,8 @@ setBEGINLIBPATH	virtualenv/lib/python2.7/site.py	/^def setBEGINLIBPATH():$/;"	f
 setOutputStream	virtualenv/lib/python2.7/site-packages/nose/plugins/base.py	/^    def setOutputStream(self, stream):$/;"	m	class:IPluginInterface
 setOutputStream	virtualenv/lib/python2.7/site-packages/nose/plugins/testid.py	/^    def setOutputStream(self, stream):$/;"	m	class:TestId
 setPosition	virtualenv/lib/python2.7/site-packages/pip/_vendor/html5lib/inputstream.py	/^    def setPosition(self, position):$/;"	m	class:EncodingBytes
+setUp	test/encoder/test_echo_encoder.py	/^    def setUp(self):$/;"	m	class:TestEchoEncoder
+setUp	test/encoder/test_influxdb09_encoder.py	/^    def setUp(self):$/;"	m	class:TestInfluxDB09Encoder
 setUp	test/test_config.py	/^    def setUp(self):$/;"	m	class:TestConfig
 setUp	virtualenv/lib/python2.7/site-packages/nose/case.py	/^    def setUp(self):$/;"	m	class:FunctionTestCase
 setUp	virtualenv/lib/python2.7/site-packages/nose/case.py	/^    def setUp(self):$/;"	m	class:MethodTestCase
@@ -16399,8 +16408,6 @@ set_attrs	virtualenv/lib/python2.7/site-packages/pip/_vendor/colorama/winterm.py
 set_cert	virtualenv/lib/python2.7/site-packages/pip/_vendor/requests/packages/urllib3/connection.py	/^    def set_cert(self, key_file=None, cert_file=None,$/;"	m	class:VerifiedHTTPSConnection
 set_cert	virtualenv/lib/python2.7/site-packages/requests/packages/urllib3/connection.py	/^    def set_cert(self, key_file=None, cert_file=None,$/;"	m	class:VerifiedHTTPSConnection
 set_ciphers	virtualenv/lib/python2.7/site-packages/requests/packages/urllib3/util/ssl_.py	/^        def set_ciphers(self, cipher_suite):$/;"	m	class:SSLContext
-set_config_values	kafka_influxdb.py	/^	def set_config_values(self, values, prefix = ""):$/;"	m	class:KafkaInfluxDB
-set_config_values	test/test_config.py	/^from kafka_influxdb import read_config_file, set_config_values$/;"	i
 set_console	virtualenv/lib/python2.7/site-packages/pip/_vendor/colorama/winterm.py	/^    def set_console(self, attrs=None, on_stderr=False):$/;"	m	class:WinTerm
 set_continue	virtualenv/lib/python2.7/site-packages/nose/plugins/doctests.py	/^    def set_continue(self):$/;"	m	class:NoseOutputRedirectingPdb
 set_cookie	virtualenv/lib/python2.7/site-packages/pip/_vendor/requests/cookies.py	/^    def set_cookie(self, cookie, *args, **kwargs):$/;"	m	class:RequestsCookieJar
@@ -17578,9 +17585,11 @@ test_dsn	virtualenv/lib/python2.7/site-packages/tests/influxdb/influxdb08/client
 test_dsn_mixed_scheme_case	virtualenv/lib/python2.7/site-packages/tests/influxdb/client_test.py	/^    def test_dsn_mixed_scheme_case(self):$/;"	m	class:TestInfluxDBClusterClient
 test_dsn_password_caps	virtualenv/lib/python2.7/site-packages/tests/influxdb/client_test.py	/^    def test_dsn_password_caps(self):$/;"	m	class:TestInfluxDBClusterClient
 test_dsn_single_client	virtualenv/lib/python2.7/site-packages/tests/influxdb/client_test.py	/^    def test_dsn_single_client(self):$/;"	m	class:TestInfluxDBClusterClient
+test_encode	test/encoder/test_echo_encoder.py	/^    def test_encode(self):$/;"	m	class:TestEchoEncoder
 test_entries	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_svn.py	/^    def test_entries(self):$/;"	m	class:TestSvn
 test_exclude	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_find_packages.py	/^    def test_exclude(self):$/;"	m	class:TestFindPackages
 test_externals	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_svn.py	/^    def test_externals(self):$/;"	m	class:TestSvn
+test_failing_encode	test/encoder/test_influxdb09_encoder.py	/^    def test_failing_encode(self):$/;"	m	class:TestInfluxDB09Encoder
 test_filter_by_name	virtualenv/lib/python2.7/site-packages/tests/influxdb/resultset_test.py	/^    def test_filter_by_name(self):$/;"	m	class:TestResultSet
 test_filter_by_name_and_tags	virtualenv/lib/python2.7/site-packages/tests/influxdb/resultset_test.py	/^    def test_filter_by_name_and_tags(self):$/;"	m	class:TestResultSet
 test_filter_by_tags	virtualenv/lib/python2.7/site-packages/tests/influxdb/resultset_test.py	/^    def test_filter_by_tags(self):$/;"	m	class:TestResultSet
@@ -18047,6 +18056,7 @@ true	virtualenv/include/python2.7/asdl.h	/^typedef enum {false, true} bool;$/;"	
 truncate	virtualenv/lib/python2.7/site-packages/nose/ext/dtcompat.py	/^    def truncate(self,   size=None):$/;"	m	class:_SpoofOut
 truncate	virtualenv/lib/python2.7/site-packages/nose/plugins/logcapture.py	/^    def truncate(self):$/;"	m	class:MyMemoryHandler
 truncate	virtualenv/lib/python2.7/site-packages/setuptools/tests/doctest.py	/^    def truncate(self,   size=None):$/;"	m	class:_SpoofOut
+try_encode	test/encoder/test_influxdb09_encoder.py	/^    def try_encode(self, msg):$/;"	m	class:TestInfluxDB09Encoder
 try_run	virtualenv/lib/python2.7/site-packages/nose/case.py	/^from nose.util import resolve_name, test_address, try_run$/;"	i
 try_run	virtualenv/lib/python2.7/site-packages/nose/suite.py	/^from nose.util import isclass, resolve_name, try_run$/;"	i
 try_run	virtualenv/lib/python2.7/site-packages/nose/util.py	/^def try_run(obj, names):$/;"	f
@@ -18179,6 +18189,8 @@ union	virtualenv/lib/python2.7/_weakrefset.py	/^    def union(self, other):$/;"	
 unique	virtualenv/lib/python2.7/site-packages/pip/wheel.py	/^    def unique(*args, **kw):$/;"	f	function:_unique
 unique_everseen	virtualenv/lib/python2.7/site-packages/setuptools/package_index.py	/^def unique_everseen(iterable, key=None):$/;"	f
 unique_values	virtualenv/lib/python2.7/site-packages/setuptools/package_index.py	/^def unique_values(func):$/;"	f
+unittest	test/encoder/test_echo_encoder.py	/^import unittest$/;"	i
+unittest	test/encoder/test_influxdb09_encoder.py	/^import unittest$/;"	i
 unittest	test/test_config.py	/^import unittest$/;"	i
 unittest	virtualenv/lib/python2.7/site-packages/nose/case.py	/^import unittest$/;"	i
 unittest	virtualenv/lib/python2.7/site-packages/nose/core.py	/^import unittest$/;"	i

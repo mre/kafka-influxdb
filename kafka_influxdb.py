@@ -7,10 +7,11 @@ from reader import kafka_reader
 from writer import influxdb_writer
 
 class KafkaInfluxDB(object):
-	def __init__(self, reader, writer, config):
+	def __init__(self, reader, encoder, writer, config):
 		""" Setup """
 		self.config = config
 		self.reader = reader
+		self.encoder = encoder
 		self.writer = writer
 		self.buffer = []
 
@@ -19,7 +20,7 @@ class KafkaInfluxDB(object):
 		logging.info("Listening for messages on kafka topic ", self.config.kafka_topic)
 		try:
 			for index, raw_message in enumerate(self.reader.read(), 1):
-				self.buffer.append(self.input_encoder.encode(raw_message))
+				self.buffer.append(self.encoder.encode(raw_message))
 				if index % self.config.buffer_size == 0:
 					self.flush()
 		except KeyboardInterrupt:
@@ -30,8 +31,6 @@ class KafkaInfluxDB(object):
 		try:
 			self.writer.write(self.buffer)
 			self.buffer = []
-			print "flush"
-			exit(-1)
 		except Exception, e:
 			logging.warning(e)
 
@@ -50,13 +49,12 @@ def main():
 	else:
 		logging.info("Using default configuration")
 
-	input_encoder = load_encoder(config.encoder_input)
 	reader = kafka_reader.KafkaReader(config.kafka_host,
 									config.kafka_port,
 									config.kafka_group,
 									config.kafka_topic)
 
-	output_encoder = load_encoder(config.encoder_output)
+	encoder = load_encoder(config.encoder)
 	writer = influxdb_writer.InfluxDBWriter(config.influxdb_host,
 									config.influxdb_port,
 									config.influxdb_user,
@@ -65,7 +63,7 @@ def main():
 									config.influxdb_retention_policy,
 									config.influxdb_time_precision)
 
-	client = KafkaInfluxDB(reader, writer, config)
+	client = KafkaInfluxDB(reader, encoder, writer, config)
 	client.consume()
 
 def load_encoder(encoder_name):
@@ -106,8 +104,7 @@ def parse_args():
 	parser.add_argument('--influxdb_dbname', type=str, default='kafka', required=False, help="InfluXDB database to write metrics into")
 	parser.add_argument('--influxdb_retention_policy', type=str, default=None, required=False, help="Retention policy for incoming metrics")
 	parser.add_argument('--influxdb_time_precision', type=str, default="s", required=False, help="Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u'")
-	parser.add_argument('--encoder_input', type=str, default='echo_encoder', required=False, help="Input encoder which converts an incoming message to dictionary")
-	parser.add_argument('--encoder_output', type=str, default='influxdb09_encoder', required=False, help="Output encoder which converts a dictionary to an outgoing message")
+	parser.add_argument('--encoder', type=str, default='collectd_graphite_encoder', required=False, help="Input encoder which converts an incoming message to dictionary")
 	parser.add_argument('--buffer_size', type=int, default=1000, required=False, help="Maximum number of messages that will be collected before flushing to the backend")
 	parser.add_argument('-c', '--configfile', type=str, default=None, required=False, help="Configfile path")
 	parser.add_argument('-v', '--verbose', action="store_true", help="Show info and debug messages while running")
