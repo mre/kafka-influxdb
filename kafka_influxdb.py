@@ -34,6 +34,20 @@ class KafkaInfluxDB(object):
 			logging.warning(e)
 		self.buffer = []
 
+	def set_reader(self, reader):
+		self.reader = reader
+
+	def get_reader(self):
+		self.reader = reader
+
+	def set_writer(self, writer):
+		self.writer = writer
+
+	def get_writer(self):
+		self.writer = writer
+
+	def get_buffer(self):
+		return self.buffer
 
 	def get_config(self):
 		return self.config
