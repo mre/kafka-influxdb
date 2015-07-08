@@ -30,9 +30,10 @@ class KafkaInfluxDB(object):
 		""" Flush values with writer """
 		try:
 			self.writer.write(self.buffer)
-			self.buffer = []
 		except Exception, e:
 			logging.warning(e)
+		self.buffer = []
+
 
 	def get_config(self):
 		return self.config
