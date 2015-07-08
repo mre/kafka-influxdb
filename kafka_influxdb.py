@@ -7,36 +7,12 @@ from reader import kafka_reader
 from writer import influxdb_writer
 
 class KafkaInfluxDB(object):
-	def __init__(self, config):
+	def __init__(self, reader, writer, config):
 		""" Setup """
-		if config.verbose:
-			logging.getLogger().setLevel(logging.DEBUG)
-
 		self.config = config
-		if config.configfile:
-			logging.debug("Reading", config.configfile)
-			values = self.parse_configfile(config.configfile)
-			self.set_config_values(values)
-		else:
-			logging.info("Using default configuration")
-
-		self.input_encoder = self.load_encoder(config.encoder_input)
-		self.reader = kafka_reader.KafkaReader(config.kafka_host,
-										config.kafka_port,
-										config.kafka_group,
-										config.kafka_topic)
-
-		self.output_encoder = self.load_encoder(config.encoder_output)
-		self.writer = influxdb_writer.InfluxDBWriter(config.influxdb_host,
-										config.influxdb_port,
-										config.influxdb_user,
-										config.influxdb_password,
-										config.influxdb_dbname,
-										config.influxdb_retention_policy,
-										config.influxdb_time_precision)
-
+		self.reader = reader
+		self.writer = writer
 		self.buffer = []
-
 
 	def consume(self):
 		""" Run loop. Consume messages from reader, convert it to the output format and write with writer """
@@ -59,33 +35,66 @@ class KafkaInfluxDB(object):
 		except Exception, e:
 			logging.warning(e)
 
-	def load_encoder(self, encoder_name):
-		""" Creates an instance of the given encoder """
-		encoder_module = importlib.import_module("encoder." + encoder_name)
-		encoder_class = getattr(encoder_module, "Encoder")
-		return encoder_class()
+	def get_config(self):
+		return self.config
 
-	def parse_configfile(self, configfile):
-		""" Read settings from file """
-		values = None
-		with open(configfile) as f:
-			try:
-				return yaml.safe_load(f)
-			except Exception, e :
-				logging.fatal("Could not load default config file: ", e)
-				exit(-1)
+def main():
+	config = parse_args()
+	if config.verbose:
+		logging.getLogger().setLevel(logging.DEBUG)
 
-	def set_config_values(self, values, prefix = ""):
-		""" Overwrite default configs with custom values """
-		for key, value in values.iteritems() :
-			if type(value) == type(dict()):
-				self.set_config_values(value, "%s_" % key)
-			elif value != u'':
-				setattr(self.config, "%s%s" % (prefix, key), value)
+	if config.configfile:
+		logging.debug("Reading config from ", config.configfile)
+		values = parse_configfile(config.configfile)
+		overwrite_config_values(values)
+	else:
+		logging.info("Using default configuration")
+
+	input_encoder = load_encoder(config.encoder_input)
+	reader = kafka_reader.KafkaReader(config.kafka_host,
+									config.kafka_port,
+									config.kafka_group,
+									config.kafka_topic)
+
+	output_encoder = load_encoder(config.encoder_output)
+	writer = influxdb_writer.InfluxDBWriter(config.influxdb_host,
+									config.influxdb_port,
+									config.influxdb_user,
+									config.influxdb_password,
+									config.influxdb_dbname,
+									config.influxdb_retention_policy,
+									config.influxdb_time_precision)
+
+	client = KafkaInfluxDB(reader, writer, config)
+	client.consume()
+
+def load_encoder(encoder_name):
+	"""
+	Creates an instance of the given encoder.
+	An encoder converts a message from one format to another
+	"""
+	encoder_module = importlib.import_module("encoder." + encoder_name)
+	return getattr(encoder_module, "Encoder")
+
+def parse_configfile(configfile):
+	""" Read settings from file """
+	with open(configfile) as f:
+		try:
+			return yaml.safe_load(f)
+		except Exception, e :
+			logging.fatal("Could not load default config file: ", e)
+			exit(-1)
+
+def overwrite_config_values(config, values, prefix = ""):
+	""" Overwrite default config with custom values """
+	for key, value in values.iteritems() :
+		if type(value) == type(dict()):
+			overwrite_config_values(config, value, "%s_" % key)
+		elif value != u'':
+			setattr(config, "%s%s" % (prefix, key), value)
 
 def parse_args():
-	parser = argparse.ArgumentParser(description='A Kafka consumer for InfluxDB',
-					formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+	parser = argparse.ArgumentParser(description='A Kafka consumer for InfluxDB', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 	parser.add_argument('--kafka_host', type=str, default='localhost', required=False, help="Hostname or IP of Kafka message broker")
 	parser.add_argument('--kafka_port', type=int, default=9092, required=False, help="Port of Kafka message broker")
 	parser.add_argument('--kafka_topic', type=str, default='test', required=False, help="Topic for metrics")
@@ -102,11 +111,7 @@ def parse_args():
 	parser.add_argument('--buffer_size', type=int, default=1000, required=False, help="Maximum number of messages that will be collected before flushing to the backend")
 	parser.add_argument('-c', '--configfile', type=str, default=None, required=False, help="Configfile path")
 	parser.add_argument('-v', '--verbose', action="store_true", help="Show info and debug messages while running")
-
 	return parser.parse_args()
 
 if __name__ == '__main__'	:
-	config = parse_args()
-	client = KafkaInfluxDB(config)
-	# Enter run loop
-	client.consume()
+	main()
