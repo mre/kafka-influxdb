@@ -100,8 +100,8 @@ def parse_args():
 	parser.add_argument('--encoder_input', type=str, default='echo_encoder', required=False)
 	parser.add_argument('--encoder_output', type=str, default='influxdb09_encoder', required=False)
 	parser.add_argument('--buffer_size', type=int, default=1000, required=False)
-	parser.add_argument('--configfile', type=str, default=None, required=False)
-	parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
+	parser.add_argument('-c', '--configfile', type=str, default=None, required=False)
+	parser.add_argument('-v', '--verbose', help="increase output verbosity", action="store_true")
 
 	return parser.parse_args()
 
