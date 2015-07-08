@@ -7,15 +7,25 @@ Supports Influxdb 0.8.x and 0.9.x.
 
 ## Usage
 
+### Starting inside a container
+
+The most convenient way to get started is running this inside a Docker container like so:
+
+    docker build -t mre/kafka_influxdb .
+    docker run -it --rm mre/kafka_influxdb
+
+To run a simple test setup, you can run a collectd -> kafka -> kafka_influxdb -> influxdb toolchain with the following command:
+
+    docker-compose up
+
+### Starting manually
+
+If you want to run a local instance, you can do so with the following commands:
+
     pip install -r requirements.txt
+    # You might need to adjust the config.yaml
+    python kafka_influxdb.py -c config.yaml
 
-To run a simple test, you can provide config flags on the commandline like so:
-
-    python kafka_influxdb.py --influxdb_host 127.0.0.1 --influxdb_port 8086
-
-You can also specify a config file which is more convenient for running as a daemon:
-
-    python kafka_influxdb.py --configfile my_config.yaml
 
 ## Configuration
 
@@ -39,11 +49,6 @@ You can also specify a config file which is more convenient for running as a dae
 
 Command line settings have precedence over config file provided settings. See the sample at `config.yaml` to get an idea on the format.
 
-## Dependencies
-
-Please note that you must install the version of the influxdb python client matching your influxdb version (for 0.9 see https://github.com/influxdb/influxdb-python/tree/0.9.0_support )
-
 ## Todo
 * flush buffer if not full but some period has elapsed (safety net for low frequency input)
-* offset management, if not already supported in kafka client
-* create error log
+* Provide environment variables for docker
