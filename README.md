@@ -27,6 +27,21 @@ If you want to run a local instance, you can do so with the following commands:
     python kafka_influxdb.py -c config.yaml
 
 
+## Supported input and output formats
+
+### Input formats
+
+* Graphite
+
+### Output formats
+
+* InfluxDB 0.9 and later
+* InfluxDB 0.8
+
+### Extending
+
+You can write a custom encoder to support any other format (e.g. Protobuf). Look at the examples in the `encoder` folder to get started.
+
 ## Configuration
 
     kafka_influxdb.py [-h] [--kafka_host KAFKA_HOST]
@@ -48,6 +63,7 @@ If you want to run a local instance, you can do so with the following commands:
                            [--configfile CONFIG_FILE]
 
 Command line settings have precedence over config file provided settings. See the sample at `config.yaml` to get an idea on the format.
+
 
 ## Todo
 * flush buffer if not full but some period has elapsed (safety net for low frequency input)
