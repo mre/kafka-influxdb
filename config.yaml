@@ -12,10 +12,9 @@ influxdb:
   # Todo: remove and replace with output format
   version: 0.9
   retention_policy: "my_rp"
-# Possible input formats: graphite, collectd_json
-encoder:
-  input: "echo_encoder"
-  output: "influxdb09_encoder"
+# Possible encoders (see encoder directory for details)
+# * collectd_graphite_encoder
+encoder: "collectd_graphite_encoder"
 buffer_size: 1000
 verbose: false
 statistics: true
