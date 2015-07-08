@@ -1226,7 +1226,6 @@ E_SYNTAX	virtualenv/include/python2.7/errcode.h	/^#define E_SYNTAX	/;"	d
 E_TABSPACE	virtualenv/include/python2.7/errcode.h	/^#define E_TABSPACE	/;"	d
 E_TOKEN	virtualenv/include/python2.7/errcode.h	/^#define E_TOKEN	/;"	d
 E_TOODEEP	virtualenv/include/python2.7/errcode.h	/^#define E_TOODEEP	/;"	d
-EchoEncoder	encoder/echo_encoder.py	/^class EchoEncoder(object):$/;"	c
 EggInfoDistribution	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/database.py	/^class EggInfoDistribution(BaseInstalledDistribution):$/;"	c
 EggMetadata	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^class EggMetadata(ZipProvider):$/;"	c
 EggMetadata	virtualenv/lib/python2.7/site-packages/pkg_resources.py	/^class EggMetadata(ZipProvider):$/;"	c
@@ -1257,6 +1256,8 @@ EmptyPoolError	virtualenv/lib/python2.7/site-packages/requests/packages/urllib3/
 EmptyProvider	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^class EmptyProvider(NullProvider):$/;"	c
 EmptyProvider	virtualenv/lib/python2.7/site-packages/pkg_resources.py	/^class EmptyProvider(NullProvider):$/;"	c
 EncodedFile	virtualenv/lib/python2.7/codecs.py	/^def EncodedFile(file, data_encoding, file_encoding=None, errors='strict'):$/;"	f
+Encoder	encoder/echo_encoder.py	/^class Encoder(object):$/;"	c
+Encoder	encoder/influxdb09_encoder.py	/^class Encoder():$/;"	c
 EncodingBytes	virtualenv/lib/python2.7/site-packages/pip/_vendor/html5lib/inputstream.py	/^class EncodingBytes(bytes):$/;"	c
 EncodingParser	virtualenv/lib/python2.7/site-packages/pip/_vendor/html5lib/inputstream.py	/^class EncodingParser(object):$/;"	c
 EntryPoint	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^class EntryPoint(object):$/;"	c
@@ -2249,7 +2250,6 @@ IndexServer	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_package
 Index_kind	virtualenv/include/python2.7/Python-ast.h	/^enum _slice_kind {Ellipsis_kind=1, Slice_kind=2, ExtSlice_kind=3, Index_kind=4};$/;"	e	enum:_slice_kind
 Inf	virtualenv/lib/python2.7/site-packages/pip/index.py	/^from pip.util import Inf, normalize_name, splitext, is_prerelease$/;"	i
 Inf	virtualenv/lib/python2.7/site-packages/pip/util.py	/^Inf = _Inf() #this object is not currently used as a sortable in our code$/;"	v
-InfluxDB09Encoder	encoder/influxdb09_encoder.py	/^class InfluxDB09Encoder():$/;"	c
 InfluxDBClient	virtualenv/lib/python2.7/site-packages/influxdb/__init__.py	/^from influxdb.client import InfluxDBClient$/;"	i
 InfluxDBClient	virtualenv/lib/python2.7/site-packages/influxdb/client.py	/^class InfluxDBClient(object):$/;"	c
 InfluxDBClientError	virtualenv/lib/python2.7/site-packages/influxdb/client.py	/^class InfluxDBClientError(Exception):$/;"	c
@@ -9480,8 +9480,6 @@ contextlib	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/database.p
 contextlib	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/util.py	/^import contextlib$/;"	i
 contextlib	virtualenv/lib/python2.7/site-packages/setuptools/tests/test_easy_install.py	/^import contextlib$/;"	i
 continue_stmt	virtualenv/include/python2.7/graminit.h	/^#define continue_stmt /;"	d
-convert	encoder/echo_encoder.py	/^    def convert(self, message):$/;"	m	class:EchoEncoder
-convert	encoder/influxdb09_encoder.py	/^    def convert(self, msg):$/;"	m	class:InfluxDB09Encoder
 convert	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/compat.py	/^        def convert(self, value):$/;"	m	class:BaseConfigurator
 convert	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/util.py	/^        def convert(o):$/;"	f	function:Configurator.configure_custom
 convert_ansi	virtualenv/lib/python2.7/site-packages/pip/_vendor/colorama/ansitowin32.py	/^    def convert_ansi(self, paramstring, command):$/;"	m	class:AnsiToWin32
@@ -10492,6 +10490,8 @@ enabled	virtualenv/lib/python2.7/site-packages/nose/plugins/logcapture.py	/^    
 enabled	virtualenv/lib/python2.7/site-packages/nose/plugins/skip.py	/^    enabled = True$/;"	v	class:Skip
 enabled_for_errors	virtualenv/lib/python2.7/site-packages/nose/plugins/debug.py	/^    enabled_for_errors = False$/;"	v	class:Pdb
 enabled_for_failures	virtualenv/lib/python2.7/site-packages/nose/plugins/debug.py	/^    enabled_for_failures = False$/;"	v	class:Pdb
+encode	encoder/echo_encoder.py	/^    def encode(self, message):$/;"	m	class:Encoder
+encode	encoder/influxdb09_encoder.py	/^    def encode(self, msg):$/;"	m	class:Encoder
 encode	virtualenv/lib/python2.7/codecs.py	/^    def encode(self, input, errors='strict'):$/;"	m	class:Codec
 encode	virtualenv/lib/python2.7/codecs.py	/^    def encode(self, input, final=False):$/;"	m	class:BufferedIncrementalEncoder
 encode	virtualenv/lib/python2.7/codecs.py	/^    def encode(self, input, final=False):$/;"	m	class:IncrementalEncoder
@@ -12569,6 +12569,7 @@ import_name	virtualenv/include/python2.7/graminit.h	/^#define import_name /;"	d
 import_stmt	virtualenv/include/python2.7/graminit.h	/^#define import_stmt /;"	d
 importer	virtualenv/lib/python2.7/site-packages/nose/loader.py	/^    importer = None$/;"	v	class:TestLoader
 importer	virtualenv/lib/python2.7/site-packages/pip/_vendor/distlib/compat.py	/^        importer = staticmethod(__import__)$/;"	v	class:BaseConfigurator
+importlib	kafka_influxdb.py	/^import importlib$/;"	i
 importlib	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^    import importlib._bootstrap as importlib_bootstrap$/;"	i
 importlib	virtualenv/lib/python2.7/site-packages/pkg_resources.py	/^    import importlib._bootstrap as importlib_bootstrap$/;"	i
 importlib_bootstrap	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^    import importlib._bootstrap as importlib_bootstrap$/;"	i
@@ -13222,6 +13223,7 @@ loadTestsFromTestCase	virtualenv/lib/python2.7/site-packages/nose/plugins/base.p
 loadTestsFromTestClass	virtualenv/lib/python2.7/site-packages/nose/loader.py	/^    def loadTestsFromTestClass(self, cls):$/;"	m	class:TestLoader
 loadTestsFromTestClass	virtualenv/lib/python2.7/site-packages/nose/plugins/base.py	/^    def loadTestsFromTestClass(self, cls):$/;"	m	class:IPluginInterface
 load_all	virtualenv/lib/python2.7/site-packages/yaml/__init__.py	/^def load_all(stream, Loader=Loader):$/;"	f
+load_encoder	kafka_influxdb.py	/^	def load_encoder(self, encoder_name):$/;"	m	class:KafkaInfluxDB
 load_entry_point	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^    def load_entry_point(self, group, name):$/;"	m	class:Distribution
 load_entry_point	virtualenv/lib/python2.7/site-packages/pip/_vendor/pkg_resources.py	/^def load_entry_point(dist, group, name):$/;"	f
 load_entry_point	virtualenv/lib/python2.7/site-packages/pkg_resources.py	/^    def load_entry_point(self, group, name):$/;"	m	class:Distribution

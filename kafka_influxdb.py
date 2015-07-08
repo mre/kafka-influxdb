@@ -32,7 +32,8 @@ class KafkaInfluxDB(object):
 										config.influxdb_user,
 										config.influxdb_password,
 										config.influxdb_dbname,
-										config.influxdb_retention_policy)
+										config.influxdb_retention_policy,
+										config.influxdb_time_precision)
 
 		self.buffer = []
 
@@ -42,7 +43,7 @@ class KafkaInfluxDB(object):
 		logging.info("Listening for messages on kafka topic ", self.config.kafka_topic)
 		try:
 			for index, raw_message in enumerate(self.reader.read(), 1):
-				self.buffer.append(self.input_encoder(raw_message))
+				self.buffer.append(self.input_encoder.encode(raw_message))
 				if index % self.config.buffer_size == 0:
 					self.flush()
 		except KeyboardInterrupt:
@@ -95,6 +96,7 @@ def parse_args():
 	parser.add_argument('--influxdb_password', type=str, default='root', required=False)
 	parser.add_argument('--influxdb_dbname', type=str, default='kafka', required=False)
 	parser.add_argument('--influxdb_retention_policy', type=str, default=None, required=False)
+	parser.add_argument('--influxdb_time_precision', type=str, default="s", required=False)
 	parser.add_argument('--encoder_input', type=str, default='echo_encoder', required=False)
 	parser.add_argument('--encoder_output', type=str, default='influxdb09_encoder', required=False)
 	parser.add_argument('--buffer_size', type=int, default=1000, required=False)

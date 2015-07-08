@@ -5,19 +5,21 @@ import influxdb
 
 class InfluxDBWriter(object):
 
-	def __init__(self, host, port, user, password, dbname, retention_policy):
+	def __init__(self, host, port, user, password, dbname, retention_policy, time_precision):
 		""" Initialize InfluxDB writer """
 		logging.info("Connecting to InfluxDB at %s:%s...", host, port)
 		self.retention_policy = retention_policy
-		influxdb_client = influxdb.InfluxDBClient(host, port, user, password, dbname)
+		self.time_precision = time_precision
+		self.dbname = dbname
+		self.client = influxdb.InfluxDBClient(host, port, user, password, dbname)
 
 	def write(self, msg):
 		""" Write messages to InfluxDB database"""
-		if self.version_0_9:
-			data = self.metrics.points
-		else:
-			data = [self.metrics.__dict__]
-		self.client.write_points(data, "s", self.config.influxdb_dbname, self.retention_policy)
+		#if self.version_0_9:
+		#	msg = self.metrics.points
+		#else:
+		#	msg = [self.metrics.__dict__]
+		self.client.write_points(msg, self.time_precision, self.dbname, self.retention_policy)
 
 """
 InfluxDB 09:
