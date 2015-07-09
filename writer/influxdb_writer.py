@@ -5,68 +5,63 @@ import influxdb
 
 class InfluxDBWriter(object):
 
-	def __init__(self, host, port, user, password, dbname, retention_policy, time_precision):
-		""" Initialize InfluxDB writer """
-		logging.info("Connecting to InfluxDB at %s:%s...", host, port)
-		self.retention_policy = retention_policy
-		self.time_precision = time_precision
-		self.dbname = dbname
-		self.client = influxdb.InfluxDBClient(host, port, user, password, dbname)
-
-	def write(self, msg):
-		""" Write messages to InfluxDB database"""
-		#if self.version_0_9:
-		#	msg = self.metrics.points
-		#else:
-		#	msg = [self.metrics.__dict__]
-		self.client.write_points(msg, self.time_precision, self.dbname, self.retention_policy)
-
-"""
-InfluxDB 09:
->>> data = [
-    {
-        "measurement": "cpu_load_short",
-        "tags": {
-            "host": "server01",
-            "region": "us-west"
-        },
-        "time": "2009-11-10T23:00:00Z",
-        "fields": {
-            "value": 0.64
+    def __init__(self, host, port, user, password, dbname, retention_policy=None, time_precision=None):
+        """
+        Initialize InfluxDB writer
+        """
+        self.retention_policy = retention_policy
+        self.time_precision = time_precision
+        self.dbname = dbname
+        self.headers = {
+            'Content-type': 'application/octet-stream',
+            'Accept': 'text/plain'
         }
-    }
-]
+        self.params = {}
+        if time_precision is not None:
+            self.params['precision'] = time_precision
+        if retention_policy is not None:
+            self.params['rp'] = retention_policy
+        logging.info("Connecting to InfluxDB at %s:%s...", host, port)
+        self.client = influxdb.InfluxDBClient(host, port, user, password, dbname)
+        logging.info("Creating database %s if not exists", dbname)
 
->>> client = InfluxDBClient('localhost', 8086, 'root', 'root', 'example')
+    def create_database(self, dbname):
+        """ Initialize the given database """
+        self.client.create_database(dbname)
 
->>> client.create_database('example')
+    def write(self, msg, params=None, expected_response_code=204):
+        """
+        Write messages to InfluxDB database.
+        Expects messages in line protocol format.
+        See https://influxdb.com/docs/v0.9/write_protocols/line.html
+        """
+        self.client.request(url='write',
+                            method='POST',
+                            params=self.params,
+                            data="\n".join(m.encode('utf-8') for m in msg),
+                            expected_response_code=expected_response_code,
+                            headers=self.headers
+                            )
+        return True
 
->>> client.write_points(data)
-client.write_points(data,
-                     time_precision=None,
-                     database=None,
-                     retention_policy=None,
-                     tags=None,
-                     batch_size=None,
-                     ):
-
----------
-
-InfluxDB legacy 08:
- data = [
-            {
-                "name": "cpu_load_short",
-                "columns": [
-                    "value"
+    def write08(self):
+        """
+        TODO: Write in InfluxDB legacy 08 format:
+         data = [
+                    {
+                        "name": "cpu_load_short",
+                        "columns": [
+                            "value"
+                        ]
+                        "points": [
+                            [
+                                12
+                            ]
+                        ],
+                    }
                 ]
-                "points": [
-                    [
-                        12
-                    ]
-                ],
-            }
-        ]
 
-        client.write_points(data, time_precision='s', *args, **kwargs):
+                client.write_points(data, time_precision='s', *args, **kwargs):
 
-"""
+        """
+        raise NotImplementedError

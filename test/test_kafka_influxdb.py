@@ -8,6 +8,7 @@ class Config:
     def __init__(self, buffer_size):
         self.buffer_size = buffer_size
         self.kafka_topic = "test"
+        self.influxdb_dbname = "mydb"
 
 class DummyReader(object):
     def __init__(self, messages, num_messages):

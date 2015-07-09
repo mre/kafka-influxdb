@@ -8,29 +8,10 @@ class TestCollectdGraphiteEncoder(unittest.TestCase):
 
     def test_encode_simple(self):
         msg = "myhost.load.load.shortterm 0.05 1436357630"
-        expected =  {
-                        "measurement": "load_load_shortterm",
-                        "tags": {
-                            "host": "myhost"
-                        },
-                        "time": "1436357630s",
-                        "fields": {
-                            "value": "0.05"
-                        }
-                    }
+        expected = "load_load_shortterm,host=myhost value=0.05 1436357630"
         self.assertEqual(self.encoder.encode(msg), expected)
 
     def test_encode_with_prefix(self):
         msg = "mydatacenter.myhost.load.load.shortterm 0.45 1436357630"
-        expected =  {
-                        "measurement": "load_load_shortterm",
-                        "tags": {
-                            "host": "myhost",
-                            "datacenter": "mydatacenter"
-                        },
-                        "time": "1436357630s",
-                        "fields": {
-                            "value": "0.45"
-                        }
-                    }
+        expected = "load_load_shortterm,datacenter=mydatacenter,host=myhost value=0.45 1436357630"
         self.assertEqual(self.encoder.encode(msg, prefix="mydatacenter.", prefix_tag="datacenter"), expected)
