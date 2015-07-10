@@ -1,3 +1,5 @@
+from six import binary_type, text_type
+
 class Encoder(object):
     """
     An encoder for the Collectd Graphite ASCII format
@@ -51,9 +53,37 @@ class Encoder(object):
             if postfix_tag:
                 if postfix.endswith(delimiter):
                     postfix = postfix [:-len(delimiter)]
-                tags[postfix_tag] = postfix
+                tags[pcstfix_tag] = postfix
 
-            return self.escape(measurement) + "," + ','.join("{}={}".format(self.escape(k),self.escape(tags[k])) for k in sorted(tags)) + " value=" + value + " " + timestamp
+            return self.escape_measurement(measurement) \
+                    + ',' + ','.join('{}={}'.format(self.escape_tag(k),self.escape_tag(tags[k])) for k in sorted(tags)) \
+                    + ' value=' + self.escape_value(value) + ' ' + timestamp
 
-    def escape(self, str):
-        return str.replace(" ", "\ ").replace(",", "\, ")
+    def escape_tag(self, tag):
+        return tag.replace(
+            "\\", "\\\\"
+        ).replace(
+            " ", "\\ "
+        ).replace(
+            ",", "\\,"
+        ).replace(
+            "=", "\\="
+        )
+
+    def escape_value(self, value):
+        value = self.escape_measurement(value)
+        if isinstance(value, text_type):
+            return "\"{}\"".format(value.replace(
+                "\"", "\\\""
+            ))
+        else:
+            return str(value)
+
+    def escape_measurement(self, data):
+        """
+        Try to return a text aka unicode object from the given data.
+        """
+        if isinstance(data, binary_type):
+            return data.decode('utf-8')
+        else:
+            return data
