@@ -9,9 +9,7 @@ influxdb:
   user: "root"
   password: "root"
   dbname: "metrics"
-  # Todo: remove and replace with output format
-  version: 0.9
-  retention_policy: "my_rp"
+  retention_policy: "default"
 # Possible encoders (see encoder directory for details)
 # * collectd_graphite_encoder
 encoder: "collectd_graphite_encoder"
