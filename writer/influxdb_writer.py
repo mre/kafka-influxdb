@@ -55,25 +55,6 @@ class InfluxDBWriter(object):
             return False
         return True
 
-    def write_custom(self, msg, params=None, expected_response_code=204):
-        """
-        Write messages to InfluxDB database.
-        Expects messages in line protocol format.
-        See https://influxdb.com/docs/v0.9/write_protocols/line.html
-        """
-        try:
-            self.client.request(url='write',
-                                method='POST',
-                                params=self.params,
-                                data="\n".join(m.encode('utf-8') for m in msg),
-                                expected_response_code=expected_response_code,
-                                headers=self.headers
-                                )
-        except Exception, e:
-            logging.warning("Cannot write data points: %s", e)
-            return False
-        return True
-
     def write08(self):
         """
         TODO: Write in InfluxDB legacy 08 format:
