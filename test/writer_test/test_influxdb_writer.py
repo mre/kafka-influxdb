@@ -16,8 +16,8 @@ class TestInfluxDBWriter(unittest.TestCase):
     def test_line_protocol_query(self):
         self.writer.write(["cpu,host=server01,region=uswest value=1.0 1434055562000"])
         self.writer.client.request.assert_called_once_with(url='write',
-                        expected_response_code=204,
-                        headers={'Content-type': 'application/octet-stream', 'Accept': 'text/plain'},
-                        params={},
-                        data='cpu,host=server01,region=uswest value=1.0 1434055562000',
-                        method='POST')
+            expected_response_code=204,
+            headers={'Content-type': 'application/octet-stream', 'Accept': 'text/plain'},
+            params={'db': 'mydb'},
+            data='cpu,host=server01,region=uswest value=1.0 1434055562000',
+            method='POST')
