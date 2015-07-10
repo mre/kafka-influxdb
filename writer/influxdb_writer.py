@@ -2,6 +2,12 @@
 
 import logging
 import influxdb
+import sys
+
+
+
+import requests
+
 
 class InfluxDBWriter(object):
 
@@ -16,7 +22,7 @@ class InfluxDBWriter(object):
             'Content-type': 'application/octet-stream',
             'Accept': 'text/plain'
         }
-        self.params = {}
+        self.params = { 'db': self.dbname}
         if time_precision is not None:
             self.params['precision'] = time_precision
         if retention_policy is not None:
@@ -29,19 +35,43 @@ class InfluxDBWriter(object):
         """ Initialize the given database """
         self.client.create_database(dbname)
 
+
     def write(self, msg, params=None, expected_response_code=204):
         """
         Write messages to InfluxDB database.
         Expects messages in line protocol format.
         See https://influxdb.com/docs/v0.9/write_protocols/line.html
         """
-        self.client.request(url='write',
-                            method='POST',
-                            params=self.params,
-                            data="\n".join(m.encode('utf-8') for m in msg),
-                            expected_response_code=expected_response_code,
-                            headers=self.headers
-                            )
+        try:
+            self.client.request(url='write',
+                                method='POST',
+                                params=self.params,
+                                data="\n".join(m.encode('utf-8') for m in msg),
+                                expected_response_code=expected_response_code,
+                                headers=self.headers
+                                )
+        except Exception, e:
+            logging.warning("Cannot write data points: %s", e)
+            return False
+        return True
+
+    def write_custom(self, msg, params=None, expected_response_code=204):
+        """
+        Write messages to InfluxDB database.
+        Expects messages in line protocol format.
+        See https://influxdb.com/docs/v0.9/write_protocols/line.html
+        """
+        try:
+            self.client.request(url='write',
+                                method='POST',
+                                params=self.params,
+                                data="\n".join(m.encode('utf-8') for m in msg),
+                                expected_response_code=expected_response_code,
+                                headers=self.headers
+                                )
+        except Exception, e:
+            logging.warning("Cannot write data points: %s", e)
+            return False
         return True
 
     def write08(self):
