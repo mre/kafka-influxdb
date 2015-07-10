@@ -13,7 +13,7 @@ class KafkaReader(object):
         kafka_client = KafkaClient(connection)
         self.consumer = SimpleConsumer(kafka_client, group, topic)
 
-        def read(self):
-            """ Yield messages from Kafka topic """
-            for raw_message in self.consumer:
-                yield raw_message.message.value
+    def read(self):
+        """ Yield messages from Kafka topic """
+        for raw_message in self.consumer:
+            yield raw_message.message.value
