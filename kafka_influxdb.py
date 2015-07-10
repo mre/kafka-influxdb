@@ -6,6 +6,7 @@ import logging
 import importlib
 from reader import kafka_reader
 from writer import influxdb_writer
+import traceback
 
 class KafkaInfluxDB(object):
     def __init__(self, reader, encoder, writer, config):
@@ -17,9 +18,10 @@ class KafkaInfluxDB(object):
         self.buffer = []
 
     def consume(self):
-        """ Run loop. Consume messages from reader, convert it to the output format and write with writer """
-        logging.info("Creating InfluxDB database if not exists: %s", self.config.influxdb_dbname)
-        self.writer.create_database(self.config.influxdb_dbname)
+        """
+        Run loop. Consume messages from reader, convert it to the output format and write with writer
+        """
+        self.init_database()
 
         logging.info("Listening for messages on kafka topic %s...", self.config.kafka_topic)
         try:
@@ -29,6 +31,16 @@ class KafkaInfluxDB(object):
                     self.flush()
         except KeyboardInterrupt:
             logging.info("Shutdown")
+
+    def init_database(self):
+        """
+        Initialize the InfluxDB database if it is not already there
+        """
+        try:
+            logging.info("Creating InfluxDB database if not exists: %s", self.config.influxdb_dbname)
+            self.writer.create_database(self.config.influxdb_dbname)
+        except Exception, e:
+            logging.info(e)
 
     def flush(self):
         """ Flush values with writer """
@@ -127,7 +139,7 @@ def parse_args():
     parser.add_argument('--influxdb_user', type=str, default='root', required=False, help="InfluxDB username")
     parser.add_argument('--influxdb_password', type=str, default='root', required=False, help="InfluxDB password")
     parser.add_argument('--influxdb_dbname', type=str, default='metrics', required=False, help="InfluXDB database to write metrics into")
-    parser.add_argument('--influxdb_retention_policy', type=str, default=None, required=False, help="Retention policy for incoming metrics")
+    parser.add_argument('--influxdb_retention_policy', type=str, default='default', required=False, help="Retention policy for incoming metrics")
     parser.add_argument('--influxdb_time_precision', type=str, default="s", required=False, help="Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u'")
     parser.add_argument('--encoder', type=str, default='collectd_graphite_encoder', required=False, help="Input encoder which converts an incoming message to dictionary")
     parser.add_argument('--buffer_size', type=int, default=1000, required=False, help="Maximum number of messages that will be collected before flushing to the backend")
