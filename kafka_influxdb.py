@@ -1,231 +1,151 @@
-from kafka.client import KafkaClient
-from kafka.consumer import SimpleConsumer
-from influxdb import InfluxDBClient # TODO import dynamically. If version 0.9 we have different requirements!
-import json
-import argparse
-import time
-import yaml
+import sys
 from collections import defaultdict
+import argparse
+import yaml
+import logging
+import importlib
+from reader import kafka_reader
+from writer import influxdb_writer
+import traceback
 
-DB_VERSION_DEFAULT = 0.8
-DB_VERSION_APICHANGE = 0.9
+class KafkaInfluxDB(object):
+    def __init__(self, reader, encoder, writer, config):
+        """ Setup """
+        self.config = config
+        self.reader = reader
+        self.encoder = encoder
+        self.writer = writer
+        self.buffer = []
 
-class InfluxDBData09(object):
-	def __init__(self):
-		self.points = []
+    def consume(self):
+        """
+        Run loop. Consume messages from reader, convert it to the output format and write with writer
+        """
+        self.init_database()
 
-	def add_points(self, points):
-		self.points = self.points + points
+        logging.info("Listening for messages on kafka topic %s...", self.config.kafka_topic)
+        try:
+            for index, raw_message in enumerate(self.reader.read(), 1):
+                self.buffer.append(self.encoder.encode(raw_message))
+                if index % self.config.buffer_size == 0:
+                    self.flush()
+        except KeyboardInterrupt:
+            logging.info("Shutdown")
 
+    def init_database(self):
+        """
+        Initialize the InfluxDB database if it is not already there
+        """
+        try:
+            logging.info("Creating InfluxDB database if not exists: %s", self.config.influxdb_dbname)
+            self.writer.create_database(self.config.influxdb_dbname)
+        except Exception, e:
+            logging.info(e)
 
-	def reset(self):
-		self.points = []
+    def flush(self):
+        """ Flush values with writer """
+        try:
+            self.writer.write(self.buffer)
+        except Exception, e:
+            logging.warning(e)
+        self.buffer = []
 
-class InfluxDBData(object):
-	def __init__(self, name, columns):
-		self.name = name	
-		self.columns = columns
-		self.points = []
+    def set_reader(self, reader):
+        self.reader = reader
 
-	def add_point(self, *point):
-		self.points.append(list(point))
-	
-	def reset(self):
-		self.points = []
+    def get_reader(self):
+        self.reader = reader
 
+    def set_writer(self, writer):
+        self.writer = writer
 
+    def get_writer(self):
+        self.writer = writer
 
-class KafkaListener(object):
-	
+    def get_buffer(self):
+        return self.buffer
 
-	def __init__(self, kafka_client, influxdb_client, config):
-		self.kafka = kafka_client
-		self.client = influxdb_client
-		self.config = config
-		self.consumer = SimpleConsumer(self.kafka, self.config.kafka_group, self.config.kafka_topic)
-		
+    def get_config(self):
+        return self.config
 
-		try:
-			db_version = float(self.config.influxdb_version)
-			self.version_0_9 = db_version >= DB_VERSION_APICHANGE
-		except:
-			self.version_0_9 = False
-		if self.version_0_9:
-			self.stats = InfluxDBData09()
-		else:
-			self.stats = InfluxDBData(self.config.influxdb_data_name, self.config.influxdb_columns)
+def main():
+    config = parse_args()
+    if config.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
 
-	def listen(self):
-		
-		i = 0
-		self.count_flush = 0
-		self.count_kafka = 0
-		self.count_datapoints = 0
-		self.aborted = False
-		starttime = get_millis()
-		
-		log( "Listening.")
+    if config.configfile:
+        logging.debug("Reading config from ", config.configfile)
+        values = parse_configfile(config.configfile)
+        overwrite_config_values(config, values)
+    else:
+        logging.info("Using default configuration")
 
-		for message in self.consumer:
-			i = i + 1
-			
-			val = message.message.value
-			if self.version_0_9:
-				transformed = transform_to_0_9(val)
-				self.stats.add_points(transformed)
-				if self.config.statistics:
-					self.count_datapoints = self.count_datapoints + len(transformed)	
-			else:
-				self.stats.add_point(val)
-				if self.config.statistics:
-					self.count_datapoints = self.count_datapoints + 1
-			if i == self.config.buffer_size or self.config.buffer_size == 0 or self.aborted:
-				self.flush()				
-				if self.config.statistics:
-					self.calculate_statistics(starttime, i)
-				i = 0
-				self.stats.reset()
-			if self.aborted:
-				break
-				
-		# TODO close consumer?
-		self.kafka.close()
+    try:
+        reader = kafka_reader.KafkaReader(config.kafka_host,
+                                        config.kafka_port,
+                                        config.kafka_group,
+                                        config.kafka_topic)
+    except Exception, e:
+        logging.error("The connection to Kafka can not be established.")
+        sys.exit(-1)
 
-	def calculate_statistics(self, starttime, i):
-		self.count_kafka = self.count_kafka + i	
-		self.count_flush = self.count_flush + 1
-		now = get_millis()
-		time_elapsed_ms = (now - starttime)
-		if self.config.verbose:
-			log( "Time elapsed: %d - %d = %d" % (now, starttime, time_elapsed_ms))
-		kafka_per_ms = (float(self.count_kafka) / time_elapsed_ms)
-		kafka_per_sec = kafka_per_ms * 1000
-		if self.config.verbose:
-			log( "Count kafka: %d / %d = %d * 1000 = %d" % (self.count_kafka, time_elapsed_ms , kafka_per_ms, kafka_per_sec))
-		log( "Flush %d. Buffer size %d. Parsed %d kafka mes. into %d datapoints. Speed: %d kafka mes./sec" % (self.count_flush, self.config.buffer_size, self.count_kafka, self.count_datapoints, kafka_per_sec))
+    encoder = load_encoder(config.encoder)
+    writer = influxdb_writer.InfluxDBWriter(config.influxdb_host,
+                                    config.influxdb_port,
+                                    config.influxdb_user,
+                                    config.influxdb_password,
+                                    config.influxdb_dbname,
+                                    config.influxdb_retention_policy,
+                                    config.influxdb_time_precision)
 
-	def abort(self):
-		self.aborted = True
+    client = KafkaInfluxDB(reader, encoder, writer, config)
+    client.consume()
 
-	def flush(self):
-		try:
-			if self.version_0_9:
-				data = self.stats.points		
-			else:
-				data = [self.stats.__dict__]
-			self.client.write_points(data, "s", self.config.influxdb_dbname, self.config.influxdb_retention_policy)
-			
-		except Exception as inst:
-			error_log("Exception caught while flushing: %s" % inst)
+def load_encoder(encoder_name):
+    """
+    Creates an instance of the given encoder.
+    An encoder converts a message from one format to another
+    """
+    encoder_module = importlib.import_module("encoder." + encoder_name)
+    encoder_class = getattr(encoder_module, "Encoder")
+    # Return an instance of the class
+    return encoder_class()
 
-def main(config):
-	if config.configfile is not None and config.configfile != u'':
-		read_config_file(config)
-		if config.verbose:
-			log("Config read: %s" % config)
+def parse_configfile(configfile):
+    """ Read settings from file """
+    with open(configfile) as f:
+        try:
+            return yaml.safe_load(f)
+        except Exception, e :
+            logging.fatal("Could not load default config file: ", e)
+            exit(-1)
 
-	kafka = KafkaClient("{0}:{1}".format(config.kafka_host, config.kafka_port))
-
-	client = InfluxDBClient(config.influxdb_host,
-				config.influxdb_port,
-				config.influxdb_user,
-				config.influxdb_password,
-				config.influxdb_dbname)
-
-	listener = KafkaListener(kafka, client, config)
-	
-	try:	
-		listener.listen()
-	except KeyboardInterrupt:
-		error_log("Shutdown.")
-		listener.abort()
-
-def read_config_file(config):
-	values = None
-	try:
-		f = open(config.configfile)
-		values = yaml.safe_load(f)
-		f.close()
-		set_config_values(config, values)
-
-	except Exception as inst:
-		error_log("Could not open config file %s : %s" % (config.configfile, inst), True)
-
-def set_config_values(config, values, prefix = ''):
-	for key, value in values.iteritems() :
-		if type(value) == type(dict()):
-			set_config_values(config, value, "%s_" % key)
-		elif value != u'':
-			setattr(config, "%s%s" % (prefix, key), value)
-			
-		
-def log(msg):
-	print msg # maybe redirect to logfile
-	
-def error_log(msg, die=False):
-	print msg # TODO
-	if die:
-		exit()
-
-def get_millis():
-	return int(round(time.time() * 1000))
-
-def transform_to_0_9(kafka_message):
-	results = []
-	try:
-		for json_obj in json.loads(kafka_message):
-			timestamp = int(json_obj['time'])
-			tags = {}
-			tags['host'] = json_obj['host']
-			if json_obj['plugin_instance'] != u'':
-				tags['plugin_instance'] = json_obj['plugin_instance']
-			if json_obj['type_instance'] != u'':
-				tags['type_instance'] = json_obj['type_instance']
-			if json_obj['type'] != u'':
-				tags['type'] = json_obj['type']
-			for i in range (0, len(json_obj['values'])):
-				
-				if json_obj['dstypes'][i] != u'':
-					tags['ds_type'] = json_obj['dstypes'][i]
-				else:
-					del tags['ds_type'] #in case this has been set in a previous loop iteration
-				if json_obj['dsnames'][i] != u'':
-					tags['ds_name'] = json_obj['dsnames'][i]
-				else:
-					del tags['ds_name'] #in case this has been set in a previous loop iteration
-				new_point = {"precision":"s"}
-				new_point["name"] = json_obj['plugin']
-				new_point["timestamp"] = timestamp
-				new_point["tags"] = tags
-				
-				new_point["fields"] = {"value" : json_obj['values'][i]}
-				results.append(new_point)
-	except Exception as inst:
-		error_log("Exception caught in json transformation: %s" % inst)
-	return results
+def overwrite_config_values(config, values, prefix = ""):
+    """ Overwrite default config with custom values """
+    for key, value in values.iteritems() :
+        if type(value) == type(dict()):
+            overwrite_config_values(config, value, "%s_" % key)
+        elif value != u'':
+            setattr(config, "%s%s" % (prefix, key), value)
 
 def parse_args():
-	parser = argparse.ArgumentParser(description='A Kafka consumer for InfluxDB',
-					formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-	parser.add_argument('--kafka_host', type=str, default='localhost', required=False)
-	parser.add_argument('--kafka_port', type=int, default=9092, required=False)
-	parser.add_argument('--kafka_topic', type=str, default='test', required=False)
-	parser.add_argument('--kafka_group', type=str, default='my_group', required=False)
-	parser.add_argument('--influxdb_host', type=str, default='localhost', required=False)
-	parser.add_argument('--influxdb_port', type=int, default=8086, required=False)
-	parser.add_argument('--influxdb_user', type=str, default='root', required=False)
-	parser.add_argument('--influxdb_password', type=str, default='root', required=False)
-	parser.add_argument('--influxdb_dbname', type=str, default='kafka', required=False)
-	parser.add_argument('--influxdb_data_name', type=str, default='statsd', required=False)
-	parser.add_argument('--influxdb_columns', type=str, default=['counter'], required=False)
-	parser.add_argument('--influxdb_version', type=str, default=DB_VERSION_DEFAULT, required=False)
-	parser.add_argument('--buffer_size', type=int, default=1000, required=False)
-	parser.add_argument('--influxdb_retention_policy', type=str, default='', required=False)
-	parser.add_argument('--verbose', type=bool, default=False, required=False)
-	parser.add_argument('--statistics', type=bool, default=False, required=False)
-	parser.add_argument('--configfile', type=str, default=None, required=False)
-	return parser.parse_args()
+    parser = argparse.ArgumentParser(description='A Kafka consumer for InfluxDB', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--kafka_host', type=str, default='localhost', required=False, help="Hostname or IP of Kafka message broker")
+    parser.add_argument('--kafka_port', type=int, default=9092, required=False, help="Port of Kafka message broker")
+    parser.add_argument('--kafka_topic', type=str, default='test', required=False, help="Topic for metrics")
+    parser.add_argument('--kafka_group', type=str, default='my_group', required=False, help="Kafka consumer group")
+    parser.add_argument('--influxdb_host', type=str, default='localhost', required=False, help="InfluxDB hostname or IP")
+    parser.add_argument('--influxdb_port', type=int, default=8086, required=False, help="InfluxDB API port")
+    parser.add_argument('--influxdb_user', type=str, default='root', required=False, help="InfluxDB username")
+    parser.add_argument('--influxdb_password', type=str, default='root', required=False, help="InfluxDB password")
+    parser.add_argument('--influxdb_dbname', type=str, default='metrics', required=False, help="InfluXDB database to write metrics into")
+    parser.add_argument('--influxdb_retention_policy', type=str, default='default', required=False, help="Retention policy for incoming metrics")
+    parser.add_argument('--influxdb_time_precision', type=str, default="s", required=False, help="Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u'")
+    parser.add_argument('--encoder', type=str, default='collectd_graphite_encoder', required=False, help="Input encoder which converts an incoming message to dictionary")
+    parser.add_argument('--buffer_size', type=int, default=1000, required=False, help="Maximum number of messages that will be collected before flushing to the backend")
+    parser.add_argument('-c', '--configfile', type=str, default=None, required=False, help="Configfile path")
+    parser.add_argument('-v', '--verbose', action="store_true", help="Show info and debug messages while running")
+    return parser.parse_args()
 
-if __name__ == '__main__':
-	args = parse_args()
-	main(args)
+if __name__ == '__main__'	:
+    main()
