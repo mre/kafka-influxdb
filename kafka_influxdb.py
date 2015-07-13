@@ -6,11 +6,16 @@ import logging
 import importlib
 from reader import kafka_reader
 from writer import influxdb_writer
+from writer import kafka_sample_writer as benchmark
+
 import traceback
+import time
 
 class KafkaInfluxDB(object):
     def __init__(self, reader, encoder, writer, config):
-        """ Setup """
+        """
+        Setup
+        """
         self.config = config
         self.reader = reader
         self.encoder = encoder
@@ -112,7 +117,9 @@ def load_encoder(encoder_name):
     return encoder_class()
 
 def parse_configfile(configfile):
-    """ Read settings from file """
+    """
+    Read settings from file
+    """
     with open(configfile) as f:
         try:
             return yaml.safe_load(f)
@@ -121,7 +128,9 @@ def parse_configfile(configfile):
             exit(-1)
 
 def overwrite_config_values(config, values, prefix = ""):
-    """ Overwrite default config with custom values """
+    """
+    Overwrite default config with custom values
+    """
     for key, value in values.iteritems() :
         if type(value) == type(dict()):
             overwrite_config_values(config, value, "%s_" % key)
