@@ -5,8 +5,6 @@ A Kafka consumer for InfluxDB written in Python.
 All messages sent to Kafka on a certain topic will be relayed to Influxdb.  
 Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support check out the 0.3.0 tag.
 
-## Usage
-
 ## Quick start
 
 To see the tool in action, you can start a complete `CollectD -> Kafka -> kafka_influxdb -> Influxdb` setup with the following command:
@@ -17,7 +15,7 @@ This will immediately start reading messages from Kafka and write them into Infl
 Open the InfluxDB Admin Interface at `http://<docker_host_ip>:8083` and type `SHOW MEASUREMENTS` to see the output.
  (`<docker_host_ip>` is probably `localhost` on Linux. On Mac you can find out with `boot2docker ip` or `docker-machine ip`).
 
-### Execute on your local machine
+## Execute on your local machine
 
 If you want to run a local instance, you can do so with the following commands:
 
@@ -79,7 +77,9 @@ You can overwrite the settings from the commandline with the following flags:
                              [--influxdb_retention_policy INFLUXDB_RETENTION_POLICY]
                              [--influxdb_time_precision INFLUXDB_TIME_PRECISION]
                              [--encoder ENCODER] [--buffer_size BUFFER_SIZE]
-                             [-c CONFIGFILE] [-v]
+                             [-c CONFIGFILE] [-s] [-b] [-v]
+
+    A Kafka consumer for InfluxDB
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -89,7 +89,7 @@ You can overwrite the settings from the commandline with the following flags:
       --kafka_port KAFKA_PORT
                             Port of Kafka message broker (default: 9092)
       --kafka_topic KAFKA_TOPIC
-                            Topic for metrics (default: test)
+                            Topic for metrics (default: my_topic)
       --kafka_group KAFKA_GROUP
                             Kafka consumer group (default: my_group)
       --influxdb_host INFLUXDB_HOST
@@ -116,8 +116,10 @@ You can overwrite the settings from the commandline with the following flags:
                             before flushing to the backend (default: 1000)
       -c CONFIGFILE, --configfile CONFIGFILE
                             Configfile path (default: None)
-      -v, --verbose         Show info and debug messages while running (default:
-                            False)
+      -s, --statistics      Show performance statistics (default: True)
+      -b, --benchmark       Run benchmark (default: False)
+      -v, --verbose         Set verbosity level. Increase verbosity by adding a v:
+                            -v -vv -vvv (default: 0)
 
 ## TODO
 
