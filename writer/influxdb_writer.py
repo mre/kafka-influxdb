@@ -46,7 +46,7 @@ class InfluxDBWriter(object):
                                 expected_response_code=expected_response_code,
                                 headers=self.headers
                                 )
-        except Exception, e:
+        except Exception as e:
             logging.warning("Cannot write data points: %s", e)
             return False
         return True

@@ -7,6 +7,7 @@ import importlib
 from reader import kafka_reader
 from writer import influxdb_writer
 from writer import kafka_sample_writer as benchmark
+import six
 
 import traceback
 import time
@@ -45,7 +46,7 @@ class KafkaInfluxDB(object):
         try:
             logging.info("Creating InfluxDB database if not exists: %s", self.config.influxdb_dbname)
             self.writer.create_database(self.config.influxdb_dbname)
-        except Exception, e:
+        except Exception as e:
             logging.info(e)
 
     def flush(self):
@@ -54,14 +55,14 @@ class KafkaInfluxDB(object):
             self.writer.write(self.buffer)
             if self.config.statistics:
                 self.show_statistics()
-        except Exception, e:
+        except Exception as e:
             logging.warning(e)
         self.buffer = []
 
     def show_statistics(self):
         delta = time.time() - self.start_time
         msg_per_sec = self.config.buffer_size / delta
-        print "Flushing output buffer. {0:.2f} messages/s".format(msg_per_sec)
+        print("Flushing output buffer. {0:.2f} messages/s".format(msg_per_sec))
         # Reset timer
         self.start_time = time.time()
 
@@ -118,7 +119,7 @@ def start_consumer(config):
                                         config.kafka_port,
                                         config.kafka_group,
                                         config.kafka_topic)
-    except Exception, e:
+    except Exception as e:
         logging.error("The connection to Kafka can not be established.")
         sys.exit(-1)
 
@@ -151,7 +152,7 @@ def parse_configfile(configfile):
     with open(configfile) as f:
         try:
             return yaml.safe_load(f)
-        except Exception, e :
+        except Exception as e :
             logging.fatal("Could not load default config file: ", e)
             exit(-1)
 
@@ -159,10 +160,10 @@ def overwrite_config_values(config, values, prefix = ""):
     """
     Overwrite default config with custom values
     """
-    for key, value in values.iteritems() :
+    for key, value in six.iteritems(values):
         if type(value) == type(dict()):
             overwrite_config_values(config, value, "%s_" % key)
-        elif value != u'':
+        elif value != '':
             setattr(config, "%s%s" % (prefix, key), value)
 
 def parse_args():
