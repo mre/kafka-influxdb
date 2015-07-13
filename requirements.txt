@@ -1,5 +1,5 @@
 certifi==2015.4.28
--e git://github.com/influxdb/influxdb-python.git@815f7f96caf700c9bb3e6b5eb3108cfcee4c0469#egg=influxdb
+git+https://github.com/influxdb/influxdb-python.git@815f7f96caf700c9bb3e6b5eb3108cfcee4c0469#egg=influxdb
 kafka-python==0.9.4
 mock==1.0.1
 nose==1.3.7
