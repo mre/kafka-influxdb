@@ -47,7 +47,7 @@ Sample output using the above Docker setup inside a virtual machine:
     Flushing output buffer. 11538.44 messages/s
 
 
-## Supported input and output formats
+## Supported formats
 
 You can write a custom encoder to support any input and output format (even fancy things like Protobuf).  
 Look at the examples in the `encoder` folder to get started. For now we support the following formats:  
