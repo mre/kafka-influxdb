@@ -84,6 +84,6 @@ class Encoder(object):
         Try to return a text aka unicode object from the given data.
         """
         if isinstance(data, binary_type):
-            return data.decode('utf-8')
+            return unicode(data, 'utf-8')
         else:
             return data
