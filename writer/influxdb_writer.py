@@ -3,11 +3,7 @@
 import logging
 import influxdb
 import sys
-
-
-
 import requests
-
 
 class InfluxDBWriter(object):
 
