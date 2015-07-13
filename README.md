@@ -15,7 +15,7 @@ This will immediately start reading messages from Kafka and write them into Infl
 Open the InfluxDB Admin Interface at `http://<docker_host_ip>:8083` and type `SHOW MEASUREMENTS` to see the output.
  (`<docker_host_ip>` is probably `localhost` on Linux. On Mac you can find out with `boot2docker ip` or `docker-machine ip`).
 
-## Execute on your local machine
+## Run on your local machine
 
 If you want to run a local instance, you can do so with the following commands:
 
@@ -79,8 +79,6 @@ You can overwrite the settings from the commandline with the following flags:
                              [--encoder ENCODER] [--buffer_size BUFFER_SIZE]
                              [-c CONFIGFILE] [-s] [-b] [-v]
 
-    A Kafka consumer for InfluxDB
-
     optional arguments:
       -h, --help            show this help message and exit
       --kafka_host KAFKA_HOST
@@ -123,6 +121,6 @@ You can overwrite the settings from the commandline with the following flags:
 
 ## TODO
 
-* flush buffer if not full but some period has elapsed (safety net for low frequency input)
-* Support reading from multiple partitions and topics (using python multiprocessing)
+* flush buffer if not full but some time has gone by (safety net for low frequency input)
+* Support reading from multiple partitions and topics (using Python multiprocessing)
 * Enable settings using environment variables for Docker image
