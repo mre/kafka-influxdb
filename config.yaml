@@ -10,9 +10,8 @@ influxdb:
   password: "root"
   dbname: "metrics"
   retention_policy: "default"
-# Possible encoders (see encoder directory for details)
-# * collectd_graphite_encoder
 encoder: "collectd_graphite_encoder"
+benchmark: false
 buffer_size: 1000
 verbose: false
 statistics: true
