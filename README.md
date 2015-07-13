@@ -33,6 +33,21 @@ You can use the built-in benchmark tool for performance measurements:
 
 By default this will write 1.000.000 sample messages into the `benchmark` Kafka topic.
 After that it will consume the messages again to measure the throughput.
+Sample output using the above Docker setup inside a virtual machine:
+
+    Flushing output buffer. 10811.29 messages/s
+    Flushing output buffer. 11375.65 messages/s
+    Flushing output buffer. 11930.45 messages/s
+    Flushing output buffer. 11970.28 messages/s
+    Flushing output buffer. 11016.74 messages/s
+    Flushing output buffer. 11852.67 messages/s
+    Flushing output buffer. 11833.07 messages/s
+    Flushing output buffer. 11599.32 messages/s
+    Flushing output buffer. 11800.12 messages/s
+    Flushing output buffer. 12026.89 messages/s
+    Flushing output buffer. 12287.26 messages/s
+    Flushing output buffer. 11538.44 messages/s
+
 
 ## Supported input and output formats
 
