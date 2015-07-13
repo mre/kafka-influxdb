@@ -28,7 +28,8 @@ class KafkaInfluxDB(object):
         """
         self.init_database()
 
-        logging.info("Listening for messages on kafka topic %s...", self.config.kafka_topic)
+        self.start_time = time.time()
+        logging.info("Listening for messages on Kafka topic %s...", self.config.kafka_topic)
         try:
             for index, raw_message in enumerate(self.reader.read(), 1):
                 self.buffer.append(self.encoder.encode(raw_message))
@@ -51,9 +52,18 @@ class KafkaInfluxDB(object):
         """ Flush values with writer """
         try:
             self.writer.write(self.buffer)
+            if self.config.statistics:
+                self.show_statistics()
         except Exception, e:
             logging.warning(e)
         self.buffer = []
+
+    def show_statistics(self):
+        delta = time.time() - self.start_time
+        msg_per_sec = self.config.buffer_size / delta
+        print "Flushing output buffer. {0:.2f} messages/s".format(msg_per_sec)
+        # Reset timer
+        self.start_time = time.time()
 
     def set_reader(self, reader):
         self.reader = reader
@@ -74,8 +84,15 @@ class KafkaInfluxDB(object):
         return self.config
 
 def main():
+    """
+    Setup consumer
+    """
     config = parse_args()
-    if config.verbose:
+
+    # Set verbosity level
+    if config.verbose == 1:
+        logging.getLogger().setLevel(logging.INFO)
+    elif config.verbose > 1:
         logging.getLogger().setLevel(logging.DEBUG)
 
     if config.configfile:
@@ -85,6 +102,17 @@ def main():
     else:
         logging.info("Using default configuration")
 
+    if config.benchmark:
+        logging.info("Writing sample messages for benchmark")
+        bench = benchmark.KafkaSampleWriter(config)
+        bench.produce_messages()
+
+    start_consumer(config)
+
+def start_consumer(config):
+    """
+    Start metrics consumer
+    """
     try:
         reader = kafka_reader.KafkaReader(config.kafka_host,
                                         config.kafka_port,
@@ -139,9 +167,10 @@ def overwrite_config_values(config, values, prefix = ""):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='A Kafka consumer for InfluxDB', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    # Parameters
     parser.add_argument('--kafka_host', type=str, default='localhost', required=False, help="Hostname or IP of Kafka message broker")
     parser.add_argument('--kafka_port', type=int, default=9092, required=False, help="Port of Kafka message broker")
-    parser.add_argument('--kafka_topic', type=str, default='test', required=False, help="Topic for metrics")
+    parser.add_argument('--kafka_topic', type=str, default='my_topic', required=False, help="Topic for metrics")
     parser.add_argument('--kafka_group', type=str, default='my_group', required=False, help="Kafka consumer group")
     parser.add_argument('--influxdb_host', type=str, default='localhost', required=False, help="InfluxDB hostname or IP")
     parser.add_argument('--influxdb_port', type=int, default=8086, required=False, help="InfluxDB API port")
@@ -153,7 +182,10 @@ def parse_args():
     parser.add_argument('--encoder', type=str, default='collectd_graphite_encoder', required=False, help="Input encoder which converts an incoming message to dictionary")
     parser.add_argument('--buffer_size', type=int, default=1000, required=False, help="Maximum number of messages that will be collected before flushing to the backend")
     parser.add_argument('-c', '--configfile', type=str, default=None, required=False, help="Configfile path")
-    parser.add_argument('-v', '--verbose', action="store_true", help="Show info and debug messages while running")
+    # Flags
+    parser.add_argument('-s', '--statistics', default=True, action="store_true", help="Show performance statistics")
+    parser.add_argument('-b', '--benchmark', default=False, action="store_true", help="Run benchmark")
+    parser.add_argument('-v', '--verbose', action='count', default=0, help="Set verbosity level. Increase verbosity by adding a v: -v -vv -vvv")
     return parser.parse_args()
 
 if __name__ == '__main__'	:
