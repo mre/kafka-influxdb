@@ -7,8 +7,21 @@ Kafka-InfluxDB
 
 |Build Status| |Coverage Status|
 
+
+Use cases
+---------
+
+Kafka can serve as a buffer for your metric data during high load or read metrics from offshore data centers.
+Imagine the following scenario:
+
+.. figure:: usage-example.png
+   :alt: Usage example
+
+   usage-example
+
 Quick start
 -----------
+
 
 To see the tool in action, you can start a complete
 ``CollectD -> Kafka -> kafka_influxdb -> Influxdb`` setup with the
