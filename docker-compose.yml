@@ -33,9 +33,10 @@ collectd:
     - kafka
 kafkainfluxdb:
   build: .
-  entrypoint: /bin/bash
-  stdin_open: true
-  tty: true
+  # Uncomment the following for interactive mode:
+  #entrypoint: /bin/bash
+  #stdin_open: true
+  #tty: true
   volumes:
     - .:/code
   links:
