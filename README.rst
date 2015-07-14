@@ -3,7 +3,7 @@ Kafka-InfluxDB
 
 | A Kafka consumer for InfluxDB written in Python.
 | All messages sent to Kafka on a certain topic will be relayed to Influxdb.
-| Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support check out the 0.3.0 tag.
+| Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support, check out the `0.3.0 tag <https://github.com/mre/kafka-influxdb/tree/v0.3.0>`__.
 
 |Build Status| |Coverage Status|
 
@@ -32,9 +32,9 @@ commands:
 
 ::
 
-    pip install -r requirements.txt
-    # Have a look at config.yaml
-    python kafka_influxdb.py -c config.yaml
+    pip install kafka_influxdb
+    # Create a config.yaml like the one in this repository
+    kafka_influxdb -c config.yaml
 
 Benchmark
 ---------
@@ -43,7 +43,7 @@ You can use the built-in benchmark tool for performance measurements:
 
 ::
 
-    python kafka-influxdb.py -b
+    kafka-influxdb -b
 
 By default this will write 1.000.000 sample messages into the
 ``benchmark`` Kafka topic. After that it will consume the messages again
@@ -80,9 +80,9 @@ Input formats
 Output formats
 ~~~~~~~~~~~~~~
 
--  InfluxDB 0.9 line protocol output (e.g.
+-  InfluxDB 0.9.x line protocol output (e.g.
    ``load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630``)
--  InfluxDB 0.8 JSON output (deprecated)
+-  InfluxDB 0.8.x JSON output (deprecated)
 
 Configuration
 -------------
