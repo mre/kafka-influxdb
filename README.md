@@ -5,6 +5,8 @@ A Kafka consumer for InfluxDB written in Python.
 All messages sent to Kafka on a certain topic will be relayed to Influxdb.  
 Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support check out the 0.3.0 tag.
 
+[![Build Status](https://travis-ci.org/mre/kafka-influxdb.svg?branch=master)](https://travis-ci.org/mre/kafka-influxdb)
+
 ## Quick start
 
 To see the tool in action, you can start a complete `CollectD -> Kafka -> kafka_influxdb -> Influxdb` setup with the following command:
