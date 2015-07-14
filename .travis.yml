@@ -3,17 +3,22 @@ sudo: false
 os:
   - linux
   - osx
-env:
-  global:
-    - NEWEST_PYTHON=2.7
 language: python
 python:
-  - 2.7
+  - "2.7"
   - pypy
+  # Coming soon
   #- 3.3
   #- 3.4
   #- pypy3
-install: "pip install -r requirements.txt"
-script: nosetests
+install:
+  - pip install python-coveralls
+  - pip install coverage
+  - pip install nose
+  - pip install -r requirements.txt
+script:
+  - python setup.py install
+  - nosetests --with-coverage
 after_success:
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls && coveralls; fi
+  - coveralls
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then coveralls; fi
