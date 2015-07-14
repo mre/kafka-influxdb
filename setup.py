@@ -43,7 +43,7 @@ setup(name='kafka_influxdb',
       'nose>=1.0',
       'PyYAML>=3.0',
       'requests>=1.0.3',
-      'six',
+      'six>=1.7',
       'virtualenv',
       'wheel'
     ],
