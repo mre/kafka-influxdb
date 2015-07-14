@@ -10,7 +10,7 @@ def readme():
 
 setup(name='kafka_influxdb',
     version=__version__,
-    description='A Kafka consumer for InfluXDB',
+    description='A Kafka consumer for InfluxDB',
     long_description=readme(),
     classifiers=[
     'Development Status :: 4 - Beta',
