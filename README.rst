@@ -2,10 +2,8 @@ Kafka-InfluxDB
 ==============
 
 | A Kafka consumer for InfluxDB written in Python.
-| All messages sent to Kafka on a certain topic will be relayed to
-Influxdb.
-| Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support check out the
-0.3.0 tag.
+| All messages sent to Kafka on a certain topic will be relayed to Influxdb.
+| Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support check out the 0.3.0 tag.
 
 |Build Status| |Coverage Status|
 
@@ -70,10 +68,8 @@ inside a virtual machine:
 Supported formats
 -----------------
 
-| You can write a custom encoder to support any input and output format
-(even fancy things like Protobuf).
-| Look at the examples in the ``encoder`` folder to get started. For now
-we support the following formats:
+| You can write a custom encoder to support any input and output format (even fancy things like Protobuf).
+| Look at the examples in the ``encoder`` folder to get started. For now we support the following formats:
 
 Input formats
 ~~~~~~~~~~~~~
@@ -91,10 +87,8 @@ Output formats
 Configuration
 -------------
 
-| Take a look at the ``config.yaml`` to find out how to create a config
-file.
-| You can overwrite the settings from the commandline with the following
-flags:
+| Take a look at the ``config.yaml`` to find out how to create a config file.
+| You can overwrite the settings from the commandline with the following flags:
 
 ::
 
