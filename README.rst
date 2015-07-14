@@ -17,11 +17,9 @@ Imagine the following scenario:
 .. figure:: usage-example.png
    :alt: Usage example
 
-   usage-example
 
 Quick start
 -----------
-
 
 To see the tool in action, you can start a complete
 ``CollectD -> Kafka -> kafka_influxdb -> Influxdb`` setup with the
