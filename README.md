@@ -6,6 +6,7 @@ All messages sent to Kafka on a certain topic will be relayed to Influxdb.
 Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support check out the 0.3.0 tag.
 
 [![Build Status](https://travis-ci.org/mre/kafka-influxdb.svg?branch=master)](https://travis-ci.org/mre/kafka-influxdb)
+[![Coverage Status](https://coveralls.io/repos/mre/kafka-influxdb/badge.svg?branch=master&service=github)](https://coveralls.io/github/mre/kafka-influxdb?branch=master)
 
 ## Quick start
 
