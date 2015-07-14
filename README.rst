@@ -1,40 +1,58 @@
 Kafka-InfluxDB
 ==============
 
-A Kafka consumer for InfluxDB written in Python.  
-All messages sent to Kafka on a certain topic will be relayed to Influxdb.  
-Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support check out the 0.3.0 tag.
+| A Kafka consumer for InfluxDB written in Python.
+| All messages sent to Kafka on a certain topic will be relayed to
+Influxdb.
+| Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support check out the
+0.3.0 tag.
 
-[![Build Status](https://travis-ci.org/mre/kafka-influxdb.svg?branch=master)](https://travis-ci.org/mre/kafka-influxdb)
-[![Coverage Status](https://coveralls.io/repos/mre/kafka-influxdb/badge.svg?branch=master&service=github)](https://coveralls.io/github/mre/kafka-influxdb?branch=master)
+|Build Status| |Coverage Status|
 
-## Quick start
+Quick start
+-----------
 
-To see the tool in action, you can start a complete `CollectD -> Kafka -> kafka_influxdb -> Influxdb` setup with the following command:
+To see the tool in action, you can start a complete
+``CollectD -> Kafka -> kafka_influxdb -> Influxdb`` setup with the
+following command:
+
+::
 
     docker-compose up
 
-This will immediately start reading messages from Kafka and write them into InfluxDB.
-Open the InfluxDB Admin Interface at `http://<docker_host_ip>:8083` and type `SHOW MEASUREMENTS` to see the output.
- (`<docker_host_ip>` is probably `localhost` on Linux. On Mac you can find out with `boot2docker ip` or `docker-machine ip`).
+This will immediately start reading messages from Kafka and write them
+into InfluxDB. Open the InfluxDB Admin Interface at
+``http://<docker_host_ip>:8083`` and type ``SHOW MEASUREMENTS`` to see
+the output. (``<docker_host_ip>`` is probably ``localhost`` on Linux. On
+Mac you can find out with ``boot2docker ip`` or ``docker-machine ip``).
 
-## Run on your local machine
+Run on your local machine
+-------------------------
 
-If you want to run a local instance, you can do so with the following commands:
+If you want to run a local instance, you can do so with the following
+commands:
+
+::
 
     pip install -r requirements.txt
     # Have a look at config.yaml
     python kafka_influxdb.py -c config.yaml
 
-## Benchmark
+Benchmark
+---------
 
 You can use the built-in benchmark tool for performance measurements:
 
+::
+
     python kafka-influxdb.py -b
 
-By default this will write 1.000.000 sample messages into the `benchmark` Kafka topic.
-After that it will consume the messages again to measure the throughput.
-Sample output using the above Docker setup inside a virtual machine:
+By default this will write 1.000.000 sample messages into the
+``benchmark`` Kafka topic. After that it will consume the messages again
+to measure the throughput. Sample output using the above Docker setup
+inside a virtual machine:
+
+::
 
     Flushing output buffer. 10811.29 messages/s
     Flushing output buffer. 11375.65 messages/s
@@ -49,25 +67,36 @@ Sample output using the above Docker setup inside a virtual machine:
     Flushing output buffer. 12287.26 messages/s
     Flushing output buffer. 11538.44 messages/s
 
+Supported formats
+-----------------
 
-## Supported formats
+| You can write a custom encoder to support any input and output format
+(even fancy things like Protobuf).
+| Look at the examples in the ``encoder`` folder to get started. For now
+we support the following formats:
 
-You can write a custom encoder to support any input and output format (even fancy things like Protobuf).  
-Look at the examples in the `encoder` folder to get started. For now we support the following formats:  
+Input formats
+~~~~~~~~~~~~~
 
-### Input formats
+-  Collectd Graphite, e.g. "mydatacenter.myhost.load.load.shortterm 0.45
+   1436357630"
 
-* Collectd Graphite, e.g. "mydatacenter.myhost.load.load.shortterm 0.45 1436357630"
+Output formats
+~~~~~~~~~~~~~~
 
-### Output formats
+-  InfluxDB 0.9 line protocol output (e.g.
+   ``load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630``)
+-  InfluxDB 0.8 JSON output (deprecated)
 
-* InfluxDB 0.9 line protocol output (e.g. `load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630`)
-* InfluxDB 0.8 JSON output (deprecated)
+Configuration
+-------------
 
-## Configuration
+| Take a look at the ``config.yaml`` to find out how to create a config
+file.
+| You can overwrite the settings from the commandline with the following
+flags:
 
-Take a look at the `config.yaml` to find out how to create a config file.  
-You can overwrite the settings from the commandline with the following flags:  
+::
 
     usage: kafka_influxdb.py [-h] [--kafka_host KAFKA_HOST]
                              [--kafka_port KAFKA_PORT] [--kafka_topic KAFKA_TOPIC]
@@ -122,8 +151,16 @@ You can overwrite the settings from the commandline with the following flags:
       -v, --verbose         Set verbosity level. Increase verbosity by adding a v:
                             -v -vv -vvv (default: 0)
 
-## TODO
+TODO
+----
 
-* flush buffer if not full but some time has gone by (safety net for low frequency input)
-* Support reading from multiple partitions and topics (using Python multiprocessing)
-* Enable settings using environment variables for Docker image
+-  flush buffer if not full but some time has gone by (safety net for
+   low frequency input)
+-  Support reading from multiple partitions and topics (using Python
+   multiprocessing)
+-  Enable settings using environment variables for Docker image
+
+.. |Build Status| image:: https://travis-ci.org/mre/kafka-influxdb.svg?branch=master
+   :target: https://travis-ci.org/mre/kafka-influxdb
+.. |Coverage Status| image:: https://coveralls.io/repos/mre/kafka-influxdb/badge.svg?branch=master&service=github
+   :target: https://coveralls.io/github/mre/kafka-influxdb?branch=master

@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 exec(open('kafka_influxdb/version.py').read())
 
 def readme():
-    with open('README.md') as f:
+    with open('README.rst') as f:
         return f.read()
 
 setup(name='kafka_influxdb',
