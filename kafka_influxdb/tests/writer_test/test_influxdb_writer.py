@@ -1,6 +1,6 @@
 import unittest
 from mock import MagicMock
-from writer import influxdb_writer
+from kafka_influxdb.writer import influxdb_writer
 
 class TestInfluxDBWriter(unittest.TestCase):
 

@@ -1,5 +1,5 @@
 import unittest
-from encoder import collectd_graphite_encoder
+from kafka_influxdb.encoder import collectd_graphite_encoder
 
 class TestCollectdGraphiteEncoder(unittest.TestCase):
 

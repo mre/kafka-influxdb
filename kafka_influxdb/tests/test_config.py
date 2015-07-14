@@ -1,6 +1,6 @@
 import unittest
-
-from kafka_influxdb import parse_configfile, overwrite_config_values
+import os
+from kafka_influxdb.kafka_influxdb import parse_configfile, overwrite_config_values
 
 class Config:
     def __init__(self, configfile):
@@ -13,7 +13,8 @@ class ParsedConfig:
 class TestConfig(unittest.TestCase):
 
     def setUp(self):
-        self.configfile = "test/fixtures/config.yaml"
+        path = os.path.dirname(os.path.abspath(__file__))
+        self.configfile = "{}/fixtures/config.yaml".format(path)
 
     def test_load_config(self):
         parsed_config = parse_configfile(self.configfile)

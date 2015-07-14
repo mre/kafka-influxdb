@@ -1,6 +1,6 @@
 import unittest
 
-from encoder import echo_encoder
+from kafka_influxdb.encoder import echo_encoder
 
 class TestEchoEncoder(unittest.TestCase):
 

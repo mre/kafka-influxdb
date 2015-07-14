@@ -1,8 +1,8 @@
 import unittest
 from mock import Mock
 import random
-from kafka_influxdb import KafkaInfluxDB
-from encoder import echo_encoder
+from kafka_influxdb.kafka_influxdb import KafkaInfluxDB
+from kafka_influxdb.encoder import echo_encoder
 
 class Config:
     def __init__(self, buffer_size):
