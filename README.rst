@@ -1,12 +1,11 @@
 Kafka-InfluxDB
 ==============
 
+|Build Status| |Coverage Status|
+
 | A Kafka consumer for InfluxDB written in Python.
 | All messages sent to Kafka on a certain topic will be relayed to Influxdb.
 | Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support, check out the `0.3.0 tag <https://github.com/mre/kafka-influxdb/tree/v0.3.0>`__.
-
-  
-|Build Status| |Coverage Status|
 
 
 Use cases
@@ -15,7 +14,7 @@ Use cases
 Kafka can serve as a buffer for your metric data during high load or read metrics from offshore data centers.
 Imagine the following scenario:
 
-.. figure:: usage-example.png
+.. figure:: assets/schema-small.png
    :alt: Usage example
 
 
