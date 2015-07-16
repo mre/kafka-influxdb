@@ -18,8 +18,8 @@ class KafkaReader(object):
     def connect(self):
         connection = "{0}:{1}".format(self.host, self.port)
         logging.info("Connecting to Kafka at {}...", connection)
-        kafka_client = KafkaClient(connection)
-        self.consumer = SimpleConsumer(kafka_client,
+        self.kafka_client = KafkaClient(connection)
+        self.consumer = SimpleConsumer(self.kafka_client,
                                        self.group,
                                        self.topic)
 
