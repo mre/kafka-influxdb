@@ -7,7 +7,7 @@ zookeeper:
 kafka:
   image: wurstmeister/kafka
   ports:
-    - "9092:9092"
+    - "9092"
   links:
     - zookeeper:zk
   volumes:
@@ -23,9 +23,9 @@ influxdb:
   volumes:
     - contrib/influxdb/config.toml:/config/config.toml
   ports:
-   - "2003:2003"
-   - "8083:8083"
-   - "8086:8086"
+   - "2003"
+   - "8083"
+   - "8086"
 collectd:
   image: mre0/collectd
   volumes:
