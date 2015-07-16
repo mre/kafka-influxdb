@@ -114,6 +114,7 @@ def start_consumer(config):
     """
     Start metrics consumer
     """
+    logging.info("Connecting to Kafka broker at {}:{}", config.kafka_host, config.kafka_port)
     try:
         reader = kafka_reader.KafkaReader(config.kafka_host,
                                         config.kafka_port,
@@ -124,13 +125,19 @@ def start_consumer(config):
         sys.exit(-1)
 
     encoder = load_encoder(config.encoder)
-    writer = influxdb_writer.InfluxDBWriter(config.influxdb_host,
-                                    config.influxdb_port,
-                                    config.influxdb_user,
-                                    config.influxdb_password,
-                                    config.influxdb_dbname,
-                                    config.influxdb_retention_policy,
-                                    config.influxdb_time_precision)
+
+    logging.info("Connecting to InfluxDB at {}:{}", config.influxdb_host, config.influxdb_port)
+    try:
+        writer = influxdb_writer.InfluxDBWriter(config.influxdb_host,
+                                        config.influxdb_port,
+                                        config.influxdb_user,
+                                        config.influxdb_password,
+                                        config.influxdb_dbname,
+                                        config.influxdb_retention_policy,
+                                        config.influxdb_time_precision)
+    except Exception as e:
+        logging.error("The connection to InfluxDB can not be established.")
+        sys.exit(-2)
 
     client = KafkaInfluxDB(reader, encoder, writer, config)
     client.consume()
