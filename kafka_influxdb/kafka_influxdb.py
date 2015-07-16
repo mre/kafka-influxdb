@@ -104,6 +104,7 @@ def main():
         logging.info("Using default configuration")
 
     if config.benchmark:
+        print("Starting in benchmark mode. Stand by while creating sample messages.")
         logging.info("Writing sample messages for benchmark")
         bench = benchmark.KafkaSampleWriter(config)
         bench.produce_messages()
