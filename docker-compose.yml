@@ -15,6 +15,7 @@ kafka:
   environment:
     KAFKA_ADVERTISED_HOST_NAME: 192.168.99.100
     KAFKA_CREATE_TOPICS: "metrics:1:1,benchmark:1:1,my_topic:1:1"
+    KAFKA_ZOOKEEPER_CONNECT: "zk"
 influxdb:
   image: tutum/influxdb:0.9
   environment:
