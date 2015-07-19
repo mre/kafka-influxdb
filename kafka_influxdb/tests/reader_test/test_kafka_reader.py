@@ -1,8 +1,6 @@
 import unittest
 import mock
 import itertools
-import time
-from nose.tools import *
 from collections import namedtuple
 from kafka_influxdb.reader import kafka_reader
 from kafka.client import KafkaClient
