@@ -7,30 +7,40 @@ from kafka.consumer import SimpleConsumer
 
 class KafkaReader(object):
 
-    def __init__(self, host, port, group, topic, connection_wait_time=2):
-        """ Initialize Kafka reader """
+    def __init__(self, host, port, group, topic, reconnect_wait_time=2):
+        """
+        Initialize Kafka reader
+        """
         self.host = host
         self.port = port
         self.group = group
         self.topic = topic
-        self.connection_wait_time = connection_wait_time
+        self.reconnect_wait_time = reconnect_wait_time
 
     def connect(self):
         connection = "{0}:{1}".format(self.host, self.port)
-        logging.info("Connecting to Kafka at {}...", connection)
+        logging.info("Connecting to Kafka at {}...".format(connection))
         self.kafka_client = KafkaClient(connection)
         self.consumer = SimpleConsumer(self.kafka_client,
                                        self.group,
                                        self.topic)
 
     def read(self):
-        """ Yield messages from Kafka topic """
+        """
+        Read from Kafka. Reconnect on error.
+        """
         while True:
-            try:
-                self.connect()
-                for raw_message in self.consumer:
-                    yield raw_message.message.value
-            except Exception:
-                logging.error("Connection to Kafka lost. Trying to reconnect to {}:{}...",
-                                    self.host, self.port)
-                time.sleep(self.connection_wait_time)
+            self.handle_read()
+
+    def handle_read(self):
+        """
+        Yield messages from Kafka topic
+        """
+        try:
+            self.connect()
+            for raw_message in self.consumer:
+                yield raw_message.message.value
+        except Exception as e:
+            logging.warning("Connection to Kafka lost. Trying to reconnect to {}:{}".format(self.host, self.port))
+            time.sleep(self.reconnect_wait_time)
+            pass
