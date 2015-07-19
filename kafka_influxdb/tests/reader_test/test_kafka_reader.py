@@ -1,11 +1,14 @@
 import unittest
 import mock
 import itertools
+import time
+from nose.tools import *
 from collections import namedtuple
 from kafka_influxdb.reader import kafka_reader
 from kafka.client import KafkaClient
 from kafka.common import ConnectionError
 from kafka.common import Message
+from kafka_influxdb.tests.helpers.timeout import timeout
 
 class TestKafkaReader(unittest.TestCase):
 
@@ -31,16 +34,22 @@ class TestKafkaReader(unittest.TestCase):
     def test_handle_read(self):
         sample_messages, extracted_messages = self.sample_messages("hello", 3)
         self.reader.consumer.__iter__.return_value = sample_messages
-        real_messages = list(self.reader.handle_read())
-        self.assertEquals(real_messages, extracted_messages)
+        received_messages = list(self.reader.handle_read())
+        self.assertEquals(received_messages, extracted_messages)
 
-    # TODO: Run in separate process
-    #def test_reconnect(self):
-    #""" In case of a connection error, the client should reconnect and
-    #start receiving messages again without interruption """
-    #    sample_messages1, extracted_messages1 = self.sample_messages("hi", 3)
-    #    sample_messages2, extracted_messages2 = self.sample_messages("world", 3)
-    #    sample_messages = sample_messages1 + [ConnectionError] + sample_messages2
-    #    self.reader.consumer.__iter__.return_value = sample_messages
-    #    real_messages = list(self.reader.handle_read())
-    #    self.assertEquals(real_messages, extracted_messages1 + extracted_messages2)
+    @timeout(0.1)
+    def test_reconnect(self):
+        """
+        In case of a connection error, the client should reconnect and
+        start receiving messages again without interruption
+        """
+        sample_messages1, extracted_messages1 = self.sample_messages("hi", 3)
+        sample_messages2, extracted_messages2 = self.sample_messages("world", 3)
+        sample_messages = sample_messages1 + [ConnectionError] + sample_messages2
+        self.reader.consumer.__iter__.return_value = sample_messages
+        received_messages = list(self.receive_messages())
+        self.assertEquals(received_messages, extracted_messages1 + extracted_messages2)
+
+    def receive_messages(self):
+        for message in self.reader.read():
+            yield message
