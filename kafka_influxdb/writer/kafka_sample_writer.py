@@ -37,5 +37,5 @@ class KafkaSampleWriter(object):
             req = ProduceRequest(topic=self.config.kafka_topic, partition=0, messages=messages_batch)
             resps = kafka.send_produce_request(payloads=[req], fail_on_error=True)
             sent_messages = i * self.batch_size
-            logging.info('Created {} out of {} sample messages'.format(sent_messages, total_messages))
+            logging.info('Created %s out of %s sample messages', sent_messages, total_messages)
         kafka.close()

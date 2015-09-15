@@ -19,7 +19,7 @@ class KafkaReader(object):
 
     def connect(self):
         connection = "{0}:{1}".format(self.host, self.port)
-        logging.info("Connecting to Kafka at {}...".format(connection))
+        logging.info("Connecting to Kafka at %s...", connection)
         self.kafka_client = KafkaClient(connection)
         self.consumer = SimpleConsumer(self.kafka_client,
                                        self.group,
@@ -41,6 +41,6 @@ class KafkaReader(object):
             for raw_message in self.consumer:
                 yield raw_message.message.value
         except Exception as e:
-            logging.warning("Connection to Kafka lost. Trying to reconnect to {}:{}".format(self.host, self.port))
+            logging.warning("Connection to Kafka lost. Trying to reconnect to %s:%s", self.host, self.port)
             time.sleep(self.reconnect_wait_time)
             pass

@@ -97,7 +97,7 @@ def main():
         logging.getLogger().setLevel(logging.DEBUG)
 
     if config.configfile:
-        logging.debug("Reading config from ", config.configfile)
+        logging.debug("Reading config from %s", config.configfile)
         values = parse_configfile(config.configfile)
         overwrite_config_values(config, values)
     else:
@@ -115,7 +115,7 @@ def start_consumer(config):
     """
     Start metrics consumer
     """
-    logging.info("Connecting to Kafka broker at {}:{}", config.kafka_host, config.kafka_port)
+    logging.info("Connecting to Kafka broker at %s:%s", config.kafka_host, config.kafka_port)
     try:
         reader = kafka_reader.KafkaReader(config.kafka_host,
                                         config.kafka_port,
@@ -127,7 +127,7 @@ def start_consumer(config):
 
     encoder = load_encoder(config.encoder)
 
-    logging.info("Connecting to InfluxDB at {}:{}", config.influxdb_host, config.influxdb_port)
+    logging.info("Connecting to InfluxDB at %s:%s", config.influxdb_host, config.influxdb_port)
     try:
         writer = influxdb_writer.InfluxDBWriter(config.influxdb_host,
                                         config.influxdb_port,
