@@ -109,6 +109,7 @@ def main():
     else:
         logging.info("Using default configuration")
 
+    logging.info("Connecting to Kafka broker at %s:%s", config.kafka_host, config.kafka_port)
     if config.benchmark:
         create_sample_messages(config)
     start_consumer(config)
@@ -117,14 +118,13 @@ def start_consumer(config):
     """
     Start metrics consumer
     """
-    logging.info("Connecting to Kafka broker at %s:%s", config.kafka_host, config.kafka_port)
     try:
         reader = kafka_reader.KafkaReader(config.kafka_host,
                                         config.kafka_port,
                                         config.kafka_group,
                                         config.kafka_topic)
     except Exception as e:
-        logging.error("The connection to Kafka can not be established.")
+        logging.error("The connection to Kafka can not be established: %s. Please check your config.", e.message)
         sys.exit(-1)
 
     encoder = load_encoder(config.encoder)
@@ -139,7 +139,7 @@ def start_consumer(config):
                                         config.influxdb_retention_policy,
                                         config.influxdb_time_precision)
     except Exception as e:
-        logging.error("The connection to InfluxDB can not be established.")
+        logging.error("The connection to InfluxDB can not be established: %s", e.message)
         sys.exit(-2)
 
     client = KafkaInfluxDB(reader, encoder, writer, config)
