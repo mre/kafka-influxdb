@@ -40,11 +40,9 @@ class TestKafkaInfluxDB(unittest.TestCase):
         self.client = KafkaInfluxDB(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertFalse(self.writer.write.called)
-        #self.writer.assert_called_with(1)
 
     def test_flush(self):
         self.reader = DummyReader(["myhost.load.load.shortterm 0.05 1436357630"], self.config.buffer_size)
         self.client = KafkaInfluxDB(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertTrue(self.writer.write.called)
-        #self.writer.assert_called_with(1)
