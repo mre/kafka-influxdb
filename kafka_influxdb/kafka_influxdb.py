@@ -134,7 +134,7 @@ def load_encoder(encoder_name):
     Creates an instance of the given encoder.
     An encoder converts a message from one format to another
     """
-    encoder_module = importlib.import_module("kafka_influxdb.encoder." + encoder_name)
+    encoder_module = importlib.import_module("encoder." + encoder_name)
     encoder_class = getattr(encoder_module, "Encoder")
     # Return an instance of the class
     return encoder_class()
