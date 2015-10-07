@@ -9,13 +9,8 @@ influxdb:
   user: "hans"
   password: "hans"
   dbname: "influxdbname"
-  # Todo: remove and replace with output format
-  version: 0.9
   retention_policy: "my_rp"
-# Possible input formats: graphite, collectd_json
-input_format: "graphite"
-# Possible output values: influxdb, influxdb_legacy
-output_format: "influxdb"
-buffer_size: 1000
-verbose: false
+encoder: "collectd_graphite_encoder"
+benchmark: false
+buffer_size: 444
 statistics: true
