@@ -84,6 +84,12 @@ class KafkaInfluxDB(object):
     def get_config(self):
         return self.config
 
+def create_sample_messages(config):
+    print("Starting in benchmark mode. Stand by while creating sample messages.")
+    logging.info("Writing sample messages for benchmark to topic %s", config.kafka_topic)
+    bench = benchmark.KafkaSampleWriter(config)
+    bench.produce_messages()
+
 def main():
     """
     Setup consumer
@@ -104,11 +110,7 @@ def main():
         logging.info("Using default configuration")
 
     if config.benchmark:
-        print("Starting in benchmark mode. Stand by while creating sample messages.")
-        logging.info("Writing sample messages for benchmark")
-        bench = benchmark.KafkaSampleWriter(config)
-        bench.produce_messages()
-
+        create_sample_messages(config)
     start_consumer(config)
 
 def start_consumer(config):
