@@ -62,7 +62,7 @@ class KafkaInfluxDB(object):
     def show_statistics(self):
         delta = time.time() - self.start_time
         msg_per_sec = self.config.buffer_size / delta
-        print("Flushing output buffer. {0:.2f} messages/s".format(msg_per_sec))
+        logging.info("Flushing output buffer. {0:.2f} messages/s".format(msg_per_sec))
         # Reset timer
         self.start_time = time.time()
 
