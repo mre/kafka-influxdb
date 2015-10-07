@@ -34,6 +34,7 @@ class KafkaSampleWriter(object):
         messages_batch = [create_message(random.choice(self.sample_messages)) for r in range(self.batch_size)]
 
         for i in range(self.batches):
+            # TODO: Support writing to all partitions
             req = ProduceRequest(topic=self.config.kafka_topic, partition=0, messages=messages_batch)
             resps = kafka.send_produce_request(payloads=[req], fail_on_error=True)
             sent_messages = i * self.batch_size
