@@ -2,6 +2,7 @@
 kafka:
   host: "kafka"
   port: 9092
+  group: "kafka-influxdb"
   topic: "metrics"
 influxdb:
   host: "influxdb"
@@ -13,5 +14,4 @@ influxdb:
 encoder: "collectd_graphite_encoder"
 benchmark: false
 buffer_size: 1000
-verbose: false
 statistics: true
