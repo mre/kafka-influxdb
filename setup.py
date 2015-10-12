@@ -8,6 +8,9 @@ def readme():
     with open('README.rst') as f:
         return f.read()
 
+with open('requirements.txt', 'r') as f:
+    requires = [x.strip() for x in f if x.strip()]
+
 setup(name='kafka_influxdb',
     version=__version__,
     description='A Kafka consumer for InfluxDB',
@@ -35,18 +38,7 @@ setup(name='kafka_influxdb',
        #"git+ssh://git@github.com/mwilliamson/mayo.git@0.2.1#egg=mayo-0.2.1"
       'git+https://github.com/influxdb/influxdb-python.git@815f7f96caf700c9bb3e6b5eb3108cfcee4c0469#egg=influxdb'
     ],
-    install_requires=[
-      'certifi>=14.05.14',
-      'influxdb',
-      'kafka-python>=0.9',
-      'mock>=1.0',
-      'nose>=1.0',
-      'PyYAML>=3.0',
-      'requests>=1.0.3',
-      'six>=1.7',
-      'virtualenv',
-      'wheel'
-    ],
+    install_requires=requires,
     test_suite='nose.collector',
     tests_require=['nose', 'nose-cover3'],
     entry_points={
