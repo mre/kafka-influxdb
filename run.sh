@@ -31,5 +31,5 @@ if [ -z "$BENCHMARK" ]; then
   kafka_influxdb -c config.yaml
 else
   echo "Starting performance benchmark"
-  kafka_influxdb --benchmark --kafka_host kafka --kafka_topic benchmark
+  kafka_influxdb --benchmark --kafka_host=$KAFKA_HOST --kafka_port=$KAFKA_PORT --kafka_topic=benchmark --influxdb_host=$INFLUXDB_HOST --influxdb_port=$INFLUXDB_PORT
 fi
