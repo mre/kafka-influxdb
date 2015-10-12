@@ -23,7 +23,6 @@ def load_config():
     """
     # We start with the default config
     config = flatten(default_config.DEFAULT_CONFIG)
-    print config
 
     # Read commandline arguments
     cli_config = flatten(parse_args())
@@ -32,11 +31,9 @@ def load_config():
         print("Reading config file {}".format(cli_config['configfile']))
         configfile = flatten(parse_configfile(cli_config['configfile']))
         config = dict(config.items() + configfile.items())
-    print config
 
     # Parameters from commandline take precedence over all others
     config = overwrite_config(config, cli_config)
-    print config
 
     # Set verbosity level
     if config['verbose'] == 1:
