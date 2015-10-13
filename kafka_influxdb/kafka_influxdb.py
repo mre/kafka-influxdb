@@ -1,8 +1,5 @@
 import sys
-import collections
 import logging
-import six
-import traceback
 import time
 
 from config import loader
