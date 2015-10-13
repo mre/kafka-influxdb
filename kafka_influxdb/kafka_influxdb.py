@@ -1,14 +1,15 @@
 import sys
 import collections
-import importlib
 import logging
-from config import loader
-from reader import kafka_reader
-from writer import influxdb_writer
-from writer import kafka_sample_writer as benchmark
 import six
 import traceback
 import time
+
+from config import loader
+from encoder import load_encoder
+from reader import kafka_reader
+from writer import influxdb_writer
+from writer import kafka_sample_writer as benchmark
 
 class KafkaInfluxDB(object):
     def __init__(self, reader, encoder, writer, config):
@@ -128,16 +129,6 @@ def start_consumer(config):
 
     client = KafkaInfluxDB(reader, encoder, writer, config)
     client.consume()
-
-def load_encoder(encoder_name):
-    """
-    Creates an instance of the given encoder.
-    An encoder converts a message from one format to another
-    """
-    encoder_module = importlib.import_module("encoder." + encoder_name)
-    encoder_class = getattr(encoder_module, "Encoder")
-    # Return an instance of the class
-    return encoder_class()
 
 if __name__ == '__main__'	:
     main()
