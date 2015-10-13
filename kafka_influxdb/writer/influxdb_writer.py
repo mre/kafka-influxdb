@@ -19,10 +19,11 @@ class InfluxDBWriter(object):
             'Accept': 'text/plain'
         }
         self.params = { 'db': self.dbname}
-        if time_precision is not None:
+        if time_precision:
             self.params['precision'] = time_precision
-        if retention_policy is not None:
+        if retention_policy:
             self.params['rp'] = retention_policy
+
         logging.info("Connecting to InfluxDB at %s:%s...", host, port)
         self.client = influxdb.InfluxDBClient(host, port, user, password, dbname)
         logging.info("Creating database %s if not exists", dbname)
