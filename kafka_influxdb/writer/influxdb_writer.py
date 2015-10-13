@@ -54,21 +54,19 @@ class InfluxDBWriter(object):
     def write08(self):
         """
         TODO: Write in InfluxDB legacy 08 format:
-         data = [
-                    {
-                        "name": "cpu_load_short",
-                        "columns": [
-                            "value"
-                        ]
-                        "points": [
-                            [
-                                12
-                            ]
-                        ],
-                    }
+        data = [
+            {
+                "name": "cpu_load_short",
+                "columns": [
+                    "value"
                 ]
-
-                client.write_points(data, time_precision='s', *args, **kwargs):
-
+                "points": [
+                    [
+                        12
+                    ]
+                ],
+            }
+        ]
+        client.write_points(data, time_precision='s', *args, **kwargs):
         """
         raise NotImplementedError
