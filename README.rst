@@ -1,7 +1,7 @@
 Kafka-InfluxDB
 ==============
 
-|Build Status| |Coverage Status|
+|Build Status| |Coverage Status| |Code Climate|
 
 | A Kafka consumer for InfluxDB written in Python.
 | All messages sent to Kafka on a certain topic will be relayed to Influxdb.
@@ -172,3 +172,6 @@ TODO
    :target: https://travis-ci.org/mre/kafka-influxdb
 .. |Coverage Status| image:: https://coveralls.io/repos/mre/kafka-influxdb/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/mre/kafka-influxdb?branch=master
+.. |Code Climate| image:: https://codeclimate.com/github/mre/kafka-influxdb/badges/gpa.svg
+   :target: https://codeclimate.com/github/mre/kafka-influxdb
+   :alt: Code Climate
