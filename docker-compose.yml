@@ -39,7 +39,7 @@ kafkainfluxdb:
   #stdin_open: true
   #tty: true
   volumes:
-    - .:/code
+    - .:/kafka-influxdb
   links:
     - kafka
     - influxdb
