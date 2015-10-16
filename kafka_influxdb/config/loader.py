@@ -85,7 +85,7 @@ def parse_args():
     parser.add_argument('--influxdb_port', type=int, default=argparse.SUPPRESS, required=False, help="InfluxDB API port (default: 8086)")
     parser.add_argument('--influxdb_user', type=str, default=argparse.SUPPRESS, required=False, help="InfluxDB username (default: root)")
     parser.add_argument('--influxdb_password', type=str, default=argparse.SUPPRESS, required=False, help="InfluxDB password (default: root)")
-    parser.add_argument('--influxdb_dbname', type=str, default=argparse.SUPPRESS, required=False, help="InfluXDB database to write metrics into (default: metrics)")
+    parser.add_argument('--influxdb_dbname', type=str, default=argparse.SUPPRESS, required=False, help="InfluxDB database to write metrics into (default: metrics)")
     parser.add_argument('--influxdb_retention_policy', type=str, default=argparse.SUPPRESS, required=False, help="Retention policy for incoming metrics (default: default)")
     parser.add_argument('--influxdb_time_precision', type=str, default=argparse.SUPPRESS, help="Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u' (default: s)")
     parser.add_argument('--encoder', type=str, default=argparse.SUPPRESS, required=False, help="Input encoder which converts an incoming message to dictionary (default: collectd_graphite_encoder)")
