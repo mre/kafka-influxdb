@@ -35,6 +35,7 @@ influxdb:
 kafkainfluxdb:
   build: .
   # Uncomment the following for interactive mode:
+  # Uncomment the following three lines for interactive mode:
   #entrypoint: /bin/bash
   #stdin_open: true
   #tty: true
