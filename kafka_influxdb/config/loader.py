@@ -16,9 +16,10 @@ def load_config():
 
     Note: Commandline parameters are of the form
     --kafka_host="localhost"
+    to make them easy to enter from the cli
     while the config file parameters are stored in a dict
     {kafka: { host: localhost }}
-    to avoid redundancy in the key name, e.g.
+    to avoid redundancy in the key name.
     So to merge them, we flatten all keys.
     """
     # We start with the default config
