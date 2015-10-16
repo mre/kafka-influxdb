@@ -3,6 +3,7 @@ kafka:
   host: "kafkahost"
   port: 1234
   topic: "kafkatopic"
+  group : "foogroup"
 influxdb:
   host: "influxdbhost"
   port: 9999
