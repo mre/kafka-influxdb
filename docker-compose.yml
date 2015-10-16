@@ -34,7 +34,8 @@ influxdb:
    - "8086"
 kafkainfluxdb:
   build: .
-  # Uncomment the following for interactive mode:
+  environment:
+    BENCHMARK: 1
   # Uncomment the following three lines for interactive mode:
   #entrypoint: /bin/bash
   #stdin_open: true
