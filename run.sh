@@ -28,8 +28,8 @@ done
 
 if [ -z "$BENCHMARK" ]; then
   echo "Starting to consume messages"
-  kafka_influxdb -c config_example.yaml
+  kafka_influxdb -v -c config_example.yaml
 else
   echo "Starting performance benchmark"
-  kafka_influxdb --benchmark --kafka_host=$KAFKA_HOST --kafka_port=$KAFKA_PORT --kafka_topic=benchmark --influxdb_host=$INFLUXDB_HOST --influxdb_port=$INFLUXDB_PORT
+  kafka_influxdb -v -c config_example.yaml --benchmark
 fi
