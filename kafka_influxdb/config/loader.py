@@ -37,10 +37,11 @@ def load_config():
     config = overwrite_config(config, cli_config)
 
     # Set verbosity level
-    if config['verbose'] == 1:
-        logging.getLogger().setLevel(logging.INFO)
-    elif config['verbose'] > 1:
-        logging.getLogger().setLevel(logging.DEBUG)
+    if 'verbose' in config:
+        if config['verbose'] == 1:
+            logging.getLogger().setLevel(logging.INFO)
+        elif config['verbose'] > 1:
+            logging.getLogger().setLevel(logging.DEBUG)
 
     return objectview(config)
 
