@@ -34,10 +34,6 @@ setup(name='kafka_influxdb',
     author_email='matthias-endler@gmx.net',
     license='Apache',
     packages=find_packages(),
-    dependency_links=[
-       #"git+ssh://git@github.com/mwilliamson/mayo.git@0.2.1#egg=mayo-0.2.1"
-      'git+https://github.com/influxdb/influxdb-python.git@815f7f96caf700c9bb3e6b5eb3108cfcee4c0469#egg=influxdb'
-    ],
     install_requires=requires,
     test_suite='nose.collector',
     tests_require=['nose', 'nose-cover3'],
