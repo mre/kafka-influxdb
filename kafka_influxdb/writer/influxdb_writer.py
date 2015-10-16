@@ -7,21 +7,38 @@ import requests
 
 class InfluxDBWriter(object):
 
-    def __init__(self, host, port, user, password, dbname, retention_policy=None, time_precision=None):
     DEFAULT_HEADERS = {
         'Content-type': 'application/octet-stream',
         'Accept': 'text/plain'
     }
+
+    def __init__(self,
+                 host,
+                 port,
+                 user,
+                 password,
+                 dbname,
+                 use_ssl=False,
+                 verify_ssl=False,
+                 timeout=5,
+                 use_udp=False,
+                 retention_policy=None,
+                 time_precision=None):
         """
         Initialize InfluxDB writer
         """
+        self.host = host
+        self.port = port
+        self.user = user
+        self.password = password
+        self.dbname = dbname
+        self.use_ssl = use_ssl
+        self.verify_ssl = verify_ssl
+        self.timeout = timeout
+        self.use_udp = use_udp
         self.retention_policy = retention_policy
         self.time_precision = time_precision
-        self.dbname = dbname
-        self.headers = {
-            'Content-type': 'application/octet-stream',
-            'Accept': 'text/plain'
-        }
+        
         self.params = { 'db': self.dbname}
         self.headers = self.DEFAULT_HEADERS
         if time_precision:
@@ -29,9 +46,24 @@ class InfluxDBWriter(object):
         if retention_policy:
             self.params['rp'] = retention_policy
 
-        logging.info("Connecting to InfluxDB at %s:%s...", host, port)
-        self.client = influxdb.InfluxDBClient(host, port, user, password, dbname)
+        logging.info("Connecting to InfluxDB at %s:%s (SSL: %r, UDP: %r)", host, port, use_ssl, use_udp)
+        self.client = self.create_client()
         logging.info("Creating database %s if not exists", dbname)
+
+    def create_client(self):
+        """
+        Create an InfluxDB client
+        """
+        return influxdb.InfluxDBClient( self.host,
+                                        self.port,
+                                        self.user,
+                                        self.password,
+                                        self.dbname,
+                                        self.use_ssl,
+                                        self.verify_ssl,
+                                        self.timeout,
+                                        self.use_udp,
+                                        self.port)
 
     def create_database(self, dbname):
         """ Initialize the given database """

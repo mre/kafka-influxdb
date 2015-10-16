@@ -11,6 +11,10 @@ DEFAULT_CONFIG = {
         'user': 'root',
         'password': 'root',
         'dbname': 'metrics',
+        'use_ssl': False,
+        'verify_ssl': False,
+        'timeout': 5,
+        'use_udp': False,
         'retention_policy': 'default',
         'time_precision': 's'
     },

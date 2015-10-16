@@ -117,6 +117,10 @@ def start_consumer(config):
                                         config.influxdb_user,
                                         config.influxdb_password,
                                         config.influxdb_dbname,
+                                        config.influxdb_use_ssl,
+                                        config.influxdb_verify_ssl,
+                                        config.influxdb_timeout,
+                                        config.influxdb_use_udp,
                                         config.influxdb_retention_policy,
                                         config.influxdb_time_precision)
     except Exception as e:

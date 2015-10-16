@@ -1,6 +1,8 @@
 import unittest
 import os
-from kafka_influxdb.config import loader
+import argparse
+from mock import MagicMock
+from kafka_influxdb.config import loader, default_config
 
 class Config:
     def __init__(self, configfile):
@@ -26,6 +28,10 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(parsed_config["influxdb"]["user"], "hans")
         self.assertEqual(parsed_config["influxdb"]["password"], "hans")
         self.assertEqual(parsed_config["influxdb"]["dbname"], "influxdbname")
+        self.assertEqual(parsed_config["influxdb"]["use_ssl"], True)
+        self.assertEqual(parsed_config["influxdb"]["verify_ssl"], True)
+        self.assertEqual(parsed_config["influxdb"]["timeout"], 9000)
+        self.assertEqual(parsed_config["influxdb"]["use_udp"], False)
         self.assertEqual(parsed_config["influxdb"]["retention_policy"], "my_rp")
         self.assertEqual(parsed_config["encoder"], "collectd_graphite_encoder")
         self.assertEqual(parsed_config["benchmark"], False)

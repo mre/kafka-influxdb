@@ -10,6 +10,10 @@ influxdb:
   user: "hans"
   password: "hans"
   dbname: "influxdbname"
+  use_ssl: True
+  verify_ssl: True
+  timeout: 9000
+  use_udp: False
   retention_policy: "my_rp"
 encoder: "collectd_graphite_encoder"
 benchmark: false
