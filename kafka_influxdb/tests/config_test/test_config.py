@@ -20,6 +20,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(parsed_config["kafka"]["host"], "kafkahost")
         self.assertEqual(parsed_config["kafka"]["port"], 1234)
         self.assertEqual(parsed_config["kafka"]["topic"], "kafkatopic")
+        self.assertEqual(parsed_config["kafka"]["group"], "foogroup")
         self.assertEqual(parsed_config["influxdb"]["host"], "influxdbhost")
         self.assertEqual(parsed_config["influxdb"]["port"], 9999)
         self.assertEqual(parsed_config["influxdb"]["user"], "hans")
