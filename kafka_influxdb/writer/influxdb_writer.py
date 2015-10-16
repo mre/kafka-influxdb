@@ -8,6 +8,10 @@ import requests
 class InfluxDBWriter(object):
 
     def __init__(self, host, port, user, password, dbname, retention_policy=None, time_precision=None):
+    DEFAULT_HEADERS = {
+        'Content-type': 'application/octet-stream',
+        'Accept': 'text/plain'
+    }
         """
         Initialize InfluxDB writer
         """
@@ -19,6 +23,7 @@ class InfluxDBWriter(object):
             'Accept': 'text/plain'
         }
         self.params = { 'db': self.dbname}
+        self.headers = self.DEFAULT_HEADERS
         if time_precision:
             self.params['precision'] = time_precision
         if retention_policy:
