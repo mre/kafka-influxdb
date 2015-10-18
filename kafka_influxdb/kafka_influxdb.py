@@ -24,8 +24,8 @@ class KafkaInfluxDB(object):
         """
         self.init_database()
 
-        self.start_time = time.time()
         logging.info("Listening for messages on Kafka topic %s...", self.config.kafka_topic)
+        self.start_time = time.time()
         try:
             for index, raw_message in enumerate(self.reader.read(), 1):
                 self.buffer.append(self.encoder.encode(raw_message))
