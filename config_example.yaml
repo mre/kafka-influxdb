@@ -11,9 +11,9 @@ influxdb:
   password: "root"
   dbname: "metrics"
   use_ssl: false
-  verify_ssl: False,
-  timeout: 5,
-  use_udp: False,
+  verify_ssl: False
+  timeout: 5
+  use_udp: False
   retention_policy: "default"
   time_precision: "s"
 encoder: "collectd_graphite_encoder"
