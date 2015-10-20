@@ -114,10 +114,16 @@ Configuration
                              [--influxdb_user INFLUXDB_USER]
                              [--influxdb_password INFLUXDB_PASSWORD]
                              [--influxdb_dbname INFLUXDB_DBNAME]
+                             [--influxdb_use_ssl INFLUXDB_USE_SSL]
+                             [--influxdb_verify_ssl INFLUXDB_VERIFY_SSL]
+                             [--influxdb_timeout INFLUXDB_TIMEOUT]
+                             [--influxdb_use_udp INFLUXDB_USE_UDP]
                              [--influxdb_retention_policy INFLUXDB_RETENTION_POLICY]
                              [--influxdb_time_precision INFLUXDB_TIME_PRECISION]
                              [--encoder ENCODER] [--buffer_size BUFFER_SIZE]
                              [-c CONFIGFILE] [-s] [-b] [-v]
+
+    A Kafka consumer for InfluxDB
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -139,8 +145,18 @@ Configuration
       --influxdb_password INFLUXDB_PASSWORD
                             InfluxDB password (default: root)
       --influxdb_dbname INFLUXDB_DBNAME
-                            InfluXDB database to write metrics into (default:
+                            InfluxDB database to write metrics into (default:
                             metrics)
+      --influxdb_use_ssl INFLUXDB_USE_SSL
+                            Use SSL connection for InfluxDB (default: False)
+      --influxdb_verify_ssl INFLUXDB_VERIFY_SSL
+                            Verify the SSL certificate before connecting (default:
+                            False)
+      --influxdb_timeout INFLUXDB_TIMEOUT
+                            Max number of seconds to establish a connection to
+                            InfluxDB (default: 5)
+      --influxdb_use_udp INFLUXDB_USE_UDP
+                            Use UDP connection for InfluxDB (default: False)
       --influxdb_retention_policy INFLUXDB_RETENTION_POLICY
                             Retention policy for incoming metrics (default:
                             default)
