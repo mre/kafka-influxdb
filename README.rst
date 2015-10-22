@@ -175,15 +175,6 @@ Configuration
       -v, --verbose         Set verbosity level. Increase verbosity by adding a v:
                             -v -vv -vvv (default: 0)
 
-TODO
-----
-
--  flush buffer if not full but some time has gone by (safety net for
-   low frequency input)
--  Support reading from multiple partitions and topics (using Python
-   multiprocessing)
--  Enable settings using environment variables for Docker image
-
 .. |Build Status| image:: https://travis-ci.org/mre/kafka-influxdb.svg?branch=master
    :target: https://travis-ci.org/mre/kafka-influxdb
 .. |Coverage Status| image:: https://coveralls.io/repos/mre/kafka-influxdb/badge.svg?branch=master&service=github
