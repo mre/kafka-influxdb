@@ -11,15 +11,26 @@ Kafka-InfluxDB
 Use cases
 ---------
 
-Kafka can serve as a buffer for your metric data during high load or read metrics from offshore data centers.
-Imagine the following scenario:
+Kafka will serve as a buffer for your metric data during high load.
+Also it's useful for metrics from offshore data centers with unreliable connections.
 
 .. figure:: https://raw.githubusercontent.com/mre/kafka-influxdb/master/assets/schema-small.png
    :alt: Usage example
 
 
-Quick start
------------
+Quickstart
+----------
+
+To run the tool from your local machine:
+
+::
+
+    pip install kafka_influxdb
+    kafka_influxdb -c config-example.yaml
+
+
+Benchmark
+---------
 
 To see the tool in action, you can start a complete
 ``CollectD -> Kafka -> kafka_influxdb -> Influxdb`` setup with the
@@ -37,27 +48,6 @@ In this case 32785 is the port where you can reach it.
 Then go to ``http://<docker_host_ip>:<port>`` and type ``SHOW MEASUREMENTS``
 to see the output. (``<docker_host_ip>`` is probably ``localhost`` on Linux.
 On Mac you can find out with ``boot2docker ip`` or ``docker-machine ip``).
-
-Run on your local machine
--------------------------
-
-If you want to run a local instance, you can do so with the following
-commands:
-
-::
-
-    pip install kafka_influxdb
-    # Create a config.yaml like the one in this repository
-    kafka_influxdb -c config.yaml
-
-Benchmark
----------
-
-You can use the built-in benchmark tool for performance measurements:
-
-::
-
-    kafka-influxdb -b
 
 By default this will write 1.000.000 sample messages into the
 ``benchmark`` Kafka topic. After that it will consume the messages again
@@ -79,6 +69,7 @@ inside a virtual machine:
     Flushing output buffer. 12287.26 messages/s
     Flushing output buffer. 11538.44 messages/s
 
+
 Supported formats
 -----------------
 
@@ -98,10 +89,11 @@ Output formats
    ``load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630``)
 -  InfluxDB 0.8.x JSON output (deprecated)
 
+
 Configuration
 -------------
 
-| Take a look at the ``config.yaml`` to find out how to create a config file.
+| Take a look at the ``config-example.yaml`` to find out how to create a config file.
 | You can overwrite the settings from the commandline with the following flags:
 
 ::
