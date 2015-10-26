@@ -7,6 +7,7 @@ from reader import kafka_reader
 from writer import influxdb_writer
 from writer import kafka_sample_writer as benchmark
 
+
 class KafkaInfluxDB(object):
     def __init__(self, reader, encoder, writer, config):
         """
@@ -17,6 +18,9 @@ class KafkaInfluxDB(object):
         self.encoder = encoder
         self.writer = writer
         self.buffer = []
+
+        # Field for time measurement
+        self.start_time = None
 
     def consume(self):
         """
@@ -79,11 +83,13 @@ class KafkaInfluxDB(object):
     def get_config(self):
         return self.config
 
+
 def create_sample_messages(config):
     print("Starting in benchmark mode. Stand by while creating sample messages.")
     logging.info("Writing sample messages for benchmark to topic %s", config.kafka_topic)
     bench = benchmark.KafkaSampleWriter(config)
     bench.produce_messages()
+
 
 def main():
     """
@@ -95,15 +101,16 @@ def main():
         create_sample_messages(config)
     start_consumer(config)
 
+
 def start_consumer(config):
     """
     Start metrics consumer
     """
     try:
         reader = kafka_reader.KafkaReader(config.kafka_host,
-                                        config.kafka_port,
-                                        config.kafka_group,
-                                        config.kafka_topic)
+                                          config.kafka_port,
+                                          config.kafka_group,
+                                          config.kafka_topic)
     except Exception as e:
         logging.error("The connection to Kafka can not be established: %s. Please check your config.", e.message)
         sys.exit(-1)
@@ -113,16 +120,16 @@ def start_consumer(config):
     logging.info("Connecting to InfluxDB at %s:%s", config.influxdb_host, config.influxdb_port)
     try:
         writer = influxdb_writer.InfluxDBWriter(config.influxdb_host,
-                                        config.influxdb_port,
-                                        config.influxdb_user,
-                                        config.influxdb_password,
-                                        config.influxdb_dbname,
-                                        config.influxdb_use_ssl,
-                                        config.influxdb_verify_ssl,
-                                        config.influxdb_timeout,
-                                        config.influxdb_use_udp,
-                                        config.influxdb_retention_policy,
-                                        config.influxdb_time_precision)
+                                                config.influxdb_port,
+                                                config.influxdb_user,
+                                                config.influxdb_password,
+                                                config.influxdb_dbname,
+                                                config.influxdb_use_ssl,
+                                                config.influxdb_verify_ssl,
+                                                config.influxdb_timeout,
+                                                config.influxdb_use_udp,
+                                                config.influxdb_retention_policy,
+                                                config.influxdb_time_precision)
     except Exception as e:
         logging.error("The connection to InfluxDB can not be established: %s", e.message)
         sys.exit(-2)
@@ -130,5 +137,6 @@ def start_consumer(config):
     client = KafkaInfluxDB(reader, encoder, writer, config)
     client.consume()
 
-if __name__ == '__main__'	:
+
+if __name__ == '__main__':
     main()

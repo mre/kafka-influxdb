@@ -1,8 +1,8 @@
 from kafka import KafkaClient, create_message
-from kafka.protocol import KafkaProtocol
 from kafka.common import ProduceRequest
 import random
 import logging
+
 
 class KafkaSampleWriter(object):
     """
@@ -10,7 +10,7 @@ class KafkaSampleWriter(object):
     benchmark purposes
     """
 
-    def __init__(self, config, batches = 1000, batch_size = 1000):
+    def __init__(self, config, batches=1000, batch_size=1000):
         self.config = config
         self.batches = batches
         self.batch_size = batch_size
@@ -31,12 +31,12 @@ class KafkaSampleWriter(object):
         kafka = KafkaClient(self.config.kafka_host)
 
         total_messages = self.batches * self.batch_size
-        messages_batch = [create_message(random.choice(self.sample_messages)) for r in range(self.batch_size)]
+        messages_batch = [create_message(random.choice(self.sample_messages)) for _ in xrange(self.batch_size)]
 
         for i in range(self.batches):
             # TODO: Support writing to all partitions
             req = ProduceRequest(topic=self.config.kafka_topic, partition=0, messages=messages_batch)
-            resps = kafka.send_produce_request(payloads=[req], fail_on_error=True)
+            kafka.send_produce_request(payloads=[req], fail_on_error=True)
             sent_messages = i * self.batch_size
             logging.info('Created %s out of %s sample messages', sent_messages, total_messages)
         kafka.close()

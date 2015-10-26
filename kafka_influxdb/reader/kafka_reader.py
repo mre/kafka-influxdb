@@ -5,8 +5,8 @@ import time
 from kafka.client import KafkaClient
 from kafka.consumer import SimpleConsumer
 
-class KafkaReader(object):
 
+class KafkaReader(object):
     def __init__(self, host, port, group, topic, reconnect_wait_time=2):
         """
         Initialize Kafka reader
@@ -16,6 +16,10 @@ class KafkaReader(object):
         self.group = group
         self.topic = topic
         self.reconnect_wait_time = reconnect_wait_time
+
+        # Initialized on read
+        self.kafka_client = None
+        self.consumer = None
 
     def connect(self):
         connection = "{0}:{1}".format(self.host, self.port)

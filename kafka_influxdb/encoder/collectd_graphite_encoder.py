@@ -1,5 +1,6 @@
 from six import binary_type, text_type
 
+
 class Encoder(object):
     """
     An encoder for the Collectd Graphite ASCII format
@@ -26,19 +27,20 @@ class Encoder(object):
         </Topic>
     </Plugin>
     """
+
     def encode(self,
-            msg, # Payload from reader
-            delimiter='.', # Delimiter between Graphite series parts
-            prefix='', # Graphite prefix string
-            prefix_tag=None, # Tag to use for Graphite prefix
-            postfix='', # Graphite postfix string
-            postfix_tag=None, # Tag to use for Graphite postfix
-            **kwargs):
+               msg,  # Payload from reader
+               delimiter='.',  # Delimiter between Graphite series parts
+               prefix='',  # Graphite prefix string
+               prefix_tag=None,  # Tag to use for Graphite prefix
+               postfix='',  # Graphite postfix string
+               postfix_tag=None,  # Tag to use for Graphite postfix
+               ):
         # One message could consist of several measurements
         for line in msg.split("\n"):
             series, value, timestamp = line.split()
             # Strip prefix and postfix:
-            series = series[len(prefix):len(series)-len(postfix)]
+            series = series[len(prefix):len(series) - len(postfix)]
             # Split into tags
             hostname, measurement = series.split(delimiter, 1)
             measurement = measurement.replace(delimiter, '_')
@@ -48,18 +50,19 @@ class Encoder(object):
             }
             if prefix_tag:
                 if prefix.endswith(delimiter):
-                    prefix= prefix[:-len(delimiter)]
+                    prefix = prefix[:-len(delimiter)]
                 tags[prefix_tag] = prefix
             if postfix_tag:
                 if postfix.endswith(delimiter):
-                    postfix = postfix [:-len(delimiter)]
-                tags[pcstfix_tag] = postfix
+                    postfix = postfix[:-len(delimiter)]
+                tags[postfix_tag] = postfix
 
-            return self.escape_measurement(measurement) \
-                    + ',' + ','.join('{}={}'.format(self.escape_tag(k),self.escape_tag(tags[k])) for k in sorted(tags)) \
-                    + ' value=' + self.escape_value(value) + ' ' + timestamp
+            return self.escape_measurement(measurement) + ',' \
+                + ','.join('{}={}'.format(self.escape_tag(k), self.escape_tag(tags[k])) for k in sorted(tags)) \
+                + ' value=' + self.escape_value(value) + ' ' + timestamp
 
-    def escape_tag(self, tag):
+    @staticmethod
+    def escape_tag(tag):
         return tag.replace(
             "\\", "\\\\"
         ).replace(
@@ -79,7 +82,8 @@ class Encoder(object):
         else:
             return str(value)
 
-    def escape_measurement(self, data):
+    @staticmethod
+    def escape_measurement(data):
         """
         Try to return a text aka unicode object from the given data.
         """

@@ -2,11 +2,9 @@
 
 import logging
 import influxdb
-import sys
-import requests
+
 
 class InfluxDBWriter(object):
-
     DEFAULT_HEADERS = {
         'Content-type': 'application/octet-stream',
         'Accept': 'text/plain'
@@ -38,8 +36,8 @@ class InfluxDBWriter(object):
         self.use_udp = use_udp
         self.retention_policy = retention_policy
         self.time_precision = time_precision
-        
-        self.params = { 'db': self.dbname}
+
+        self.params = {'db': self.dbname}
         self.headers = self.DEFAULT_HEADERS
         if time_precision:
             self.params['precision'] = time_precision
@@ -54,21 +52,20 @@ class InfluxDBWriter(object):
         """
         Create an InfluxDB client
         """
-        return influxdb.InfluxDBClient( self.host,
-                                        self.port,
-                                        self.user,
-                                        self.password,
-                                        self.dbname,
-                                        self.use_ssl,
-                                        self.verify_ssl,
-                                        self.timeout,
-                                        self.use_udp,
-                                        self.port)
+        return influxdb.InfluxDBClient(self.host,
+                                       self.port,
+                                       self.user,
+                                       self.password,
+                                       self.dbname,
+                                       self.use_ssl,
+                                       self.verify_ssl,
+                                       self.timeout,
+                                       self.use_udp,
+                                       self.port)
 
     def create_database(self, dbname):
         """ Initialize the given database """
         self.client.create_database(dbname)
-
 
     def write(self, msg, params=None, expected_response_code=204):
         """
@@ -76,10 +73,14 @@ class InfluxDBWriter(object):
         Expects messages in line protocol format.
         See https://influxdb.com/docs/v0.9/write_protocols/line.html
         """
+        if not params:
+            # Use defaults
+            params = self.params
+
         try:
             self.client.request(url='write',
                                 method='POST',
-                                params=self.params,
+                                params=params,
                                 data="\n".join(m.encode('utf-8') for m in msg),
                                 expected_response_code=expected_response_code,
                                 headers=self.headers
