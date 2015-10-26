@@ -6,7 +6,7 @@ class Encoder(object):
     An encoder for the Collectd Graphite ASCII format
     See https://collectd.org/wiki/index.php/Graphite
 
-    Sample measurements:
+    Sample measurements this encoder can handle:
     [prefix.]host.plugin.measurement[.postfix] value timestamp
 
     26f2fc918f50.load.load.shortterm 0.05 1436357630
@@ -75,12 +75,7 @@ class Encoder(object):
 
     def escape_value(self, value):
         value = self.escape_measurement(value)
-        if isinstance(value, text_type):
-            return "\"{}\"".format(value.replace(
-                "\"", "\\\""
-            ))
-        else:
-            return str(value)
+        return str(value)
 
     @staticmethod
     def escape_measurement(data):
