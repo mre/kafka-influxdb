@@ -65,13 +65,13 @@ class KafkaInfluxDB(object):
         self.reader = reader
 
     def get_reader(self):
-        self.reader = reader
+        return self.reader
 
     def set_writer(self, writer):
         self.writer = writer
 
     def get_writer(self):
-        self.writer = writer
+        return self.writer
 
     def get_buffer(self):
         return self.buffer
