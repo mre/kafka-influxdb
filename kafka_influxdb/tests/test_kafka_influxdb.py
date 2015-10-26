@@ -4,11 +4,13 @@ import random
 from kafka_influxdb.kafka_influxdb import KafkaInfluxDB
 from kafka_influxdb.encoder import echo_encoder
 
+
 class Config:
     def __init__(self, buffer_size):
         self.buffer_size = buffer_size
         self.kafka_topic = "test"
         self.influxdb_dbname = "mydb"
+
 
 class DummyReader(object):
     def __init__(self, messages, num_messages):
@@ -19,15 +21,16 @@ class DummyReader(object):
         for i in range(self.num_messages):
             yield random.choice(self.messages)
 
+
 class DummyWriter(object):
     def __init__(self):
         pass
 
-    def write():
+    def write(self):
         pass
 
-class TestKafkaInfluxDB(unittest.TestCase):
 
+class TestKafkaInfluxDB(unittest.TestCase):
     def setUp(self):
         self.config = Config(100)
         self.encoder = echo_encoder.Encoder()
