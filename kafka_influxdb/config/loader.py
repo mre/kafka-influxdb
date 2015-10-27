@@ -1,4 +1,4 @@
-import default_config
+from . import default_config
 import yaml
 import logging
 import argparse
