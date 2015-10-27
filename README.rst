@@ -99,9 +99,9 @@ Configuration
 ::
 
 optional arguments:
-  -h, --help            show help message and exit
-  --kafka_host KAFKA_HOST Hostname or IP of Kafka message broker (default: localhost)
-  --kafka_port KAFKA_PORT Port of Kafka message broker (default: 9092)
+  -h, --help                    show help message and exit
+  --kafka_host KAFKA_HOST       Hostname or IP of Kafka message broker (default: localhost)
+  --kafka_port KAFKA_PORT       Port of Kafka message broker (default: 9092)
   --kafka_topic KAFKA_TOPIC Topic for metrics (default: my_topic)
   --kafka_group KAFKA_GROUP Kafka consumer group (default: my_group)
   --influxdb_host INFLUXDB_HOST InfluxDB hostname or IP (default: localhost)
