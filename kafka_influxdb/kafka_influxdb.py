@@ -1,11 +1,11 @@
 import sys
 import logging
 import time
-from config import loader
-from encoder import load_encoder
-from reader import kafka_reader
-from writer import influxdb_writer
-from writer import kafka_sample_writer as benchmark
+from .config import loader
+from .encoder import load_encoder
+from .reader import kafka_reader
+from .writer import influxdb_writer
+from .writer import kafka_sample_writer as benchmark
 
 
 class KafkaInfluxDB(object):
