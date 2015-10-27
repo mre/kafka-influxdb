@@ -32,7 +32,7 @@ class KafkaInfluxDB(object):
         self.start_time = time.time()
         try:
             for index, raw_message in enumerate(self.reader.read(), 1):
-                self.buffer.append(self.encoder.encode(raw_message))
+                self.buffer.extend(self.encoder.encode(raw_message))
                 if index % self.config.buffer_size == 0:
                     self.flush()
         except KeyboardInterrupt:
