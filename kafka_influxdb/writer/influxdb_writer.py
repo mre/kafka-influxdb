@@ -81,7 +81,7 @@ class InfluxDBWriter(object):
             self.client.request(url='write',
                                 method='POST',
                                 params=params,
-                                data="\n".join(m.encode('utf-8') for m in msg),
+                                data="\n".join(msg),
                                 expected_response_code=expected_response_code,
                                 headers=self.headers
                                 )
