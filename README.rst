@@ -94,7 +94,7 @@ Configuration
 -------------
 
 | Take a look at the ``config-example.yaml`` to find out how to create a config file.
-| You can overwrite the settings from the commandline.
+| You can overwrite the settings from the commandline. The following parameters are allowed:
 
 ========================================================= =================================================================================================
 Option                                                    Description
