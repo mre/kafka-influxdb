@@ -1,11 +1,17 @@
+# Make it possible to call this file directly with python
+# See http://stackoverflow.com/a/19190695/270334
+if __name__ == '__main__' and __package__ is None:
+    from os import sys, path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
 import sys
 import logging
 import time
-from .config import loader
-from .encoder import load_encoder
-from .reader import kafka_reader
-from .writer import influxdb_writer
-from .writer import kafka_sample_writer as benchmark
+from config import loader
+from encoder import load_encoder
+from reader import kafka_reader
+from writer import influxdb_writer
+from writer import kafka_sample_writer as benchmark
 
 
 class KafkaInfluxDB(object):
