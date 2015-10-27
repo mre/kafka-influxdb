@@ -24,7 +24,6 @@ Quickstart
 To run the tool from your local machine:
 
 ::
-
     pip install kafka_influxdb
     kafka_influxdb -c config-example.yaml
 
@@ -37,7 +36,6 @@ To see the tool in action, you can start a complete
 following command:
 
 ::
-
     docker-compose up
 
 This will immediately start reading messages from Kafka and write them
@@ -55,7 +53,6 @@ to measure the throughput. Sample output using the above Docker setup
 inside a virtual machine:
 
 ::
-
     Flushing output buffer. 10811.29 messages/s
     Flushing output buffer. 11375.65 messages/s
     Flushing output buffer. 11930.45 messages/s
@@ -97,7 +94,6 @@ Configuration
 | You can overwrite the settings from the commandline with the following flags:
 
 ::
-
     usage: kafka_influxdb.py [-h] [--kafka_host KAFKA_HOST]
                              [--kafka_port KAFKA_PORT] [--kafka_topic KAFKA_TOPIC]
                              [--kafka_group KAFKA_GROUP]
