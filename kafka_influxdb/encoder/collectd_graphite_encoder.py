@@ -42,7 +42,7 @@ class Encoder(object):
         for line in msg.split("\n"):
             try:
                 series, value, timestamp = line.split()
-            except ValueError, e:
+            except ValueError as e:
                 logging.debug("Error in encoder: %s", e.message)
                 continue
             # Strip prefix and postfix:
