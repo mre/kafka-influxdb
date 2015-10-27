@@ -112,7 +112,7 @@ def start_consumer(config):
                                           config.kafka_group,
                                           config.kafka_topic)
     except Exception as e:
-        logging.error("The connection to Kafka can not be established: %s. Please check your config.", e.message)
+        logging.error("The connection to Kafka can not be established: %s. Please check your config.", e)
         sys.exit(-1)
 
     encoder = load_encoder(config.encoder)
@@ -131,7 +131,7 @@ def start_consumer(config):
                                                 config.influxdb_retention_policy,
                                                 config.influxdb_time_precision)
     except Exception as e:
-        logging.error("The connection to InfluxDB can not be established: %s", e.message)
+        logging.error("The connection to InfluxDB can not be established: %s", e)
         sys.exit(-2)
 
     client = KafkaInfluxDB(reader, encoder, writer, config)
