@@ -4,13 +4,16 @@ import argparse
 from mock import MagicMock
 from kafka_influxdb.config import loader, default_config
 
+
 class Config:
     def __init__(self, configfile):
         self.configfile = configfile
 
+
 class ParsedConfig:
     def __init__(self, kafka):
         self.kafka_host = kafka
+
 
 class TestConfig(unittest.TestCase):
     def setUp(self):
@@ -38,6 +41,23 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(parsed_config["buffer_size"], 444)
         self.assertEqual(parsed_config["statistics"], True)
 
+    def test_argparse_flags(self):
+        long_flags = [
+            'influxdb_use_ssl',
+            'influxdb_verify_ssl',
+            'influxdb_use_udp',
+            'benchmark',
+            'statistics'
+        ]
+        for flag in long_flags:
+            parsed = loader.parse_args(['--' + flag])
+            self.assertEqual(parsed[flag], True)
+
+        parsed = loader.parse_args(['-s'])
+        self.assertEqual(parsed['statistics'], True)
+        parsed = loader.parse_args(['-b'])
+        self.assertEqual(parsed['benchmark'], True)
+
     def test_cli_overwrite(self):
         # Fake commandline arguments
         # Argparse returns a namespace, not a dictionary
@@ -56,6 +76,7 @@ class TestConfig(unittest.TestCase):
         default_config = {'kafka_host': 'defaulthost'}
         config = loader.overwrite_config(default_config, {'kafka_host': 'otherhost'})
         self.assertEqual(config['kafka_host'], 'otherhost')
+
 
 if __name__ == '__main__':
     unittest.main()
