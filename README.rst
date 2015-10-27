@@ -79,7 +79,7 @@ Supported formats
 Input formats
 ~~~~~~~~~~~~~
 
--  Collectd Graphite, e.g. "mydatacenter.myhost.load.load.shortterm 0.45
+-  `Collectd Graphite ASCII Format <https://collectd.org/wiki/index.php/Graphite>`_, e.g. "mydatacenter.myhost.load.load.shortterm 0.45
    1436357630"
 
 Output formats
