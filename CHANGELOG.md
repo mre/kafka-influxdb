@@ -1,5 +1,10 @@
 ## Change Log
 
+### master (unreleased)
+
+* Fix values encoded as strings into Influxdb 0.9x (#9)
+* Fix boolean commandline flags changed to strings (#8)
+
 ### v0.7.1 (2015/10/20)
 
 * Add requirements.txt to Manifest file to fix pip install
