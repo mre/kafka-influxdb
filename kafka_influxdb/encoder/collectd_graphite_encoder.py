@@ -43,7 +43,7 @@ class Encoder(object):
             try:
                 series, value, timestamp = line.split()
             except ValueError as e:
-                logging.debug("Error in encoder: %s", e.message)
+                logging.debug("Error in encoder: %s", e)
                 continue
             # Strip prefix and postfix:
             series = series[len(prefix):len(series) - len(postfix)]
