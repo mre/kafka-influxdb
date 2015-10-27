@@ -7,9 +7,10 @@ python:
   - "2.7"
   - pypy
   # Coming soon
-  #- 3.3
-  #- 3.4
-  #- pypy3
+  - 3.3
+  - 3.4
+  - 3.5
+  - pypy3
 install:
   - pip install python-coveralls
   - pip install coverage
