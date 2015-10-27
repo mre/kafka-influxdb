@@ -1,5 +1,5 @@
 from six import binary_type, text_type
-
+import logging
 
 class Encoder(object):
     """
@@ -37,8 +37,14 @@ class Encoder(object):
                postfix_tag=None,  # Tag to use for Graphite postfix
                ):
         # One message could consist of several measurements
+        measurements = []
+
         for line in msg.split("\n"):
-            series, value, timestamp = line.split()
+            try:
+                series, value, timestamp = line.split()
+            except ValueError, e:
+                logging.debug("Error in encoder: %s", e.message)
+                continue
             # Strip prefix and postfix:
             series = series[len(prefix):len(series) - len(postfix)]
             # Split into tags
@@ -57,9 +63,11 @@ class Encoder(object):
                     postfix = postfix[:-len(delimiter)]
                 tags[postfix_tag] = postfix
 
-            return self.escape_measurement(measurement) + ',' \
+            encoded = self.escape_measurement(measurement) + ',' \
                 + ','.join('{}={}'.format(self.escape_tag(k), self.escape_tag(tags[k])) for k in sorted(tags)) \
                 + ' value=' + self.escape_value(value) + ' ' + timestamp
+            measurements.append(encoded)
+        return measurements
 
     @staticmethod
     def escape_tag(tag):
