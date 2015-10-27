@@ -50,7 +50,9 @@ def load_config():
 
 
 def overwrite_config(old_values, new_values):
-    return dict(old_values.items() | new_values.items())
+    config = old_values.copy()
+    config.update(new_values)
+    return config
 
 
 def parse_configfile(configfile):
