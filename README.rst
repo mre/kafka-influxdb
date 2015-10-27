@@ -97,6 +97,7 @@ Configuration
 | You can overwrite the settings from the commandline with the following flags:
 
 ::
+
     usage: kafka_influxdb.py [-h] [--kafka_host KAFKA_HOST]
                              [--kafka_port KAFKA_PORT] [--kafka_topic KAFKA_TOPIC]
                              [--kafka_group KAFKA_GROUP]
