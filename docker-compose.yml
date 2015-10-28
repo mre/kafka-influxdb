@@ -19,7 +19,7 @@ kafka:
 collectd:
   image: mre0/collectd
   volumes:
-    - contrib/collectd/collectd.conf:/etc/collectd.conf
+    - ./contrib/collectd/collectd.conf:/etc/collectd.conf
   links:
     - kafka
 influxdb:
@@ -27,7 +27,7 @@ influxdb:
   environment:
     PRE_CREATE_DB: "metrics"
   volumes:
-    - contrib/influxdb/config.toml:/config/config.toml
+    - ./contrib/influxdb/config.toml:/config/config.toml
   ports:
    - "2003"
    - "8083"
@@ -37,9 +37,9 @@ kafkainfluxdb:
   environment:
     BENCHMARK: 1
   # Uncomment the following three lines for interactive mode:
-  #entrypoint: /bin/bash
-  #stdin_open: true
-  #tty: true
+  entrypoint: /bin/bash
+  stdin_open: true
+  tty: true
   volumes:
     - .:/kafka-influxdb
   links:
