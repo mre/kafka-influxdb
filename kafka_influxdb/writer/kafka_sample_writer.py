@@ -31,7 +31,7 @@ class KafkaSampleWriter(object):
         kafka = KafkaClient(self.config.kafka_host)
 
         total_messages = self.batches * self.batch_size
-        messages_batch = [create_message(random.choice(self.sample_messages)) for _ in xrange(self.batch_size)]
+        messages_batch = [create_message(random.choice(self.sample_messages)) for _ in range(self.batch_size)]
 
         for i in range(self.batches):
             # TODO: Support writing to all partitions
