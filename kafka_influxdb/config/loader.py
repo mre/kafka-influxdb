@@ -34,7 +34,7 @@ def load_config():
     if "configfile" in cli_config:
         print("Reading config file {}".format(cli_config['configfile']))
         configfile = flatten(parse_configfile(cli_config['configfile']))
-        config = dict(config.items() + configfile.items())
+        config = overwrite_config(config, configfile)
 
     # Parameters from commandline take precedence over all others
     config = overwrite_config(config, cli_config)
