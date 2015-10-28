@@ -79,7 +79,7 @@ Supported formats
 Input formats
 ~~~~~~~~~~~~~
 
--  Collectd Graphite, e.g. "mydatacenter.myhost.load.load.shortterm 0.45
+-  `Collectd Graphite ASCII Format <https://collectd.org/wiki/index.php/Graphite>`_, e.g. "mydatacenter.myhost.load.load.shortterm 0.45
    1436357630"
 
 Output formats
@@ -94,78 +94,35 @@ Configuration
 -------------
 
 | Take a look at the ``config-example.yaml`` to find out how to create a config file.
-| You can overwrite the settings from the commandline with the following flags:
+| You can overwrite the settings from the commandline. The following parameters are allowed:
 
-::
+========================================================= =================================================================================================
+Option                                                    Description
+========================================================= =================================================================================================
+``-h``, ``--help``                                        Show help message and exit
+``--kafka_host KAFKA_HOST``                               Hostname or IP of Kafka message broker (default: localhost)
+``--kafka_port KAFKA_PORT``                               Port of Kafka message broker (default: 9092)
+``--kafka_topic KAFKA_TOPIC``                             Topic for metrics (default: my_topic)
+``--kafka_group KAFKA_GROUP``                             Kafka consumer group (default: my_group)
+``--influxdb_host INFLUXDB_HOST``                         InfluxDB hostname or IP (default: localhost)
+``--influxdb_port INFLUXDB_PORT``                         InfluxDB API port (default: 8086)
+``--influxdb_user INFLUXDB_USER``                         InfluxDB username (default: root)
+``--influxdb_password INFLUXDB_PASSWORD``                 InfluxDB password (default: root)
+``--influxdb_dbname INFLUXDB_DBNAME``                     InfluxDB database to write metrics into (default: metrics)
+``--influxdb_use_ssl``                                    Use SSL connection for InfluxDB (default: False)
+``--influxdb_verify_ssl``                                 Verify the SSL certificate before connecting (default: False)
+``--influxdb_timeout INFLUXDB_TIMEOUT``                   Max number of seconds to establish a connection to InfluxDB (default: 5)
+``--influxdb_use_udp``                                    Use UDP connection for InfluxDB (default: False)
+``--influxdb_retention_policy INFLUXDB_RETENTION_POLICY`` Retention policy for incoming metrics (default: default)
+``--influxdb_time_precision INFLUXDB_TIME_PRECISION``     Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u' (default: s)
+``--encoder ENCODER``                                     Input encoder which converts an incoming message to dictionary (default: collectd_graphite_encoder)
+``--buffer_size BUFFER_SIZE``                             Maximum number of messages that will be collected before flushing to the backend (default: 1000)
+``-c CONFIGFILE``, ``--configfile CONFIGFILE``            Configfile path (default: None)
+``-s``, ``--statistics``                                  Show performance statistics (default: True)
+``-b``, ``--benchmark``                                   Run benchmark (default: False)
+``-v``, ``--verbose``                                     Set verbosity level. Increase verbosity by adding a v: -v -vv -vvv (default: 0)
+========================================================= =================================================================================================
 
-    usage: kafka_influxdb.py [-h] [--kafka_host KAFKA_HOST]
-                             [--kafka_port KAFKA_PORT] [--kafka_topic KAFKA_TOPIC]
-                             [--kafka_group KAFKA_GROUP]
-                             [--influxdb_host INFLUXDB_HOST]
-                             [--influxdb_port INFLUXDB_PORT]
-                             [--influxdb_user INFLUXDB_USER]
-                             [--influxdb_password INFLUXDB_PASSWORD]
-                             [--influxdb_dbname INFLUXDB_DBNAME]
-                             [--influxdb_use_ssl INFLUXDB_USE_SSL]
-                             [--influxdb_verify_ssl INFLUXDB_VERIFY_SSL]
-                             [--influxdb_timeout INFLUXDB_TIMEOUT]
-                             [--influxdb_use_udp INFLUXDB_USE_UDP]
-                             [--influxdb_retention_policy INFLUXDB_RETENTION_POLICY]
-                             [--influxdb_time_precision INFLUXDB_TIME_PRECISION]
-                             [--encoder ENCODER] [--buffer_size BUFFER_SIZE]
-                             [-c CONFIGFILE] [-s] [-b] [-v]
-
-    A Kafka consumer for InfluxDB
-
-    optional arguments:
-      -h, --help            show this help message and exit
-      --kafka_host KAFKA_HOST
-                            Hostname or IP of Kafka message broker (default:
-                            localhost)
-      --kafka_port KAFKA_PORT
-                            Port of Kafka message broker (default: 9092)
-      --kafka_topic KAFKA_TOPIC
-                            Topic for metrics (default: my_topic)
-      --kafka_group KAFKA_GROUP
-                            Kafka consumer group (default: my_group)
-      --influxdb_host INFLUXDB_HOST
-                            InfluxDB hostname or IP (default: localhost)
-      --influxdb_port INFLUXDB_PORT
-                            InfluxDB API port (default: 8086)
-      --influxdb_user INFLUXDB_USER
-                            InfluxDB username (default: root)
-      --influxdb_password INFLUXDB_PASSWORD
-                            InfluxDB password (default: root)
-      --influxdb_dbname INFLUXDB_DBNAME
-                            InfluxDB database to write metrics into (default:
-                            metrics)
-      --influxdb_use_ssl INFLUXDB_USE_SSL
-                            Use SSL connection for InfluxDB (default: False)
-      --influxdb_verify_ssl INFLUXDB_VERIFY_SSL
-                            Verify the SSL certificate before connecting (default:
-                            False)
-      --influxdb_timeout INFLUXDB_TIMEOUT
-                            Max number of seconds to establish a connection to
-                            InfluxDB (default: 5)
-      --influxdb_use_udp INFLUXDB_USE_UDP
-                            Use UDP connection for InfluxDB (default: False)
-      --influxdb_retention_policy INFLUXDB_RETENTION_POLICY
-                            Retention policy for incoming metrics (default:
-                            default)
-      --influxdb_time_precision INFLUXDB_TIME_PRECISION
-                            Precision of incoming metrics. Can be one of 's', 'm',
-                            'ms', 'u' (default: s)
-      --encoder ENCODER     Input encoder which converts an incoming message to
-                            dictionary (default: collectd_graphite_encoder)
-      --buffer_size BUFFER_SIZE
-                            Maximum number of messages that will be collected
-                            before flushing to the backend (default: 1000)
-      -c CONFIGFILE, --configfile CONFIGFILE
-                            Configfile path (default: None)
-      -s, --statistics      Show performance statistics (default: True)
-      -b, --benchmark       Run benchmark (default: False)
-      -v, --verbose         Set verbosity level. Increase verbosity by adding a v:
-                            -v -vv -vvv (default: 0)
 
 .. |Build Status| image:: https://travis-ci.org/mre/kafka-influxdb.svg?branch=master
    :target: https://travis-ci.org/mre/kafka-influxdb
