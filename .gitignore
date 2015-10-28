@@ -8,6 +8,8 @@ __pycache__/
 # Distribution / packaging
 .Python
 virtualenv
+venv
+venv3
 env/
 bin/
 build/
