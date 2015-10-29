@@ -21,7 +21,7 @@ collectd:
   volumes:
     - ./contrib/collectd/collectd.conf:/etc/collectd.conf
   links:
-    - kafka
+    - kafka:kafka
 influxdb:
   image: tutum/influxdb:0.9
   environment:
@@ -44,5 +44,5 @@ kafkainfluxdbpy3:
   volumes:
     - .:/kafka-influxdb
   links:
-    - kafka
-    - influxdb
+    - kafka:kafka
+    - influxdb:influxdb
