@@ -2,8 +2,17 @@
 
 ### master (unreleased)
 
+(None)
+
+### v0.7.2 (2015/10/30)
+
 * Fix values encoded as strings into Influxdb 0.9x (#9)
 * Fix boolean commandline flags changed to strings (#8)
+* Fix encoding of multiple measurements in one message (#12)
+* Cleanup Docker setup
+* Update Documentation
+* PEP8 formatting
+* Full changelog: https://github.com/mre/kafka-influxdb/compare/v0.7.1...v0.7.2
 
 ### v0.7.1 (2015/10/20)
 
