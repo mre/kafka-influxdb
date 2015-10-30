@@ -4,9 +4,11 @@ from setuptools import setup, find_packages
 # since we can't import something we haven't built yet :)
 exec(open('kafka_influxdb/version.py').read())
 
+
 def readme():
-    with open('README.rst') as f:
-        return f.read()
+    with open('README.rst') as readme_file:
+        return readme_file.read()
+
 
 with open('requirements.txt', 'r') as f:
     requires = [x.strip() for x in f if x.strip()]
