@@ -1,7 +1,12 @@
-from kafka import KafkaClient, create_message
-from kafka.common import ProduceRequest
+import kafka
+import kafka.common
 import random
 import logging
+import time
+
+
+class KafkaWriterException(Exception):
+    pass
 
 
 class KafkaSampleWriter(object):
@@ -10,11 +15,10 @@ class KafkaSampleWriter(object):
     benchmark purposes
     """
 
-    def __init__(self, config, batches=1000, batch_size=1000):
-        self.config = config
-        self.batches = batches
-        self.batch_size = batch_size
-        # Sample messages for benchmark
+    def __init__(self, host, port, topic):
+        self.kafka_client = self._create_kafka_client(host, port)
+        self.topic = b'metrics'
+
         self.sample_messages = [
             """26f2fc918f50.load.load.shortterm 0.05 1436357630
             26f2fc918f50.load.load.midterm 0.05 1436357630
@@ -23,20 +27,49 @@ class KafkaSampleWriter(object):
             "26f2fc918f50.memory.memory-buffered 743657472 1436357630"
         ]
 
-    def produce_messages(self):
+    def produce_messages(self, batches=1000, batch_size=1000):
         """
-        Produce sample messages
+        Produce Kafka sample messages
+        :param batches: number of message batches
+        :param batch_size: messages per batch
+        :return:
         """
-        # TODO: Support different kafka port
-        kafka = KafkaClient(self.config.kafka_host)
+        partitions = self._get_partitions(self.topic)
+        if not partitions:
+            raise KafkaWriterException("No partitions found for %s" % self.topic)
 
-        total_messages = self.batches * self.batch_size
-        messages_batch = [create_message(random.choice(self.sample_messages)) for _ in range(self.batch_size)]
+        kafka_messages = self._create_random_messages(self.sample_messages, batch_size)
+        kafka_requests = [self._create_request(self.topic, p, kafka_messages) for p in partitions]
+        self._send_request_batches(kafka_requests, batches, batch_size)
 
-        for i in range(self.batches):
-            # TODO: Support writing to all partitions
-            req = ProduceRequest(topic=self.config.kafka_topic, partition=0, messages=messages_batch)
-            kafka.send_produce_request(payloads=[req], fail_on_error=True)
-            sent_messages = i * self.batch_size
-            logging.info('Created %s out of %s sample messages', sent_messages, total_messages)
-        kafka.close()
+    def _send_request_batches(self, kafka_requests, batches, batch_size):
+        total_messages = batches * batch_size
+        for i in range(batches):
+            self._send_requests(kafka_requests)
+            logging.info("Sent %s out of %s messages", i * batch_size, total_messages)
+        self.kafka_client.close()
+
+    def _send_requests(self, requests):
+        try:
+            self.kafka_client.send_produce_request(payloads=requests, fail_on_error=True)
+        except kafka.common.UnknownTopicOrPartitionError as e:
+            logging.error(e)
+            time.sleep(1)
+            self.kafka_client.close()
+
+    def _get_partitions(self, topic):
+        return self.kafka_client.get_partition_ids_for_topic(topic)
+
+    @staticmethod
+    def _create_kafka_client(host, port):
+        logging.info("Connecting to Kafka broker at %s:%s", host, port)
+        return kafka.KafkaClient("{}:{}".format(host, port))
+
+    @staticmethod
+    def _create_random_messages(messages, count):
+        return [kafka.create_message(random.choice(messages)) for _ in range(count)]
+
+    @staticmethod
+    def _create_request(topic, partition, messages):
+        return kafka.common.ProduceRequest(topic=topic, partition=partition, messages=messages)
+
