@@ -1,0 +1,15 @@
+# Testing Python 3 support:
+
+docker-compose -f docker-compose-python3.yml build
+docker-compose -f docker-compose-python3.yml up
+python -m kafka_influxdb.kafka_influxdb -c config_example.yaml -b -v
+kafka_influxdb -c config_example.yaml -b -v
+
+
+# Releasing a new version
+
+pip freeze > requirements.txt
+Run unit tests
+Update Changelog
+Bump version in kafka_influxdb/version
+python setup.py sdist upload -r pypi
