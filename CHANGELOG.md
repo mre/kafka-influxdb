@@ -4,6 +4,7 @@
 
 * Support for Python 3.x
 * Allow use of external encoders
+* Switch to from SimpleConsumer to KafkaConsumer (huge performance improvement)
 
 ### v0.7.2 (2015/10/30)
 
