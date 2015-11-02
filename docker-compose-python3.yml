@@ -32,8 +32,9 @@ influxdb:
    - "2003"
    - "8083"
    - "8086"
-kafkainfluxdb:
+kafkainfluxdbpy3:
   build: .
+  dockerfile: Dockerfile-Python3
   environment:
     BENCHMARK: 1
   # Uncomment the following three lines for interactive mode:

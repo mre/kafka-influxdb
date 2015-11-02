@@ -1,4 +1,4 @@
-import default_config
+from . import default_config
 import yaml
 import logging
 import argparse
@@ -34,7 +34,7 @@ def load_config():
     if "configfile" in cli_config:
         print("Reading config file {}".format(cli_config['configfile']))
         configfile = flatten(parse_configfile(cli_config['configfile']))
-        config = dict(config.items() + configfile.items())
+        config = overwrite_config(config, configfile)
 
     # Parameters from commandline take precedence over all others
     config = overwrite_config(config, cli_config)
@@ -50,7 +50,9 @@ def load_config():
 
 
 def overwrite_config(old_values, new_values):
-    return dict(old_values.items() + new_values.items())
+    config = old_values.copy()
+    config.update(new_values)
+    return config
 
 
 def parse_configfile(configfile):

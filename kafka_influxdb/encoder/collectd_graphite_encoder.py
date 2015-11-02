@@ -39,11 +39,11 @@ class Encoder(object):
         # One message could consist of several measurements
         measurements = []
 
-        for line in msg.split("\n"):
+        for line in msg.decode().split("\n"):
             try:
                 series, value, timestamp = line.split()
-            except ValueError, e:
-                logging.debug("Error in encoder: %s", e.message)
+            except ValueError as e:
+                logging.debug("Error in encoder: %s", e)
                 continue
             # Strip prefix and postfix:
             series = series[len(prefix):len(series) - len(postfix)]
