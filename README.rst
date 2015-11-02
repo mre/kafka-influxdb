@@ -12,7 +12,7 @@ Use cases
 ---------
 
 Kafka will serve as a buffer for your metric data during high load.
-Also it's useful for metrics from offshore data centers with unreliable connections.
+Also it's useful for metrics from offshore data centers with unreliable connections to your monitoring backend.
 
 .. figure:: https://raw.githubusercontent.com/mre/kafka-influxdb/master/assets/schema-small.png
    :alt: Usage example
