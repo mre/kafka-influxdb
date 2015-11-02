@@ -13,7 +13,6 @@ __copyright__ = 'Copyright 2015, Matthias Endler under Apache License, v2.0'
 
 
 def create_sample_messages(config):
-    print("Starting in benchmark mode. Stand by while creating sample messages.")
     logging.info("Writing sample messages for benchmark to topic: '%s'", config.kafka_topic)
     benchmark = kafka_sample_writer.KafkaSampleWriter(config.kafka_host, config.kafka_port, config.kafka_topic)
     benchmark.produce_messages()
@@ -25,6 +24,7 @@ def main():
     """
     config = loader.load_config()
     if config.benchmark:
+        print("Starting in benchmark mode. Stand by while creating sample messages.")
         create_sample_messages(config)
     start_consumer(config)
 
