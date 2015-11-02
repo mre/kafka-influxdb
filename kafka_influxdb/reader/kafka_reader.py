@@ -34,10 +34,10 @@ class KafkaReader(object):
         Read from Kafka. Reconnect on error.
         """
         while True:
-            for msg in self.handle_read():
+            for msg in self._handle_read():
                 yield msg
 
-    def handle_read(self):
+    def _handle_read(self):
         """
         Yield messages from Kafka topic
         """
