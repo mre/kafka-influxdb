@@ -2,7 +2,8 @@
 
 ### master (unreleased)
 
-(None)
+* Support for Python 3.x
+* Allow use of external encoders
 
 ### v0.7.2 (2015/10/30)
 
