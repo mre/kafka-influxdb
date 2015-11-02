@@ -39,7 +39,7 @@ class Encoder(object):
         # One message could consist of several measurements
         measurements = []
 
-        for line in msg.decode().split("\n"):
+        for line in msg.split("\n"):
             try:
                 series, value, timestamp = line.split()
             except ValueError as e:
