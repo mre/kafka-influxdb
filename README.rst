@@ -85,7 +85,7 @@ Input formats
 Output formats
 ~~~~~~~~~~~~~~
 
--  InfluxDB 0.9.x line protocol output (e.g.
+-  `InfluxDB 0.9.x line protocol output <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_ (e.g.
    ``load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630``)
 -  InfluxDB 0.8.x JSON output (deprecated)
 
