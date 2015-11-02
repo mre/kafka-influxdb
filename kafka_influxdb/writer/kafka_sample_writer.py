@@ -20,11 +20,11 @@ class KafkaSampleWriter(object):
         self.topic = b'metrics'
 
         self.sample_messages = [
-            """26f2fc918f50.load.load.shortterm 0.05 1436357630
+            b"""26f2fc918f50.load.load.shortterm 0.05 1436357630
             26f2fc918f50.load.load.midterm 0.05 1436357630
             26f2fc918f50.load.load.longterm 0.05 1436357630""",
-            "26f2fc918f50.cpu-0.cpu-user 30364 1436357630",
-            "26f2fc918f50.memory.memory-buffered 743657472 1436357630"
+            b"26f2fc918f50.cpu-0.cpu-user 30364 1436357630",
+            b"26f2fc918f50.memory.memory-buffered 743657472 1436357630"
         ]
 
     def produce_messages(self, batches=1000, batch_size=1000):
