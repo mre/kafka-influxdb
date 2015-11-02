@@ -1,6 +1,5 @@
 import unittest
 import mock
-from collections import namedtuple
 from kafka_influxdb.reader import kafka_reader
 from kafka.common import ConnectionError
 from kafka.common import Message
@@ -9,7 +8,7 @@ from kafka_influxdb.tests.helpers.timeout import timeout
 
 class TestKafkaReader(unittest.TestCase):
     def setUp(self):
-        self.host = "myhost",
+        self.host = "myhost"
         self.port = 1234
         self.group = "mygroup"
         self.topic = "mytopic"
@@ -20,17 +19,16 @@ class TestKafkaReader(unittest.TestCase):
                                                self.group,
                                                self.topic,
                                                self.reconnect_wait_time)
-        self.reader.connect = mock.MagicMock()
         self.reader.consumer = mock.MagicMock()
 
     def sample_messages(self, payload, count):
-        raw_message = namedtuple('RawMessage', 'message')
-        return count * [raw_message(message=Message(0, 0, None, payload))], count * [payload]
+        return count * [Message(0, 0, None, payload)], count * [payload]
 
     def test_handle_read(self):
         sample_messages, extracted_messages = self.sample_messages("hello", 3)
         self.reader.consumer.__iter__.return_value = sample_messages
-        received_messages = list(self.reader.handle_read())
+        self.reader._connect = mock.MagicMock()
+        received_messages = list(self.reader._handle_read())
         self.assertEquals(received_messages, extracted_messages)
 
     @timeout(0.1)
