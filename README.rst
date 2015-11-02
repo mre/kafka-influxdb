@@ -1,7 +1,7 @@
 Kafka-InfluxDB
 ==============
 
-|PyPi Version| |Build Status| |Coverage Status| |Code Climate| |Downloads|
+|PyPi Version| |Build Status| |Coverage Status| |Code Climate| |Downloads| |Python Versions|
 
 | A Kafka consumer for InfluxDB written in Python.
 | All messages sent to Kafka on a certain topic will be relayed to Influxdb.
@@ -136,3 +136,7 @@ Option                                                    Description
 .. |Downloads| image:: https://img.shields.io/pypi/dd/kafka-influxdb.svg
    :target: https://pypi.python.org/pypi/kafka-influxdb/
    :alt: pypi downloads per day
+.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/kafka-influxdb.svg
+   :target: https://pypi.python.org/pypi/coveralls/
+   :alt: Supported Python Versions
+   
