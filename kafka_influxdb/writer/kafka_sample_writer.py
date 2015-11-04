@@ -17,7 +17,7 @@ class KafkaSampleWriter(object):
 
     def __init__(self, host, port, topic):
         self.kafka_client = self._create_kafka_client(host, port)
-        self.topic = b'metrics'
+        self.topic = topic
 
         self.sample_messages = [
             b"""26f2fc918f50.load.load.shortterm 0.05 1436357630
