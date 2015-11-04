@@ -64,7 +64,10 @@ class InfluxDBWriter(object):
                                        self.port)
 
     def create_database(self, dbname):
-        """ Initialize the given database """
+        """
+        Initialize the given database
+        :param dbname:
+        """
         self.client.create_database(dbname)
 
     def write(self, msg, params=None, expected_response_code=204):
@@ -72,6 +75,9 @@ class InfluxDBWriter(object):
         Write messages to InfluxDB database.
         Expects messages in line protocol format.
         See https://influxdb.com/docs/v0.9/write_protocols/line.html
+        :param expected_response_code:
+        :param params:
+        :param msg:
         """
         if not params:
             # Use defaults
