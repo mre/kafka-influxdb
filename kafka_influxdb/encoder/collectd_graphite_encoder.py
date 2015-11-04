@@ -1,5 +1,6 @@
-from six import binary_type, text_type
+from six import binary_type
 import logging
+
 
 class Encoder(object):
     """

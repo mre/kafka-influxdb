@@ -72,4 +72,3 @@ class KafkaSampleWriter(object):
     @staticmethod
     def _create_request(topic, partition, messages):
         return kafka.common.ProduceRequest(topic=topic, partition=partition, messages=messages)
-
