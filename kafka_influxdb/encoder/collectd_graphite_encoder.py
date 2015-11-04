@@ -30,13 +30,22 @@ class Encoder(object):
     """
 
     def encode(self,
-               msg,  # Payload from reader
-               delimiter='.',  # Delimiter between Graphite series parts
-               prefix='',  # Graphite prefix string
-               prefix_tag=None,  # Tag to use for Graphite prefix
-               postfix='',  # Graphite postfix string
-               postfix_tag=None,  # Tag to use for Graphite postfix
+               msg,
+               delimiter='.',
+               prefix='',
+               prefix_tag=None,
+               postfix='',
+               postfix_tag=None,
                ):
+        """
+        :param msg: Payload from reader
+        :param delimiter: Delimiter between Graphite series parts
+        :param prefix: Graphite prefix string
+        :param prefix_tag: Tag to use for Graphite prefix
+        :param postfix: Graphite postfix string
+        :param postfix_tag: Tag to use for Graphite postfix
+        :return: A list of encoded messages
+        """
         # One message could consist of several measurements
         measurements = []
 
