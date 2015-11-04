@@ -65,8 +65,8 @@ class Encoder(object):
                 tags[postfix_tag] = postfix
 
             encoded = self.escape_measurement(measurement) + ',' \
-                + ','.join('{}={}'.format(self.escape_tag(k), self.escape_tag(tags[k])) for k in sorted(tags)) \
-                + ' value=' + self.escape_value(value) + ' ' + timestamp
+                      + ','.join('{}={}'.format(self.escape_tag(k), self.escape_tag(tags[k])) for k in sorted(tags)) \
+                      + ' value=' + self.escape_value(value) + ' ' + timestamp
             measurements.append(encoded)
         return measurements
 
