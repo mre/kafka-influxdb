@@ -32,6 +32,7 @@ def main():
 def start_consumer(config):
     """
     Start metrics consumer
+    :param config:
     """
     reader = create_reader(config)
     writer = create_writer(config)

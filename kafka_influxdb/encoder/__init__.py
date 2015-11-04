@@ -1,5 +1,6 @@
 import importlib
 
+
 def load_encoder(name):
     """
     Creates an instance of the given encoder.
