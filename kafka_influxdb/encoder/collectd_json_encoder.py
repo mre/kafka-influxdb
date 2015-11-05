@@ -1,3 +1,9 @@
+# PyPy does not have ultrajson
+# See https://github.com/esnme/ultrajson/issues/98
+try:
+    import ujson as json
+except ImportError:
+    import json
 class Encoder(object):
     """
     An encoder for the Collectd JSON format
