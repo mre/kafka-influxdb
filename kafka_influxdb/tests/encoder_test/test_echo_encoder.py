@@ -1,6 +1,6 @@
 import unittest
-
 from kafka_influxdb.encoder import echo_encoder
+
 
 class TestEchoEncoder(unittest.TestCase):
 
@@ -16,7 +16,7 @@ class TestEchoEncoder(unittest.TestCase):
 
     def test_encode(self):
         for msg in self.messages:
-            yield check_encode, msg
+            yield self.check_encode(msg)
 
     def check_encode(self, msg):
         """ Output must be same as input for echo sender """
