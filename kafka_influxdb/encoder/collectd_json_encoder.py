@@ -4,6 +4,10 @@ try:
     import ujson as json
 except ImportError:
     import json
+
+import logging
+
+
 class Encoder(object):
     """
     An encoder for the Collectd JSON format
@@ -29,5 +33,42 @@ class Encoder(object):
     ]
     """
     def encode(self, msg):
-        # Wanna help out here?
-        raise NotImplemented
+        measurements = []
+
+        for line in msg.decode().split("\n"):
+            try:
+                # Set flag for float precision to get the same
+                # results for Python 2 and 3.
+                json_object = json.loads(line, precise_float=True)
+            except ValueError as e:
+                logging.debug("Error in encoder: %s", e)
+                continue
+            for entry in json_object:
+                measurement = []
+                measurement.append(entry['plugin'])
+                # Check if plugin_instance is set and not empty
+                if 'plugin_instance' in entry and entry['plugin_instance']:
+                    measurement.append('-')
+                    measurement.append(entry['plugin_instance'])
+                # Todo: Read all values from collect json message
+                print(entry['values'][0])
+                value = str(entry['values'][0])
+                # Always use millisecond precision for the timestamp
+                timestamp = "{:.3f}".format(entry['time'])
+                measurement.extend([
+                    '_',
+                    entry['plugin'],
+                    '-',
+                    entry['type_instance'],
+                    ',',
+                    'host=',
+                    entry['host'],
+                    ' ',
+                    'value',
+                    '=',
+                    value,
+                    ' ',
+                    timestamp
+                ])
+                measurements.append(''.join(measurement))
+        return measurements
