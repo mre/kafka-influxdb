@@ -18,10 +18,10 @@ matrix:
     - python: "nightly"
   fast_finish: true
 install:
-  - pip install python-coveralls
-  - pip install coverage
-  - pip install nose
-  - pip install -r requirements.txt
+  - "pip install python-coveralls"
+  - "pip install coverage"
+  - "pip install nose"
+  - "pip install ."
 script:
   - python setup.py install
   - nosetests --with-coverage
