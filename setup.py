@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+import platform
 
 # Pull version from source without importing
 # since we can't import something we haven't built yet :)
@@ -9,9 +10,29 @@ def readme():
     with open('README.rst') as readme_file:
         return readme_file.read()
 
+requires = [
+    "certifi",
+    "funcsigs",
+    "influxdb",
+    "kafka-python",
+    "mock",
+    "nose",
+    "pbr",
+    "python-dateutil",
+    "pytz",
+    "PyYAML",
+    "requests",
+    "six",
+    "virtualenv",
+    "wheel"
+]
 
-with open('requirements.txt', 'r') as f:
-    requires = [x.strip() for x in f if x.strip()]
+# Get an additional speedup with ujson,
+# which is faster than the normal Python json module
+# ujson does not work with PyPy
+# See https://github.com/esnme/ultrajson/issues/98
+if not platform.python_implementation() == 'PyPy':
+    requires.append("ujson")
 
 setup(name='kafka_influxdb',
       version=__version__,
