@@ -1,0 +1,5 @@
+FROM pypy:3
+ADD . /kafka-influxdb
+WORKDIR /kafka-influxdb
+RUN pypy3 setup.py install
+CMD ["./run.sh"]
