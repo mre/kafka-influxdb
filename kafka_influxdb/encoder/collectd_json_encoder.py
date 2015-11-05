@@ -39,13 +39,12 @@ class Encoder(object):
             try:
                 # Set flag for float precision to get the same
                 # results for Python 2 and 3.
-                json_object = json.loads(line, precise_float=True)
+                json_object = self.parse_line(line)
             except ValueError as e:
                 logging.debug("Error in encoder: %s", e)
                 continue
             for entry in json_object:
-                measurement = []
-                measurement.append(entry['plugin'])
+                measurement = [entry['plugin']]
                 # Check if plugin_instance is set and not empty
                 if 'plugin_instance' in entry and entry['plugin_instance']:
                     measurement.append('-')
@@ -72,3 +71,7 @@ class Encoder(object):
                 ])
                 measurements.append(''.join(measurement))
         return measurements
+
+    @staticmethod
+    def parse_line(line):
+        return json.loads(line, {'precise_float': True})
