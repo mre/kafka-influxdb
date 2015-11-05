@@ -61,7 +61,7 @@ setup(name='kafka_influxdb',
       test_suite='nose.collector',
       tests_require=['nose', 'nose-cover3'],
       entry_points={
-          'console_scripts': ['kafka_influxdb=kafka_influxdb.kafka_influxdb:main'],
+          'console_scripts': ['kafka_influxdb=kafka_influxdb.__main__:main'],
       },
       include_package_data=True,
       zip_safe=False)

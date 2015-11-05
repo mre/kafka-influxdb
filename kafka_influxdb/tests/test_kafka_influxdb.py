@@ -1,7 +1,7 @@
 import unittest
 from mock import Mock
 import random
-from kafka_influxdb.kafka_influxdb import KafkaInfluxDB
+from kafka_influxdb.worker import Worker
 from kafka_influxdb.encoder import echo_encoder
 
 
@@ -40,12 +40,12 @@ class TestKafkaInfluxDB(unittest.TestCase):
 
     def test_buffering(self):
         self.reader = DummyReader(["myhost.load.load.shortterm 0.05 1436357630"], self.config.buffer_size - 1)
-        self.client = KafkaInfluxDB(self.reader, self.encoder, self.writer, self.config)
+        self.client = Worker(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertFalse(self.writer.write.called)
 
     def test_flush(self):
         self.reader = DummyReader(["myhost.load.load.shortterm 0.05 1436357630"], self.config.buffer_size)
-        self.client = KafkaInfluxDB(self.reader, self.encoder, self.writer, self.config)
+        self.client = Worker(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertTrue(self.writer.write.called)

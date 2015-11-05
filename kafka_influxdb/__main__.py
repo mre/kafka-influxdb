@@ -1,10 +1,10 @@
 import sys
 import logging
-import kafka_influxdb
-from writer import kafka_sample_writer, influxdb_writer
-from encoder import load_encoder
-from reader import kafka_reader
-from config import loader
+from .worker import Worker
+from kafka_influxdb.writer import kafka_sample_writer, influxdb_writer
+from kafka_influxdb.encoder import load_encoder
+from kafka_influxdb.reader import kafka_reader
+from kafka_influxdb.config import loader
 
 __title__ = 'kafka_influxdb'
 __author__ = 'Matthias Endler'
@@ -37,7 +37,7 @@ def start_consumer(config):
     reader = create_reader(config)
     writer = create_writer(config)
     encoder = load_encoder(config.encoder)
-    client = kafka_influxdb.KafkaInfluxDB(reader, encoder, writer, config)
+    client = Worker(reader, encoder, writer, config)
     client.consume()
 
 

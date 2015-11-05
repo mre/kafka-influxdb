@@ -2,7 +2,7 @@ import logging
 import time
 
 
-class KafkaInfluxDB(object):
+class Worker(object):
     def __init__(self, reader, encoder, writer, config):
         """
         Setup
