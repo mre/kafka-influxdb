@@ -82,15 +82,9 @@ class Encoder(object):
                 ',',
                 ','.join('{}={}'.format(self.escape_tag(k), self.escape_tag(tags[k])) for k in tags),
                 ' value=',
-                self.escape_value(value),
+                str(value),
                 ' ',
                 timestamp
             ])
             measurements.append(encoded)
         return measurements
-
-    @staticmethod
-
-    def escape_value(self, value):
-        value = self.escape_measurement(value)
-        return str(value)
