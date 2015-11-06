@@ -22,7 +22,6 @@ requires = [
     "pytz",
     "PyYAML",
     "requests",
-    "six",
     "virtualenv",
     "wheel"
 ]
