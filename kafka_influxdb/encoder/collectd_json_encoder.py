@@ -50,7 +50,6 @@ class Encoder(object):
                     measurement.append('-')
                     measurement.append(entry['plugin_instance'])
                 # Todo: Read all values from collect json message
-                print(entry['values'][0])
                 value = str(entry['values'][0])
                 # Always use millisecond precision for the timestamp
                 timestamp = "{:.3f}".format(entry['time'])
