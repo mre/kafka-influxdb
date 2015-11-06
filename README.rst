@@ -74,20 +74,48 @@ Supported formats
 -----------------
 
 | You can write a custom encoder to support any input and output format (even fancy things like Protobuf).
-| Look at the examples in the ``encoder`` folder to get started. For now we support the following formats:
+| Look at the examples inside the ``encoder`` directory to get started. The following formats are officially supported:
 
 Input formats
 ~~~~~~~~~~~~~
 
--  `Collectd Graphite ASCII Format <https://collectd.org/wiki/index.php/Graphite>`_, e.g. "mydatacenter.myhost.load.load.shortterm 0.45
-   1436357630"
+-  `Collectd Graphite ASCII format <https://collectd.org/wiki/index.php/Graphite>`_:
+::
+
+   mydatacenter.myhost.load.load.shortterm 0.45 1436357630
+
+-  `Collectd JSON format <https://collectd.org/wiki/index.php/JSON>`_:
+.. code-block:: json
+
+  [{
+      "values":[
+         0.6
+      ],
+      "dstypes":[
+         "gauge"
+      ],
+      "dsnames":[
+         "value"
+      ],
+      "time":1444745144.824,
+      "interval":10.000,
+      "host":"xx.example.internal",
+      "plugin":"cpu",
+      "plugin_instance":"1",
+      "type":"percent",
+      "type_instance":"system"
+   }]
+
 
 Output formats
 ~~~~~~~~~~~~~~
 
--  `InfluxDB 0.9.x line protocol output <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_ (e.g.
-   ``load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630``)
--  `InfluxDB 0.8.x JSON output <https://influxdb.com/docs/v0.8/api/reading_and_writing_data.html#writing-data-through-http>`_ (deprecated)
+-  `InfluxDB 0.9.x line protocol format <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_:
+::
+
+   load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630
+
+-  `InfluxDB 0.8.x JSON format <https://influxdb.com/docs/v0.8/api/reading_and_writing_data.html#writing-data-through-http>`_ (deprecated)
 
 
 Configuration
