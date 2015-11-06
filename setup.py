@@ -26,6 +26,12 @@ requires = [
     "wheel"
 ]
 
+test_requires = [
+    'nose',
+    'nose-cover3',
+    'profilehooks'
+]
+
 # Get an additional speedup with ujson,
 # which is faster than the normal Python json module
 # ujson does not work with PyPy
@@ -58,7 +64,7 @@ setup(name='kafka_influxdb',
       packages=find_packages(),
       install_requires=requires,
       test_suite='nose.collector',
-      tests_require=['nose', 'nose-cover3'],
+      tests_require=test_requires,
       entry_points={
           'console_scripts': ['kafka_influxdb=kafka_influxdb.__main__:main'],
       },
