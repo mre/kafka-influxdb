@@ -29,7 +29,7 @@ class TestKafkaReader(unittest.TestCase):
         self.reader.consumer.__iter__.return_value = sample_messages
         self.reader._connect = mock.MagicMock()
         received_messages = list(self.reader._handle_read())
-        self.assertEquals(received_messages, extracted_messages)
+        self.assertEqual(received_messages, extracted_messages)
 
     @timeout(0.1)
     def test_reconnect(self):
@@ -42,7 +42,7 @@ class TestKafkaReader(unittest.TestCase):
         sample_messages = sample_messages1 + [ConnectionError] + sample_messages2
         self.reader.consumer.__iter__.return_value = sample_messages
         received_messages = list(self.receive_messages())
-        self.assertEquals(received_messages, extracted_messages1 + extracted_messages2)
+        self.assertEqual(received_messages, extracted_messages1 + extracted_messages2)
 
     def receive_messages(self):
         for message in self.reader.read():
