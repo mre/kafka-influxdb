@@ -1,5 +1,6 @@
 from six import binary_type
 import logging
+from kafka_influxdb.encoder.escape_functions import influxdb_tag_escaper
 
 
 class Encoder(object):
@@ -28,6 +29,9 @@ class Encoder(object):
         </Topic>
     </Plugin>
     """
+
+    def __init__(self):
+        self.escape_tag = influxdb_tag_escaper()
 
     def encode(self,
                msg,
@@ -86,16 +90,6 @@ class Encoder(object):
         return measurements
 
     @staticmethod
-    def escape_tag(tag):
-        return tag.replace(
-            "\\", "\\\\"
-        ).replace(
-            " ", "\\ "
-        ).replace(
-            ",", "\\,"
-        ).replace(
-            "=", "\\="
-        )
 
     def escape_value(self, value):
         value = self.escape_measurement(value)
