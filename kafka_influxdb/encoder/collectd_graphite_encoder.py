@@ -1,4 +1,3 @@
-from six import binary_type
 import logging
 from kafka_influxdb.encoder.escape_functions import influxdb_tag_escaper
 
