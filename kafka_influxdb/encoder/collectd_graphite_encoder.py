@@ -73,9 +73,15 @@ class Encoder(object):
                     postfix = postfix[:-len(delimiter)]
                 tags[postfix_tag] = postfix
 
-            encoded = self.escape_measurement(measurement) + ',' \
-                      + ','.join('{}={}'.format(self.escape_tag(k), self.escape_tag(tags[k])) for k in sorted(tags)) \
-                      + ' value=' + self.escape_value(value) + ' ' + timestamp
+            encoded = ''.join([
+                str(measurement),
+                ',',
+                ','.join('{}={}'.format(self.escape_tag(k), self.escape_tag(tags[k])) for k in tags),
+                ' value=',
+                self.escape_value(value),
+                ' ',
+                timestamp
+            ])
             measurements.append(encoded)
         return measurements
 
@@ -94,13 +100,3 @@ class Encoder(object):
     def escape_value(self, value):
         value = self.escape_measurement(value)
         return str(value)
-
-    @staticmethod
-    def escape_measurement(data):
-        """
-        Try to return a text aka unicode object from the given data.
-        """
-        if isinstance(data, binary_type):
-            return unicode(data, 'utf-8')
-        else:
-            return data
