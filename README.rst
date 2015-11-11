@@ -73,8 +73,7 @@ inside a virtual machine:
 Supported formats
 -----------------
 
-| You can write a custom encoder to support any input and output format (even fancy things like Protobuf).
-| Look at the examples inside the ``encoder`` directory to get started. The following formats are officially supported:
+| You can write a custom encoder to support any input and output format (even fancy things like Protobuf). Look at the examples inside the ``encoder`` directory to get started. The following formats are officially supported:
 
 Input formats
 ~~~~~~~~~~~~~

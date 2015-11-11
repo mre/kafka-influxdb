@@ -131,6 +131,7 @@ def parse_args(args=sys.argv[1:]):
                         help="Run benchmark (default: False)")
     parser.add_argument('-v', '--verbose', action='count', default=argparse.SUPPRESS,
                         help="Set verbosity level. Increase verbosity by adding a v: -v -vv -vvv (default: 0)")
+    parser.add_argument('--version', action="store_true", help="Show version and exit (default: False)")
     cli_args = parser.parse_args(args)
     # Convert config from argparse Namespace to dict
     return vars(cli_args)
