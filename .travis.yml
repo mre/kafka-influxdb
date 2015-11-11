@@ -2,6 +2,9 @@
 sudo: false
 os:
   - linux
+env:
+  global:
+    - NEWEST_PYTHON=3.5
 language: python
 python:
   - "2.7"
@@ -18,12 +21,11 @@ matrix:
     - python: "nightly"
   fast_finish: true
 install:
-  - "pip install python-coveralls"
-  - "pip install coverage"
   - "pip install nose"
   - "pip install ."
 script:
-  - python setup.py test
+  - python setup.py nosetests
 after_success:
-  - coveralls
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then coveralls; fi
+  # python-coveralls doesn't like coverage 4.0 (see https://github.com/z4r/python-coveralls/issues/39)
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls coverage==3.7.1; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then python setup.py nosetests --with-coverage && coveralls; fi
