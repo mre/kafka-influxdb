@@ -45,13 +45,16 @@ class TestKafkaInfluxDB(unittest.TestCase):
         self.writer.write.return_value = True
 
     def test_buffering(self):
-        self.reader = DummyReader(["myhost.load.load.shortterm 0.05 1436357630"], self.config.buffer_size - 1)
+        self.reader = DummyReader(["foo"], self.config.buffer_size - 1)
         self.client = Worker(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertFalse(self.writer.write.called)
 
     def test_flush(self):
-        self.reader = DummyReader(["myhost.load.load.shortterm 0.05 1436357630"], self.config.buffer_size)
+        self.reader = DummyReader(["bar"], self.config.buffer_size)
+        self.client = Worker(self.reader, self.encoder, self.writer, self.config)
+        self.client.consume()
+        self.assertTrue(self.writer.write.called)
         self.client = Worker(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertTrue(self.writer.write.called)
