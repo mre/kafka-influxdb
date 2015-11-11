@@ -25,6 +25,28 @@ class DummyReader(object):
             yield random.choice(self.messages)
 
 
+class FlakyReader(object):
+    """
+    A fake reader that throws exceptions to simulate
+    connection errors
+    """
+    def __init__(self, message, num_messages):
+        self.message = message
+        self.num_messages = num_messages
+
+    def read(self):
+        # Yield the first half of messages
+        for i in range(int(self.num_messages/2)):
+            yield self.message
+        # Simulate a connection error while reading
+        try:
+            raise Exception
+        except Exception:
+            # Continue like you don't care.
+            # Yield the second half of messages
+            for i in range(int(self.num_messages/2)):
+                yield self.message
+
 class DummyWriter(object):
     """
     A fake writer that does nothing with the input data
@@ -55,6 +77,10 @@ class TestKafkaInfluxDB(unittest.TestCase):
         self.client = Worker(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertTrue(self.writer.write.called)
+
+    def test_reconnect(self):
+        self.reader = FlakyReader(["baz"], self.config.buffer_size)
         self.client = Worker(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertTrue(self.writer.write.called)
+        self.writer.write.assert_called_once_with(["baz"] * self.config.buffer_size)
