@@ -13,6 +13,9 @@ class Config:
 
 
 class DummyReader(object):
+    """
+    A reader that yields dummy messages
+    """
     def __init__(self, messages, num_messages):
         self.messages = messages
         self.num_messages = num_messages
@@ -23,6 +26,9 @@ class DummyReader(object):
 
 
 class DummyWriter(object):
+    """
+    A fake writer that does nothing with the input data
+    """
     def __init__(self):
         pass
 
