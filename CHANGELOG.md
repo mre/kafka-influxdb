@@ -2,9 +2,10 @@
 
 ### master (unreleased)
 
-* Support for Python 3.x
+* Support for Python 3.x and PyPy 3.x
 * Allow use of external encoders
-* Switch to from SimpleConsumer to KafkaConsumer (huge performance improvement)
+* Switch from SimpleConsumer to KafkaConsumer (huge performance improvement)
+* Add version flag
 
 ### v0.7.2 (2015/10/30)
 
