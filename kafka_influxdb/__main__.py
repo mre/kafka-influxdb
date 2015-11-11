@@ -23,11 +23,17 @@ def main():
     Setup consumer
     """
     config = loader.load_config()
+    if config.version:
+        show_version()
     if config.benchmark:
         print("Starting in benchmark mode. Stand by while creating sample messages.")
         create_sample_messages(config)
     start_consumer(config)
 
+def show_version():
+    from .version import __version__
+    print("{} {}".format(__package__, __version__))
+    sys.exit(0)
 
 def start_consumer(config):
     """
