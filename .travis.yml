@@ -2,6 +2,9 @@
 sudo: false
 os:
   - linux
+env:
+  global:
+    - NEWEST_PYTHON=3.5
 language: python
 python:
   - "2.7"
@@ -18,12 +21,9 @@ matrix:
     - python: "nightly"
   fast_finish: true
 install:
-  - "pip install python-coveralls"
-  - "pip install coverage"
   - "pip install nose"
   - "pip install ."
 script:
-  - python setup.py test
+  - python setup.py nosetests --with-coverage
 after_success:
-  - coveralls
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then coveralls; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls coverage && coveralls; fi
