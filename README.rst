@@ -148,6 +148,7 @@ Option                                                    Description
 ``-s``, ``--statistics``                                  Show performance statistics (default: True)
 ``-b``, ``--benchmark``                                   Run benchmark (default: False)
 ``-v``, ``--verbose``                                     Set verbosity level. Increase verbosity by adding a v: -v -vv -vvv (default: 0)
+``--version``                                             Show version
 ========================================================= =================================================================================================
 
 
