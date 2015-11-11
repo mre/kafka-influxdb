@@ -26,4 +26,5 @@ install:
 script:
   - python setup.py nosetests --with-coverage
 after_success:
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls coverage && coveralls; fi
+  # python-coveralls doesn't like coverage 4.0 (see https://github.com/z4r/python-coveralls/issues/39)
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls coverage==3.7.1 && coveralls; fi
