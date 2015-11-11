@@ -69,6 +69,9 @@ inside a virtual machine:
     Flushing output buffer. 12287.26 messages/s
     Flushing output buffer. 11538.44 messages/s
 
+For higher performance you can run kafka-influxdb on PyPy3. Currently this gives me around 50k msgs/s in my benchmarks.
+
+
 
 Supported formats
 -----------------
