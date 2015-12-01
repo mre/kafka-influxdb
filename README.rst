@@ -155,6 +155,31 @@ Option                                                    Description
 ========================================================= =================================================================================================
 
 
+Alternatives
+------------
+
+There is a Kafka input plugin and an InfluxDB output plugin for logstash.
+Currently InfluxDB 0.9 support is not part of the official logstash Influxdb output plugin
+(see `this issue <https://github.com/logstash-plugins/logstash-output-influxdb/issues/24>`__ and `this pull request <https://github.com/logstash-plugins/logstash-output-influxdb/pull/29>`__)
+
+There is a fork which supports Influxdb 0.9 and also allows us to set the InfluxDB measurement name from a field in the graphite string.
+We've achieved a message throughput of around 5000 messages/second with that setup. Check out the configuration at `contrib/logstash/config.conf`.
+You can run the benchmark yourself:
+
+::
+
+   # Start the logstash docker-compose setup
+   docker-compose -f docker-compose-logstash.yml up -d
+   # Open an interactive shell to the logstash container
+   docker exec -it kafkainfluxdb_logstash_1 bash
+   # Run the benchmark
+   ./run.sh
+
+
+
+Please send a Pull Request if you know of other tools that can be mentioned here.
+
+
 .. |Build Status| image:: https://travis-ci.org/mre/kafka-influxdb.svg?branch=master
    :target: https://travis-ci.org/mre/kafka-influxdb
 .. |Coverage Status| image:: https://coveralls.io/repos/mre/kafka-influxdb/badge.svg?branch=master&service=github
