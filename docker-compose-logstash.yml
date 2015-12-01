@@ -29,9 +29,9 @@ logstash:
   build: .
   dockerfile: Dockerfile-Logstash
   # Uncomment the following three lines for interactive mode:
-  # entrypoint: /bin/bash
-  # stdin_open: true
-  # tty: true
+  entrypoint: /bin/bash
+  stdin_open: true
+  tty: true
   links:
     - zookeeper:zk
     - kafka:kafka
