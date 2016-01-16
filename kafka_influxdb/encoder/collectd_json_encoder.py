@@ -44,33 +44,59 @@ class Encoder(object):
                 logging.debug("Error in encoder: %s", e)
                 continue
             for entry in json_object:
-                measurement = [entry['plugin']]
-                # Check if plugin_instance is set and not empty
-                if 'plugin_instance' in entry and entry['plugin_instance']:
-                    measurement.append('-')
-                    measurement.append(entry['plugin_instance'])
-                # Todo: Read all values from collect json message
-                value = str(entry['values'][0])
-                # Always use millisecond precision for the timestamp
-                timestamp = "{:.3f}".format(entry['time'])
-                measurement.extend([
-                    '_',
-                    entry['plugin'],
-                    '-',
-                    entry['type_instance'],
-                    ',',
-                    'host=',
-                    entry['host'],
-                    ' ',
-                    'value',
-                    '=',
-                    value,
-                    ' ',
-                    timestamp
-                ])
-                measurements.append(''.join(measurement))
+                # people can customize the measurement name, tags much more flexible
+                # to set plugin, plugin_instance as the measurement name, just need to pass ['plugin', 'plugin_instance']
+                measurement = Encoder.format_measurement_name(entry, ['plugin', 'plugin_instance', 'type'])
+                tags = Encoder.format_tags(entry, ['host', 'type_instance'])
+                value = Encoder.format_value(entry)
+                time = Encoder.format_time(entry)
+                measurements.append(Encoder.compose_data(measurement, tags, value, time))
         return measurements
 
     @staticmethod
     def parse_line(line):
-        return json.loads(line, {'precise_float': True})
+        # return json.loads(line, {'precise_float': True})
+        # for influxdb version > 0.9, timestamp is an integer
+        return json.loads(line)
+
+    # following methods are added to support customizing measurement name, tags much more flexible
+    @staticmethod
+    def compose_data(measurement, tags, value, time):
+        data = "%s,%s value=%s %s" % (measurement, tags, value, time)
+        return data
+
+    @staticmethod
+    def format_measurement_name(entry, args):
+        name = []
+        for arg in args:
+            if arg in entry:
+                # avoid to add extra _ if some entry value is None
+                if entry[arg] != '':
+                    name.append(entry[arg])
+        return '_'.join(name)
+
+    @staticmethod
+    def format_tags(entry, args):
+        tag = []
+        for arg in args:
+            if arg in entry:
+                # to avoid add None as tag value
+                if entry[arg] != '':
+                    tag.append("%s=%s" % (arg, entry[arg]))
+        return ','.join(tag)
+
+    @staticmethod
+    def format_time(entry):
+        return int(float(entry['time']))
+
+    @staticmethod
+    def format_value(entry):
+        values = entry['values']
+        if len(values) == 1:
+            return entry['values'][0]
+        else:
+            # support to add multiple values
+            value = ' '.join(str(value) for value in values)
+            return '"%s"' % value
+
+
