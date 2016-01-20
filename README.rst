@@ -163,7 +163,7 @@ Currently InfluxDB 0.9 support is not part of the official logstash Influxdb out
 (see `this issue <https://github.com/logstash-plugins/logstash-output-influxdb/issues/24>`__ and `this pull request <https://github.com/logstash-plugins/logstash-output-influxdb/pull/29>`__)
 
 There is a fork which supports Influxdb 0.9 and also allows us to set the InfluxDB measurement name from a field in the graphite string.
-We've achieved a message throughput of around 5000 messages/second with that setup. Check out the configuration at `contrib/logstash/config.conf`.
+We've achieved a message throughput of around 100 messages/second with that setup. Check out the configuration at `contrib/logstash/config.conf`.
 You can run the benchmark yourself:
 
 ::
