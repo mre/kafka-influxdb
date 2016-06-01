@@ -6,7 +6,8 @@ Kafka-InfluxDB
 
 | A Kafka consumer for InfluxDB written in Python.
 | All messages sent to Kafka on a certain topic will be relayed to Influxdb.
-| Supports InfluxDB 0.9.x. For InfluxDB 0.8.x support, check out the `0.3.0 tag <https://github.com/mre/kafka-influxdb/tree/v0.3.0>`__.
+| Supports InfluxDB 0.9.x and up. For InfluxDB 0.8.x support, 
+| check out the `0.3.0 tag <https://github.com/mre/kafka-influxdb/tree/v0.3.0>`__.
 
 
 Use cases
@@ -70,7 +71,7 @@ inside a virtual machine:
     Flushing output buffer. 12287.26 messages/s
     Flushing output buffer. 11538.44 messages/s
 
-For higher performance you can run kafka-influxdb on PyPy3. Currently this gives me around 50k msgs/s in my benchmarks.
+For higher performance you can run kafka-influxdb on **PyPy3**. Currently this gives me **around 50.000 msgs/s in my benchmarks**.
 
 
 
