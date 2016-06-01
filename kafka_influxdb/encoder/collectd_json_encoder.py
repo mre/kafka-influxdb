@@ -44,13 +44,16 @@ class Encoder(object):
                 logging.debug("Error in encoder: %s", e)
                 continue
             for entry in json_object:
-                # people can customize the measurement name, tags much more flexible
-                # to set plugin, plugin_instance as the measurement name, just need to pass ['plugin', 'plugin_instance']
-                measurement = Encoder.format_measurement_name(entry, ['plugin', 'plugin_instance', 'type'])
-                tags = Encoder.format_tags(entry, ['host', 'type_instance'])
-                value = Encoder.format_value(entry)
-                time = Encoder.format_time(entry)
-                measurements.append(Encoder.compose_data(measurement, tags, value, time))
+                try:
+                    # to set plugin, plugin_instance as the measurement name, just need pass ['plugin', 'plugin_instance']
+                    measurement = Encoder.format_measurement_name(entry, ['plugin', 'plugin_instance', 'type'])
+                    tags = Encoder.format_tags(entry, ['host', 'type_instance'])
+                    value = Encoder.format_value(entry)
+                    time = Encoder.format_time(entry)
+                    measurements.append(Encoder.compose_data(measurement, tags, value, time))
+                except Exception as e:
+                    logging.debug("Error in input data: %s. Skipping.", e)
+                    continue
         return measurements
 
     @staticmethod
