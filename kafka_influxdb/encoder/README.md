@@ -3,6 +3,7 @@
 These classes are used to convert from an input message format to the internal format of InfluxDB:
 To write your own encoder for an unsupported format, do the following:
 
+```python
 class Encoder(object):
   def encode(self, msg):
     """
@@ -25,3 +26,4 @@ class Encoder(object):
     cpu,host=server\ A,region=us\ west value=1.0 1434055562000000000
 
     """
+```
