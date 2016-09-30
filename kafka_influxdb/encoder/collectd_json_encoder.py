@@ -31,6 +31,9 @@ class Encoder(object):
          "type_instance":   "idle"
        }
     ]
+    
+    The following measurement format is also supported, which has more than one value for each sample.
+    [{"values":[0.2, 0.3],"dstypes":["derive"],"dsnames":["cpu_usage, mem_usage"],"time":1436372292.412,"interval":10.000,"host":"26f2fc918f50","plugin":"cpu","plugin_instance":"1","type":"cpu","type_instance":"interrupt"}]
     """
     def encode(self, msg):
         measurements = []
@@ -98,8 +101,10 @@ class Encoder(object):
         if len(values) == 1:
             return entry['values'][0]
         else:
-            # support to add multiple values
-            value = ' '.join(str(value) for value in values)
-            return '"%s"' % value
-
+            # influxdb supports writing a record with multiple field values.
+            # e.g: 'cpu_load_short,host=server01,region=us-west mem=0.1,cpu=0.2 1422568543702900257'
+            field_pairs = []
+            for key, value in zip(entry['dsname'], values):
+                field_pairs.append("%s=%s" % (key, value))
+            return ','.join(field_pairs)
 
