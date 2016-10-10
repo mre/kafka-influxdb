@@ -15,7 +15,7 @@ class TestCollectdJsonEncoder(unittest.TestCase):
         msg = b"""
         [{"values":[0.6],"dstypes":["gauge"],"dsnames":["value"],"time":1444745144.824,"interval":10.000,"host":"xx.example.internal","plugin":"cpu","plugin_instance":"1","type":"percent","type_instance":"system"}]
             """
-        expected = ['cpu-1_cpu-system,host=xx.example.internal value=0.6 1444745144.824']
+        expected = ['cpu_1_percent,host=xx.example.internal,type_instance=system value=0.6 1444745144']
         self.assertEqual(self.encoder.encode(msg), expected)
 
     def test_multiple_measurements(self):
@@ -32,11 +32,11 @@ class TestCollectdJsonEncoder(unittest.TestCase):
         [{"values":[1.1],"dstypes":["gauge"],"dsnames":["value"],"time":1444745136.182,"interval":10.000,"host":"myhost","plugin":"memory","plugin_instance":"","type":"percent","type_instance":"slab_recl"}]
             """
         expected = [
-            'cpu-1_cpu-system,host=xx.example.internal value=0.6 1444745144.824',
-            'cpu-1_cpu-user,host=example.com value=0.7 1444745144.824',
-            'cpu-0_cpu-nice,host=myhost value=37.7 1444745144.824',
-            'cpu-0_cpu-interrupt,host=myhost value=0 1444745145.824',
-            'memory_memory-slab_recl,host=myhost value=1.1 1444745136.182'
+            'cpu_1_percent,host=xx.example.internal,type_instance=system value=0.6 1444745144',
+            'cpu_1_percent,host=example.com,type_instance=user value=0.7 1444745144',
+            'cpu_0_percent,host=myhost,type_instance=nice value=37.7 1444745144',
+            'cpu_0_percent,host=myhost,type_instance=interrupt value=0 1444745145',
+            'memory_percent,host=myhost,type_instance=slab_recl value=1.1 1444745136'
         ]
         self.assertEqual(self.encoder.encode(msg), expected)
 
@@ -49,7 +49,19 @@ class TestCollectdJsonEncoder(unittest.TestCase):
         msg = b"""
         [{"values":[0],"dstypes":["derive"],"dsnames":["value"],"time":1436372292.412,"interval":10.000,"host":"26f2fc918f50","plugin":"cpu","plugin_instance":"1","type":"cpu","type_instance":"interrupt"}]
             """
-        expected = ['cpu-1_cpu-interrupt,host=26f2fc918f50 value=0 1436372292.412']
+        expected = ['cpu_1_cpu,host=26f2fc918f50,type_instance=interrupt value=0 1436372292']
+        self.assertEqual(self.encoder.encode(msg), expected)
+
+    def test_multiple_fields(self):
+        """
+        Test supporting multiple fields in a sample
+        [{"values":[0.2, 0.3],"dstypes":["derive"],"dsnames":["cpu_usage", "mem_usage"],"time":1436372292.412,"interval":10.000,"host":"26f2fc918f50","plugin":"sys_usage","plugin_instance":"1","type":"percent"}]
+        """
+        msg = b"""
+        [{"values":[0.2, 0.3],"dstypes":["derive"],"dsnames":["cpu_usage", "mem_usage"],"time":1436372292.412,"interval":10.000,"host":"26f2fc918f50","plugin":"sys_usage","plugin_instance":"1","type":"percent"}]
+        """
+        expected = ['sys_usage_1_percent,host=26f2fc918f50 cpu_usage=0.2,mem_usage=0.3 1436372292']
+        temp = self.encoder.encode(msg)
         self.assertEqual(self.encoder.encode(msg), expected)
 
 
