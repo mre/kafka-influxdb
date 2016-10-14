@@ -13,6 +13,7 @@
 * Fix unit tests for Python 3
 * Fix bugs of supporting mutliple fields in one sample; 
 * Add initial mypy static type support
+* Full changelog: https://github.com/mre/kafka-influxdb/compare/v0.7.2...v0.7.3
 
 ### v0.7.2 (2015/10/30)
 
