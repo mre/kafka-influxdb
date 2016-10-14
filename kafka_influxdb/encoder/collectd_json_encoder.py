@@ -7,6 +7,12 @@ except ImportError:
 
 import logging
 
+try:
+    # Test for mypy support (requires Python 3)
+    from typing import List, Text
+except:
+    pass
+
 
 class Encoder(object):
     """
@@ -35,7 +41,9 @@ class Encoder(object):
     The following measurement format is also supported, which has more than one value for each sample.
     [{"values":[0.2, 0.3],"dstypes":["derive"],"dsnames":["cpu_usage", "mem_usage"],"time":1436372292.412,"interval":10.000,"host":"26f2fc918f50","plugin":"cpu","plugin_instance":"1","type":"cpu","type_instance":"interrupt"}]
     """
+
     def encode(self, msg):
+        # type: (bytes) -> List[Text]
         measurements = []
 
         for line in msg.decode().split("\n"):
@@ -107,4 +115,3 @@ class Encoder(object):
             for key, value in zip(entry['dsnames'], values):
                 field_pairs.append("%s=%s" % (key, value))
             return ','.join(field_pairs)
-

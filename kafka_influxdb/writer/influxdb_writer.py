@@ -3,6 +3,12 @@
 import logging
 import influxdb
 
+try:
+    # Test for mypy support (requires Python 3)
+    from typing import Mapping, Text
+except:
+    pass
+
 
 class InfluxDBWriter(object):
     DEFAULT_HEADERS = {
@@ -64,6 +70,7 @@ class InfluxDBWriter(object):
                                        self.port)
 
     def create_database(self, dbname):
+        # type: (Text) -> bool
         """
         Initialize the given database
         :param dbname:
@@ -71,6 +78,7 @@ class InfluxDBWriter(object):
         self.client.create_database(dbname)
 
     def write(self, msg, params=None, expected_response_code=204):
+        # type: (Text, Mapping[str, str], int) -> bool
         """
         Write messages to InfluxDB database.
         Expects messages in line protocol format.

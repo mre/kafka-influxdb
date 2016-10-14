@@ -1,6 +1,11 @@
 import logging
 from kafka_influxdb.encoder.escape_functions import influxdb_tag_escaper
 
+try:
+    # Test for mypy support (requires Python 3)
+    from typing import Text
+except:
+    pass
 
 class Encoder(object):
     """
@@ -40,6 +45,7 @@ class Encoder(object):
                postfix='',
                postfix_tag=None,
                ):
+        # type: (bytes, Text, Text, Text, Text, Text) -> List[Text]
         """
         :param msg: Payload from reader
         :param delimiter: Delimiter between Graphite series parts
