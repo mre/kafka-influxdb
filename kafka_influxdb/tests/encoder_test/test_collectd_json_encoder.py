@@ -1,5 +1,6 @@
 import unittest
 from kafka_influxdb.encoder import collectd_json_encoder
+import re
 
 
 class TestCollectdJsonEncoder(unittest.TestCase):
@@ -15,8 +16,21 @@ class TestCollectdJsonEncoder(unittest.TestCase):
         msg = b"""
         [{"values":[0.6],"dstypes":["gauge"],"dsnames":["value"],"time":1444745144.824,"interval":10.000,"host":"xx.example.internal","plugin":"cpu","plugin_instance":"1","type":"percent","type_instance":"system"}]
             """
-        expected = ['cpu_1_percent,host=xx.example.internal,type_instance=system value=0.6 1444745144']
-        self.assertEqual(self.encoder.encode(msg), expected)
+
+        encoded_messages = self.encoder.encode(msg)
+
+        # We've encoded exactly one message
+        self.assertEqual(len(encoded_messages), 1)
+
+        encoded_message = encoded_messages[0]
+
+        expected = '^cpu_1_percent,host=xx\.example\.internal,type_instance=system value=(\d\.\d+) 1444745144$'
+        result = re.match(expected, encoded_message)
+
+        # Due to floating point precision there might be a tiny difference between the expected and the actual value.
+        self.assertIsNotNone(result, "Unexpected message format")
+        self.assertEqual(len(result.groups()), 1)
+        self.assertAlmostEqual(float(result.group(1)), 0.6)
 
     def test_multiple_measurements(self):
         """
@@ -32,13 +46,24 @@ class TestCollectdJsonEncoder(unittest.TestCase):
         [{"values":[1.1],"dstypes":["gauge"],"dsnames":["value"],"time":1444745136.182,"interval":10.000,"host":"myhost","plugin":"memory","plugin_instance":"","type":"percent","type_instance":"slab_recl"}]
             """
         expected = [
-            'cpu_1_percent,host=xx.example.internal,type_instance=system value=0.6 1444745144',
-            'cpu_1_percent,host=example.com,type_instance=user value=0.7 1444745144',
-            'cpu_0_percent,host=myhost,type_instance=nice value=37.7 1444745144',
-            'cpu_0_percent,host=myhost,type_instance=interrupt value=0 1444745145',
-            'memory_percent,host=myhost,type_instance=slab_recl value=1.1 1444745136'
+            ('cpu_1_percent,host=xx.example.internal,type_instance=system value=(.*) 1444745144', 0.6),
+            ('cpu_1_percent,host=example.com,type_instance=user value=(.*) 1444745144', 0.7),
+            ('cpu_0_percent,host=myhost,type_instance=nice value=(.*) 1444745144', 37.7),
+            ('cpu_0_percent,host=myhost,type_instance=interrupt value=(.*) 1444745145', 0),
+            ('memory_percent,host=myhost,type_instance=slab_recl value=(.*) 1444745136', 1.1)
         ]
-        self.assertEqual(self.encoder.encode(msg), expected)
+
+        encoded_messages = self.encoder.encode(msg)
+
+        # We've encoded exactly one message
+        self.assertEqual(len(encoded_messages), 5)
+
+        for encoded_message, expected in zip(encoded_messages, expected):
+            expected_message, expected_value = expected
+            result = re.match(expected_message, encoded_message)
+            self.assertIsNotNone(result, "Unexpected message format")
+            self.assertEqual(len(result.groups()), 1)
+            self.assertAlmostEqual(float(result.group(1)), expected_value)
 
     def test_invalid_messages(self):
         invalid_messages = [b'', b'\n', b'bla', b'foo\nbar\nbaz']
@@ -60,9 +85,21 @@ class TestCollectdJsonEncoder(unittest.TestCase):
         msg = b"""
         [{"values":[0.2, 0.3],"dstypes":["derive"],"dsnames":["cpu_usage", "mem_usage"],"time":1436372292.412,"interval":10.000,"host":"26f2fc918f50","plugin":"sys_usage","plugin_instance":"1","type":"percent"}]
         """
-        expected = ['sys_usage_1_percent,host=26f2fc918f50 cpu_usage=0.2,mem_usage=0.3 1436372292']
-        temp = self.encoder.encode(msg)
-        self.assertEqual(self.encoder.encode(msg), expected)
+
+        encoded_messages = self.encoder.encode(msg)
+
+        self.assertEqual(len(encoded_messages), 1)
+
+        encoded_message = encoded_messages[0]
+
+        expected = '^sys_usage_1_percent,host=26f2fc918f50 cpu_usage=(\d\.\d+),mem_usage=(\d\.\d+) 1436372292$'
+        result = re.match(expected, encoded_message)
+
+        # Due to floating point precision there might be a tiny difference between the expected and the actual value.
+        self.assertIsNotNone(result, "Unexpected message format")
+        self.assertEqual(len(result.groups()), 2)
+        self.assertAlmostEqual(float(result.group(1)), 0.2)
+        self.assertAlmostEqual(float(result.group(2)), 0.3)
 
 
 """
