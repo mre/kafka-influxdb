@@ -2,10 +2,17 @@
 
 ### master (unreleased)
 
+* Update package requirements
+
+### v0.7.3 (2016/10/14)
+
 * Support for Python 3.x and PyPy 3.x
 * Allow use of external encoders
 * Switch from SimpleConsumer to KafkaConsumer (huge performance improvement)
 * Add version flag
+* Fix unit tests for Python 3
+* Fix bugs of supporting mutliple fields in one sample; 
+* Add initial mypy static type support
 
 ### v0.7.2 (2015/10/30)
 
