@@ -6,7 +6,7 @@ import influxdb
 try:
     # Test for mypy support (requires Python 3)
     from typing import Mapping, Text
-except:
+except ImportError:
     pass
 
 

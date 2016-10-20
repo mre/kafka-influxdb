@@ -4,7 +4,7 @@ from kafka_influxdb.encoder.escape_functions import influxdb_tag_escaper
 try:
     # Test for mypy support (requires Python 3)
     from typing import Text
-except:
+except ImportError:
     pass
 
 class Encoder(object):
