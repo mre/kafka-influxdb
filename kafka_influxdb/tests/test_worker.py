@@ -77,9 +77,10 @@ class TestKafkaInfluxDB(unittest.TestCase):
         self.client = Worker(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertTrue(self.writer.write.called)
+        self.writer.write.assert_called_once_with(["bar"] * self.config.buffer_size)
 
     def test_reconnect(self):
-        self.reader = FlakyReader(["baz"], self.config.buffer_size)
+        self.reader = FlakyReader("baz", self.config.buffer_size)
         self.client = Worker(self.reader, self.encoder, self.writer, self.config)
         self.client.consume()
         self.assertTrue(self.writer.write.called)
