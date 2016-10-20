@@ -1,4 +1,5 @@
 FROM logstash:2.1
+MAINTAINER Matthias Endler <matthias-endler@gmx.net>
 
 RUN apt-get update && apt-get install -y git rubygems python python-pip
 
