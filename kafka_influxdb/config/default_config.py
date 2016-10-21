@@ -15,7 +15,7 @@ DEFAULT_CONFIG = {
         'verify_ssl': False,
         'timeout': 5,
         'use_udp': False,
-        'retention_policy': 'default',
+        'retention_policy': 'autogen',
         'time_precision': 's'
     },
     'encoder': 'kafka_influxdb.encoder.collectd_graphite_encoder',

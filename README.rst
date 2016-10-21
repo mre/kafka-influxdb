@@ -145,7 +145,7 @@ Option                                                    Description
 ``--influxdb_verify_ssl``                                 Verify the SSL certificate before connecting (default: False)
 ``--influxdb_timeout INFLUXDB_TIMEOUT``                   Max number of seconds to establish a connection to InfluxDB (default: 5)
 ``--influxdb_use_udp``                                    Use UDP connection for InfluxDB (default: False)
-``--influxdb_retention_policy INFLUXDB_RETENTION_POLICY`` Retention policy for incoming metrics (default: default)
+``--influxdb_retention_policy INFLUXDB_RETENTION_POLICY`` Retention policy for incoming metrics (default: autogen)
 ``--influxdb_time_precision INFLUXDB_TIME_PRECISION``     Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u' (default: s)
 ``--encoder ENCODER``                                     Input encoder which converts an incoming message to dictionary (default: collectd_graphite_encoder)
 ``--buffer_size BUFFER_SIZE``                             Maximum number of messages that will be collected before flushing to the backend (default: 1000)
