@@ -110,6 +110,8 @@ Input formats
       "type_instance":"system"
    }]
 
+-  `Raw InfluxDB line protocol (e.g. for Telegraf support) <https://github.com/mre/kafka-influxdb/issues/40>`_:
+
 
 Output formats
 ~~~~~~~~~~~~~~
