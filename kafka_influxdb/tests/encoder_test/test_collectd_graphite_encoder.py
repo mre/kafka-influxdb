@@ -1,5 +1,6 @@
 import unittest
 from kafka_influxdb.encoder import collectd_graphite_encoder
+from kafka_influxdb.template import graphite
 
 
 class TestCollectdGraphiteEncoder(unittest.TestCase):
@@ -12,7 +13,8 @@ class TestCollectdGraphiteEncoder(unittest.TestCase):
         return collectd_graphite_encoder.Encoder(templates)
 
     def test_encode_simple(self):
-        self.encoder = self.create_encoder()
+        templates = graphite.Template([])
+        self.encoder = self.create_encoder(templates)
         msg = b'myhost.load.load.shortterm 0.05 1436357630'
         expected = ['myhost_load_load_shortterm value=0.05 1436357630']
         #expected = ['load_load_shortterm,host=myhost value=0.05 1436357630']
