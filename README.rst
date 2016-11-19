@@ -6,7 +6,7 @@ Kafka-InfluxDB
 
 | A Kafka consumer for InfluxDB written in Python.
 | All messages sent to Kafka on a certain topic will be relayed to Influxdb.
-| Supports InfluxDB 0.9.x and up. For InfluxDB 0.8.x support, 
+| Supports InfluxDB 0.9.x and up. For InfluxDB 0.8.x support,
 | check out the `0.3.0 tag <https://github.com/mre/kafka-influxdb/tree/v0.3.0>`__.
 
 
@@ -149,7 +149,7 @@ Option                                                    Description
 ``--influxdb_use_udp``                                    Use UDP connection for InfluxDB (default: False)
 ``--influxdb_retention_policy INFLUXDB_RETENTION_POLICY`` Retention policy for incoming metrics (default: autogen)
 ``--influxdb_time_precision INFLUXDB_TIME_PRECISION``     Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u' (default: s)
-``--encoder ENCODER``                                     Input encoder which converts an incoming message to dictionary (default: collectd_graphite_encoder)
+``--encoder ENCODER``                                     Input encoder which converts an incoming message to dictionary (default: )
 ``--buffer_size BUFFER_SIZE``                             Maximum number of messages that will be collected before flushing to the backend (default: 1000)
 ``-c CONFIGFILE``, ``--configfile CONFIGFILE``            Configfile path (default: None)
 ``-s``, ``--statistics``                                  Show performance statistics (default: True)
@@ -201,4 +201,4 @@ Please send a Pull Request if you know of other tools that can be mentioned here
    :alt: Supported Python Versions
 .. |Scrutinizer| image:: https://scrutinizer-ci.com/g/mre/kafka-influxdb/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/mre/kafka-influxdb/?branch=master
-   :alt: Scrutinizer Code Quality  
+   :alt: Scrutinizer Code Quality

@@ -9,7 +9,7 @@ except ImportError:
 
 class Encoder(object):
     """
-    An encoder for the Collectd Graphite ASCII format
+    An encoder for the Graphite ASCII format
     See https://collectd.org/wiki/index.php/Graphite
 
     Sample measurements this encoder can handle:

@@ -18,7 +18,7 @@ DEFAULT_CONFIG = {
         'retention_policy': 'autogen',
         'time_precision': 's'
     },
-    'encoder': 'kafka_influxdb.encoder.collectd_graphite_encoder',
+    'encoder': 'kafka_influxdb.encoder.',
     'buffer_size': 1000,
     'configfile': None,
     'c': None,
