@@ -59,3 +59,4 @@ docs/_build/
 # Custom ignores
 tags
 .idea
+.DS_Store
