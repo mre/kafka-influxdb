@@ -7,6 +7,7 @@ nose==1.3.7
 pbr==1.8.1
 profilehooks==1.8.0
 python-dateutil==2.4.2
+pytest==3.0.4
 pytz==2015.7
 PyYAML==3.11
 requests==2.8.1

@@ -15,8 +15,6 @@ requires = [
     "funcsigs",
     "influxdb",
     "kafka-python",
-    "mock",
-    "nose",
     "pbr",
     "python-dateutil",
     "pytz",
@@ -28,6 +26,8 @@ requires = [
 
 test_requires = [
     'nose',
+    "mock",
+    "pytest"
     'nose-cover3',
     'profilehooks'
 ]
