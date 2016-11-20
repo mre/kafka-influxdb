@@ -14,9 +14,11 @@ influxdb:
   verify_ssl: False
   timeout: 5
   use_udp: False
-  retention_policy: "autogen"
+  retention_policy: "default" # Use "default" for InfluxDB < 1.0 otherwise "autogen"
   time_precision: "s"
-encoder: "kafka_influxdb.encoder.graphite_encoder"
+encoding: "graphite"
+templates:
+  - host.measurement*
 benchmark: false
-buffer_size: 1000
+buffer_size: 1
 statistics: true
