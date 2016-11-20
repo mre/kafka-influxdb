@@ -7,6 +7,9 @@ try:
 except ImportError:
     pass
 
+from kafka_influxdb.template import graphite
+
+
 class Encoder(object):
     """
     An encoder for the Graphite ASCII format
@@ -24,9 +27,9 @@ class Encoder(object):
     """
 
     def __init__(self, templates=None):
-        self.templates = templates or {}
+        self.templates = templates or graphite.Template()
 
-    def encode(self, messages):
+    def encode(self, messages, *args):
         """
         :param messages: Payload from reader as Bytes. Can hold multiple
                          messages
