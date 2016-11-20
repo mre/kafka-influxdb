@@ -1,6 +1,6 @@
 import pytest
 
-from kafka_influxdb.encoder import graphite_encoder
+from kafka_influxdb.encoder import graphite as graphite_encoder
 from kafka_influxdb.template import graphite
 
 
@@ -12,7 +12,7 @@ from kafka_influxdb.template import graphite
     (2, 'cpu.host.measurement', ['measurement', 'host.measurement', 'cpu.host.measurement']),
     (2, '.host.measurement', [
         'measurement', 'host.measurement', '.host.measurement']),
-    # later templates override former ones template
+    # later templates override former templates of same range
     (2, 'cpu.host.measurement', [
         'measurement', 'host.measurement', '.host.measurement', 'cpu.host.measurement']),
     # return None if no template matches metric-range
