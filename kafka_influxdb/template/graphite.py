@@ -10,7 +10,7 @@ If there is no value, the Graphite portion is skipped.
 
 Example:
 Graphite input: servers.localhost.cpu.loadavg.10
-Template:       .host.resource.measurement*
+Template:       host.resource.measurement*
 Output:         measurement=loadavg.10 tags=host=localhost resource=cpu
 
 See: https://github.com/influxdata/influxdb/tree/master/services/graphite
@@ -18,12 +18,25 @@ See: https://github.com/influxdata/influxdb/tree/master/services/graphite
 from collections import defaultdict
 
 
-class Template(defaultdict):
+class Template(object):
     """
     Create an O(1) lookup dictionary for quick template access (e.g. by an encoder)
     """
     def __init__(self, templates):
-        super(Template, self).__init__()
+        d = {}
         for template in templates:
             length = template.count('.')
-            self[length] = template
+            d[length] = template
+        self.templates = d
+
+    def get(self, key):
+        try:
+            return self.templates[key]
+        except KeyError:
+            key -= 1
+            while key >= 0:
+                template = self.templates.get(key)
+                if template and template.endswith('*'):
+                    return template
+                key -= 1
+        return None

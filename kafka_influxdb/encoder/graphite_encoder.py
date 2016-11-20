@@ -17,10 +17,15 @@ class Encoder(object):
     26f2fc918f50.load.load.shortterm 0.05 1436357630
     webserver.cpu-0.cpu-user 30364 1436357630
     datacenter.webserver.memory.memory-buffered 743657472 1436357630
+
+    The first part is called the metric name. On output the metric name
+    will get used as the key. Depending on given templates, tags are
+    extracted from the metric name.
     """
 
-    def __init__(self, templates=None):
+    def __init__(self, templates=None, separator='_'):
         self.templates = templates or {}
+        self.separator = separator
         #self.escape_tag = influxdb_tag_escaper()
 
     def encode(self, messages):
@@ -36,17 +41,16 @@ class Encoder(object):
             except ValueError as e:
                 logging.debug("Error in encoder: %s", e)
                 continue
-            segments = name.count('.') + 1
+            segments = name.count('.')
             template = self.templates.get(segments)
             key = self.create_key(name, template)
             influx_entry = self.create_entry(key, value, timestamp)
             measurements.append(influx_entry)
         return measurements
 
-    @staticmethod
-    def create_key(name, template):
+    def create_key(self, name, template):
         if not template:
-            return name.replace('.', '_')
+            return name.replace('.', self.separator)
         return name
 
     @staticmethod
