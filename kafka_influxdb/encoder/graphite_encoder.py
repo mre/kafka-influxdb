@@ -27,7 +27,7 @@ class Encoder(object):
     def __init__(self, templates=None):
         self.templates = templates or graphite.Template()
 
-    def encode(self, messages):
+    def encode(self, messages, *args):
         """
         :param messages: Payload from reader as Bytes. Can hold multiple
                          messages
@@ -35,6 +35,7 @@ class Encoder(object):
         """
         measurements = []
         for line in messages.decode().split("\n"):
+            line = line.strip()
             if not line:
                 # Ignore empty lines
                 continue
