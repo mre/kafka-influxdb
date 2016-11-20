@@ -16,7 +16,7 @@ influxdb:
   use_udp: False
   retention_policy: "autogen"
   time_precision: "s"
-encoder: "kafka_influxdb.encoder."
+encoder: "kafka_influxdb.encoder.graphite_encoder"
 benchmark: false
 buffer_size: 1000
 statistics: true
