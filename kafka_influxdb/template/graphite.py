@@ -22,15 +22,18 @@ class Template(object):
             d[length] = template
         self.templates = d
 
-    def get(self, key):
+    def get(self, metric_range):
+        """
+        Returns the best matching template for the given metric-range.
+        """
         try:
-            return self.templates[key]
+            return self.templates[metric_range]
         except KeyError:
             # TODO: make this faster?
-            key -= 1
-            while key >= 0:
-                template = self.templates.get(key)
+            metric_range -= 1
+            while metric_range >= 0:
+                template = self.templates.get(metric_range)
                 if template and template.endswith('*'):
                     return template
-                key -= 1
+                metric_range -= 1
         return None
