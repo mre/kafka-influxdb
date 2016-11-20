@@ -36,7 +36,7 @@ class Encoder(object):
             except ValueError as e:
                 logging.debug("Error in encoder: %s", e)
                 continue
-            segments = len(name.split('.'))
+            segments = name.count('.') + 1
             template = self.templates.get(segments)
             key = self.create_key(name, template)
             influx_entry = self.create_entry(key, value, timestamp)

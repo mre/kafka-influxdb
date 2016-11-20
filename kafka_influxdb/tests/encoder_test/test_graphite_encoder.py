@@ -25,7 +25,11 @@ class TestGraphiteEncoder(object):
 
     @pytest.mark.parametrize("message, key, templates", [
         # Valid, even though no template matches (fall back to default matching full key)
-        (b'myhost 1.0 1436357630', ['myhost value=1.0 1436357630'], ['host']), 
+        (b'myhost 1.0 1436357630', ['myhost value=1.0 1436357630'], ['*']),
+        (b'myhost 1.0 1436357630', ['myhost value=1.0 1436357630'], ['host']),
+        #(b'myhost.cpu 1.0 1436357630', ['cpu,host=myhost value=1.0 1436357630'], ['host.*']),
+        #(b'myhost.cpu.load 1.0 1436357630', ['cpu_load,host=myhost value=1.0 1436357630'], ['host.*']),
+        #(b'myhost.cpu.load 1.0 1436357630', ['load,cpu=cpu,host=myhost value=1.0 1436357630'], ['host.cpu.*']),
     ])
     def test_encode_template(self, message, key, templates):
         self.encoder = self.create_encoder(graphite.Template(templates))
