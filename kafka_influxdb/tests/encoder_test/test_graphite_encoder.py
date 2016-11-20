@@ -1,6 +1,6 @@
 import pytest
 
-from kafka_influxdb.encoder import graphite_encoder
+from kafka_influxdb.encoder import graphite as graphite_encoder
 from kafka_influxdb.template import graphite
 
 
