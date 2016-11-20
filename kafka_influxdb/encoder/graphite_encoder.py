@@ -1,6 +1,5 @@
 import logging
 #from kafka_influxdb.encoder.escape_functions import influxdb_tag_escaper
-from kafka_influxdb.template import graphite
 
 try:
     # Test for mypy support (requires Python 3)
@@ -24,8 +23,8 @@ class Encoder(object):
     extracted from the metric name.
     """
 
-    def __init__(self, templates=None):
-        self.templates = templates or graphite.Template()
+    def __init__(self, templates):
+        self.templates = templates
 
     def encode(self, messages, *args):
         """

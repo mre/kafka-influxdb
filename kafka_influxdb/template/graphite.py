@@ -15,7 +15,7 @@ class Template(object):
     metric-range. metric-names match on shorter templates if a templates
     ends with a wildcard '*'. More specific templates match first.
     """
-    def __init__(self, templates=set(), separator='_'):
+    def __init__(self, templates=[], separator='_'):
         d = {}
         self.tag_names = {}
         for template in templates:
