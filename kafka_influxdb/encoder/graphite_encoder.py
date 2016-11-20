@@ -23,10 +23,8 @@ class Encoder(object):
     extracted from the metric name.
     """
 
-    def __init__(self, templates=None, separator='_'):
+    def __init__(self, templates=None):
         self.templates = templates or {}
-        self.separator = separator
-        #self.escape_tag = influxdb_tag_escaper()
 
     def encode(self, messages):
         """
@@ -37,21 +35,17 @@ class Encoder(object):
         measurements = []
         for line in messages.decode().split("\n"):
             try:
-                name, value, timestamp = line.split()
+                metric_name, value, timestamp = line.split()
             except ValueError as e:
                 logging.debug("Error in encoder: %s", e)
                 continue
-            segments = name.count('.')
-            template = self.templates.get(segments)
-            key = self.create_key(name, template)
+            key = self.templates.get_key(metric_name)
+            if not key:
+                logging.debug("missing template for metric: %s", metric_name)
+                continue
             influx_entry = self.create_entry(key, value, timestamp)
             measurements.append(influx_entry)
         return measurements
-
-    def create_key(self, name, template):
-        if not template:
-            return name.replace('.', self.separator)
-        return name
 
     @staticmethod
     def create_entry(key, value, timestamp):

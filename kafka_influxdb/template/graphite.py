@@ -15,12 +15,25 @@ class Template(object):
     metric-range. metric-names match on shorter templates if a templates
     ends with a wildcard '*'. More specific templates match first.
     """
-    def __init__(self, templates):
+    def __init__(self, templates, separator='_'):
         d = {}
+        self.tag_names = {}
         for template in templates:
             length = template.count('.')
             d[length] = template
+            template_parts = template.split('.')[:-1]
+            self.tag_names[template] = (template_parts, len(template_parts))
         self.templates = d
+        self.separator = separator
+
+    def get_key(self, metric_name):
+        """
+        Gets a metric-name and returns the measurement with optional
+        tags according to the best matching template.
+        """
+        metric_range = metric_name.count('.')
+        template = self.get(metric_range)
+        return self.apply_template(metric_name, template)
 
     def get(self, metric_range):
         """
@@ -37,3 +50,15 @@ class Template(object):
                     return template
                 metric_range -= 1
         return None
+
+    def apply_template(self, metric_name, template):
+        if not template:
+            return metric_name.replace('.', self.separator)
+        tag_names, template_range = self.tag_names[template]
+        metric_parts = metric_name.split('.', template_range)
+        measurement = metric_parts.pop().replace('.', self.separator)
+        tags = ','.join(['{}={}'.format(tag, value)
+            for tag, value in zip(tag_names, metric_parts)])
+        if tags:
+            return '{},{}'.format(measurement, tags)
+        return measurement

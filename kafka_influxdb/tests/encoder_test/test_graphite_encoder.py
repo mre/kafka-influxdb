@@ -55,11 +55,13 @@ class TestGraphiteEncoder(object):
 
     @pytest.mark.parametrize("message, key, templates", [
         # Valid, even though no template matches (fall back to default matching full key)
-        (b'myhost 1.0 1436357630', ['myhost value=1.0 1436357630'], ['*']),
-        (b'myhost 1.0 1436357630', ['myhost value=1.0 1436357630'], ['host']),  # for single segments just '*' is allowed
-        #(b'myhost.cpu 1.0 1436357630', ['cpu,host=myhost value=1.0 1436357630'], ['host.*']),
-        #(b'myhost.cpu.load 1.0 1436357630', ['cpu_load,host=myhost value=1.0 1436357630'], ['host.*']),
-        #(b'myhost.cpu.load 1.0 1436357630', ['load,cpu=cpu,host=myhost value=1.0 1436357630'], ['host.cpu.*']),
+        (b'myhost 1.0 1436357630', ['myhost value=1.0 1436357630'], ['measurement']),
+        (b'myhost.cpu 1.0 1436357630', ['myhost_cpu value=1.0 1436357630'], ['measurement*']),
+        (b'myhost.cpu 1.0 1436357630', ['cpu,host=myhost value=1.0 1436357630'], ['host.measurement']),
+        (b'myhost.cpu.load 1.0 1436357630', ['cpu_load,host=myhost value=1.0 1436357630'], ['host.measurement*']),
+        (b'myhost.cpu.load 1.0 1436357630', ['load,host=myhost,cpu=cpu value=1.0 1436357630'], ['host.cpu.measurement']),
+        (b'myhost.cpu.load 1.0 1436357630', ['load,host=myhost,cpu=cpu value=1.0 1436357630'], ['host.cpu.measurement*']),
+        (b'myhost.cpu.load.shortterm 1.0 1436357630', ['load_shortterm,host=myhost,cpu=cpu value=1.0 1436357630'], ['host.cpu.measurement*']),
     ])
     def test_encode_template(self, message, key, templates):
         self.encoder = self.create_encoder(graphite.Template(templates))
