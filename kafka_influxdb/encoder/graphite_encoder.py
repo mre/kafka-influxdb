@@ -37,6 +37,9 @@ class Encoder(object):
         """
         measurements = []
         for line in messages.decode().split("\n"):
+            line = line.strip()
+            if not line:
+                continue
             try:
                 metric_name, value, timestamp = line.split()
             except ValueError as e:
