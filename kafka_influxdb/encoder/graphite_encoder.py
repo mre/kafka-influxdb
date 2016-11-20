@@ -1,5 +1,6 @@
 import logging
 #from kafka_influxdb.encoder.escape_functions import influxdb_tag_escaper
+from kafka_influxdb.template import graphite
 
 try:
     # Test for mypy support (requires Python 3)
@@ -24,7 +25,7 @@ class Encoder(object):
     """
 
     def __init__(self, templates=None):
-        self.templates = templates or {}
+        self.templates = templates or graphite.Template()
 
     def encode(self, messages):
         """
@@ -34,6 +35,9 @@ class Encoder(object):
         """
         measurements = []
         for line in messages.decode().split("\n"):
+            if not line:
+                # Ignore empty lines
+                continue
             try:
                 metric_name, value, timestamp = line.split()
             except ValueError as e:
