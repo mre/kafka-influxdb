@@ -7,12 +7,12 @@ from encoder.graphite import Encoder
 from template.graphite import Template
 
 
-loops = int(1e2)
+loops = int(1e4)
 messages = (
-    b'dus.www0.cpu.shortterm',
-    b'562987602.cpu.load.longterm',
-    b'hkg.cpu.load.load.pipapo',
-    b'what.ever.you.like.here',
+    b'dus.www0.cpu.shortterm 1.45 123456789',
+    b'562987602.cpu.load.longterm 5.67 987654321',
+    b'hkg.cpu.load.load.pipapo hello 123876654',
+    b'what.ever.you.like.here value timestamp',
 )
 
 templates = (
@@ -23,7 +23,7 @@ templates = (
 
 def run_benchmark():
     template = Template(templates)
-    encoder = Encoder(Template)
+    encoder = Encoder(template)
     start = timeit.default_timer()
 
     for n in range(loops):
