@@ -66,7 +66,7 @@ def test_get_template(segments, result, templates):
     # find matching template depending on metric-name segments
     # (number of '.' in metric-name)
     template = graphite.Template(templates)
-    assert result == template.templates.get(segments)
+    assert result == template.templates[segments]
 
 
 class TestGraphiteEncoder(object):

@@ -27,7 +27,6 @@ class Template(object):
             self.templates[length] = template
             template_parts = template.split('.')[:-1]
             self.tag_names[template] = (template_parts, len(template_parts))
-        #self.max_template_range = self._init_wildcards()
         self.last_wildcard_template = self._init_wildcards()
         self.separator = separator
 
@@ -55,7 +54,10 @@ class Template(object):
         tags according to the best matching template.
         """
         metric_range = metric_name.count('.')
-        template = self.templates.get(metric_range, self.last_wildcard_template)
+        try:
+            template = self.templates[metric_range]
+        except KeyError:
+            template = self.last_wildcard_template
         return self.apply_template(metric_name, template)
 
     def apply_template(self, metric_name, template):

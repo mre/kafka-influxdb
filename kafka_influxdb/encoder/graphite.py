@@ -1,12 +1,6 @@
 import logging
 #from kafka_influxdb.encoder.escape_functions import influxdb_tag_escaper
-#from kafka_influxdb.template import graphite
 
-try:
-    # Test for mypy support (requires Python 3)
-    from typing import Text
-except ImportError:
-    pass
 
 class Encoder(object):
     """
