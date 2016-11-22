@@ -21,14 +21,13 @@ requires = [
     "PyYAML",
     "requests",
     "virtualenv",
-    "wheel"
+    "wheel",
+    'pytest-runner'
 ]
 
 test_requires = [
-    'nose',
     "mock",
-    "pytest"
-    'nose-cover3',
+    "pytest",
     'profilehooks'
 ]
 
