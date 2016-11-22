@@ -6,7 +6,7 @@ Kafka-InfluxDB
 
 | A Kafka consumer for InfluxDB written in Python.
 | All messages sent to Kafka on a certain topic will be relayed to Influxdb.
-| Supports InfluxDB 0.9.x and up. For InfluxDB 0.8.x support, 
+| Supports InfluxDB 0.9.x and up. For InfluxDB 0.8.x support,
 | check out the `0.3.0 tag <https://github.com/mre/kafka-influxdb/tree/v0.3.0>`__.
 
 
@@ -83,12 +83,12 @@ Supported formats
 Input formats
 ~~~~~~~~~~~~~
 
--  `Collectd Graphite ASCII format <https://collectd.org/wiki/index.php/Graphite>`_:
-::
+-  `Collectd Graphite ASCII format <https://collectd.org/wiki/index.php/Graphite>`_::
 
-   mydatacenter.myhost.load.load.shortterm 0.45 1436357630
+    mydatacenter.myhost.load.load.shortterm 0.45 1436357630
 
 -  `Collectd JSON format <https://collectd.org/wiki/index.php/JSON>`_:
+
 .. code-block:: json
 
   [{
@@ -116,10 +116,9 @@ Input formats
 Output formats
 ~~~~~~~~~~~~~~
 
--  `InfluxDB 0.9.x line protocol format <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_:
-::
+-  `InfluxDB 0.9.x line protocol format <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_::
 
-   load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630
+    load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630
 
 -  `InfluxDB 0.8.x JSON format <https://influxdb.com/docs/v0.8/api/reading_and_writing_data.html#writing-data-through-http>`_ (deprecated)
 
@@ -201,4 +200,4 @@ Please send a Pull Request if you know of other tools that can be mentioned here
    :alt: Supported Python Versions
 .. |Scrutinizer| image:: https://scrutinizer-ci.com/g/mre/kafka-influxdb/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/mre/kafka-influxdb/?branch=master
-   :alt: Scrutinizer Code Quality  
+   :alt: Scrutinizer Code Quality
