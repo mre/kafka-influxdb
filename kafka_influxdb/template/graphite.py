@@ -3,6 +3,7 @@ Maintains a dictionary of valid Graphite message templates.
 See: https://github.com/influxdata/influxdb/tree/master/services/graphite
 """
 
+
 class Template(object):
     """
     Create a lookup dictionary for quick template access (e.g. by an encoder)
@@ -26,6 +27,22 @@ class Template(object):
             d[length] = template
             template_parts = template.split('.')[:-1]
             self.tag_names[template] = (template_parts, len(template_parts))
+
+        if templates:
+            last_wildcard_template = None
+            for n in range(max(d.keys()) + 1):
+                template = d.get(n)
+                if not template:
+                    d[n] = last_wildcard_template
+                elif template.endswith('*'):
+                    last_wildcard_template = template
+            n += 1
+            d[n] = last_wildcard_template
+        else:
+            n = 0
+        self.max_template_range = n
+        d[self.max_template_range] = d.get(self.max_template_range)
+
         self.templates = d
         self.separator = separator
 
@@ -45,14 +62,7 @@ class Template(object):
         try:
             return self.templates[metric_range]
         except KeyError:
-            # TODO: make this faster?
-            metric_range -= 1
-            while metric_range >= 0:
-                template = self.templates.get(metric_range)
-                if template and template.endswith('*'):
-                    return template
-                metric_range -= 1
-        return None
+            return self.templates[self.max_template_range]
 
     def apply_template(self, metric_name, template):
         if not template:
