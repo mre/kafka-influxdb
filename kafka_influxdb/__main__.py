@@ -42,7 +42,7 @@ def start_consumer(config):
     """
     reader = create_reader(config)
     writer = create_writer(config)
-    encoder = load_encoder(config.encoder)
+    encoder = load_encoder(config.protocol, config)
     client = Worker(reader, encoder, writer, config)
     client.consume()
 

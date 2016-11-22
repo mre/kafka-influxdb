@@ -21,10 +21,9 @@ matrix:
     - python: "nightly"
   fast_finish: true
 install:
-  - "pip install nose"
   - "pip install ."
 script:
-  - python setup.py nosetests
+  - python setup.py test
 after_success:
   # python-coveralls doesn't like coverage 4.0 (see https://github.com/z4r/python-coveralls/issues/39)
   - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls coverage==3.7.1; fi

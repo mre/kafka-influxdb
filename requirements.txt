@@ -3,7 +3,6 @@ funcsigs==0.4
 influxdb==2.9.3
 kafka-python==0.9.4
 mock==1.3.0
-nose==1.3.7
 pbr==1.8.1
 profilehooks==1.8.0
 python-dateutil==2.4.2
