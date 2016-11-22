@@ -6,7 +6,8 @@ from kafka_influxdb.template import graphite
 
 # TestGraphiteTemplate:
 # initialisation of template lookup dictionary
-@pytest.mark.parametrize("templates, result, max_template_range", [
+@pytest.mark.parametrize(
+        "templates, result, max_template_range, last_wildcard_template", [
     (['host.measurement',
       'dc.cpu.measurement*',
       'dc.www.cpu.host.measurement'],
@@ -15,7 +16,7 @@ from kafka_influxdb.template import graphite
       2: 'dc.cpu.measurement*',
       3: 'dc.cpu.measurement*',
       4: 'dc.www.cpu.host.measurement',
-      5: 'dc.cpu.measurement*'}, 5),
+      5: 'dc.cpu.measurement*'}, 5, 'dc.cpu.measurement*'),
     (['measurement',
       'dc.cpu.measurement*',
       'dc.www.cpu0.cpu.host.measurement'],
@@ -25,16 +26,16 @@ from kafka_influxdb.template import graphite
       3: 'dc.cpu.measurement*',
       4: 'dc.cpu.measurement*',
       5: 'dc.www.cpu0.cpu.host.measurement',
-      6: 'dc.cpu.measurement*'}, 6),
+      6: 'dc.cpu.measurement*'}, 6, 'dc.cpu.measurement*'),
     (['measurement'],
      {0: 'measurement',
-      1: None}, 1),
-    ([], {0: None}, 0),
-    ('', {0: None}, 0),
+      1: None}, 1, None),
+    ([], {0: None}, 0, None),
+    ('', {0: None}, 0, None),
 ])
-def test_template_mapping(templates, result, max_template_range):
+def test_template_mapping(templates, result, max_template_range, last_wildcard_template):
     template = graphite.Template(templates)
-    assert template.max_template_range == max_template_range
+    assert template.last_wildcard_template == last_wildcard_template
     for n in range(max_template_range + 1):
         assert template.templates[n] == result[n]
 
@@ -65,7 +66,7 @@ def test_get_template(segments, result, templates):
     # find matching template depending on metric-name segments
     # (number of '.' in metric-name)
     template = graphite.Template(templates)
-    assert result == template.get(segments)
+    assert result == template.templates.get(segments)
 
 
 class TestGraphiteEncoder(object):
