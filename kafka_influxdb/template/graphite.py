@@ -60,8 +60,8 @@ class Template(object):
         tag_names, template_range = self.tag_names[template]
         metric_parts = metric_name.split('.', template_range)
         measurement = metric_parts.pop().replace('.', self.separator)
-        tags = ','.join(['{}={}'.format(tag, value)
+        tags = ','.join(['%s=%s' % (tag, value)
             for tag, value in zip(tag_names, metric_parts)])
         if tags:
-            return '{},{}'.format(measurement, tags)
+            return '%s,%s' % (measurement, tags)
         return measurement

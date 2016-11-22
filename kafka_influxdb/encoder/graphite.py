@@ -51,10 +51,6 @@ class Encoder(object):
             if not key:
                 logging.debug("missing template for metric: %s", metric_name)
                 continue
-            influx_entry = self.create_entry(key, value, timestamp)
+            influx_entry = '%s value=%s %s' % (key, value, timestamp)
             measurements.append(influx_entry)
         return measurements
-
-    @staticmethod
-    def create_entry(key, value, timestamp):
-        return '{} value={} {}'.format(key, value, timestamp)
