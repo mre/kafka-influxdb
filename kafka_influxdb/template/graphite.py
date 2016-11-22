@@ -64,12 +64,17 @@ class Template(object):
         except KeyError:
             return self.templates[self.max_template_range]
 
+    #@profile
     def apply_template(self, metric_name, template):
+        """
+        Applies the template to the given metric_name to create the
+        measurement with the according tags. Return the measurement.
+        """
         if not template:
             return metric_name.replace('.', self.separator)
         tag_names, template_range = self.tag_names[template]
         metric_parts = metric_name.split('.', template_range)
-        measurement = metric_parts.pop().replace('.', self.separator)
+        measurement = metric_parts[-1].replace('.', self.separator)
         tags = ','.join(['%s=%s' % (tag, value)
             for tag, value in zip(tag_names, metric_parts)])
         if tags:
