@@ -5,6 +5,41 @@ from kafka_influxdb.template import graphite
 
 
 # TestGraphiteTemplate:
+# initialisation of template lookup dictionary
+@pytest.mark.parametrize("templates, result, max_template_range", [
+    (['host.measurement',
+      'dc.cpu.measurement*',
+      'dc.www.cpu.host.measurement'],
+     {0: None,
+      1: 'host.measurement',
+      2: 'dc.cpu.measurement*',
+      3: 'dc.cpu.measurement*',
+      4: 'dc.www.cpu.host.measurement',
+      5: 'dc.cpu.measurement*'}, 5),
+    (['measurement',
+      'dc.cpu.measurement*',
+      'dc.www.cpu0.cpu.host.measurement'],
+     {0: 'measurement',
+      1: None,
+      2: 'dc.cpu.measurement*',
+      3: 'dc.cpu.measurement*',
+      4: 'dc.cpu.measurement*',
+      5: 'dc.www.cpu0.cpu.host.measurement',
+      6: 'dc.cpu.measurement*'}, 6),
+    (['measurement'],
+     {0: 'measurement',
+      1: None}, 1),
+    ([], {0: None}, 0),
+    ('', {0: None}, 0),
+])
+def test_template_mapping(templates, result, max_template_range):
+    template = graphite.Template(templates)
+    assert template.max_template_range == max_template_range
+    for n in range(max_template_range + 1):
+        assert template.templates[n] == result[n]
+
+
+# TestGraphiteTemplate:
 # metric-range is the number of dots '.' in the metric-name
 @pytest.mark.parametrize("segments, result, templates", [
     (0, 'measurement', ['measurement', 'host.measurement', 'cpu.host.measurement']),

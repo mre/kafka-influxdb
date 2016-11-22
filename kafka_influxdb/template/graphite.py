@@ -20,31 +20,33 @@ class Template(object):
         """
         templates: sequence of strings
         """
-        d = {}
+        self.templates = {}
         self.tag_names = {}
         for template in templates:
             length = template.count('.')
-            d[length] = template
+            self.templates[length] = template
             template_parts = template.split('.')[:-1]
             self.tag_names[template] = (template_parts, len(template_parts))
+        self.max_template_range = self._init_wildcards()
+        self.separator = separator
 
-        if templates:
-            last_wildcard_template = None
-            for n in range(max(d.keys()) + 1):
-                template = d.get(n)
+    def _init_wildcards(self):
+        """
+        Prepares self.templates for O(1) access in self.get()
+        Returns max-key of self.templates
+        """
+        n = 0
+        last_wildcard_template = None
+        if self.templates:
+            for n in range(max(self.templates.keys()) + 1):
+                template = self.templates.get(n)
                 if not template:
-                    d[n] = last_wildcard_template
+                    self.templates[n] = last_wildcard_template
                 elif template.endswith('*'):
                     last_wildcard_template = template
             n += 1
-            d[n] = last_wildcard_template
-        else:
-            n = 0
-        self.max_template_range = n
-        d[self.max_template_range] = d.get(self.max_template_range)
-
-        self.templates = d
-        self.separator = separator
+        self.templates[n] = last_wildcard_template
+        return n
 
     def get_key(self, metric_name):
         """
@@ -64,7 +66,6 @@ class Template(object):
         except KeyError:
             return self.templates[self.max_template_range]
 
-    #@profile
     def apply_template(self, metric_name, template):
         """
         Applies the template to the given metric_name to create the
