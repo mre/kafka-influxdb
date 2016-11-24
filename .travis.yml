@@ -22,7 +22,7 @@ matrix:
     - python: "nightly"
   fast_finish: true
 install:
-  - git clone https://github.com/edenhill/librdkafka.git && cd librdkafka && ./configure && make && make install && cd ../
+  - git clone https://github.com/edenhill/librdkafka.git && cd librdkafka && ./configure && make && sudo make install && cd ../
   - "pip install nose"
   - "pip install ."
 script:
