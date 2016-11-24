@@ -5,6 +5,7 @@ os:
 env:
   global:
     - NEWEST_PYTHON=3.5
+sudo: required
 language: python
 python:
   - "2.7"
