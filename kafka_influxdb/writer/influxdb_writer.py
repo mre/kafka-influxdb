@@ -92,6 +92,7 @@ class InfluxDBWriter(object):
             params = self.params
 
         try:
+            logging.debug("Writing message: %s", msg)
             self.client.request(url='write',
                                 method='POST',
                                 params=params,

@@ -3,6 +3,8 @@
 ### master (unreleased)
 
 * Update package requirements
+* Integration of Confluent Kafka Python client API (with librdkafka support)
+* Add config parameter `api` to select Kafka consumer library
 
 ### v0.7.3 (2016/10/14)
 
