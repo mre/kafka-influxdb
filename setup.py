@@ -14,6 +14,7 @@ requires = [
     "certifi",
     "funcsigs",
     "influxdb",
+    "confluent_kafka",
     "kafka-python",
     "mock",
     "nose",
