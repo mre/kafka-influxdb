@@ -3,6 +3,8 @@ A worker handles the connection to both, Kafka and InfluxDB and handles encoding
 """
 import logging
 import time
+import sys
+from requests.exceptions import ConnectionError
 from influxdb.exceptions import InfluxDBServerError, InfluxDBClientError
 from kafka_influxdb.encoder.errors import EncoderError
 
@@ -59,8 +61,9 @@ class Worker(object):
             logging.info("Creating InfluxDB database if not exists: %s",
                          self.config.influxdb_dbname)
             self.writer.create_database(self.config.influxdb_dbname)
-        except (InfluxDBServerError, InfluxDBClientError) as influx_error:
-            logging.error("Error while creating InfluxDB datbase: %s", influx_error)
+        except (ConnectionError, InfluxDBServerError, InfluxDBClientError) as error:
+            logging.error("Error while creating InfluxDB datbase: %s", error)
+            sys.exit(2)
 
     def flush(self):
         """
