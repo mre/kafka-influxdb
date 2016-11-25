@@ -1,4 +1,5 @@
 import logging
+from kafka_influxdb.encoder.errors import EncoderError
 
 
 class ReaderAbstract(object):

@@ -3,8 +3,6 @@ import mock
 import pytest
 import platform
 from kafka_influxdb.reader import confluent
-from kafka.common import ConnectionError
-from kafka_influxdb.tests.helpers.timeout import timeout
 
 
 class KafkaError(object):
@@ -58,19 +56,6 @@ class TestConfluentKafka(unittest.TestCase):
         self.reader._connect = mock.MagicMock()
         received_messages = list(self.reader._handle_read())
         self.assertEqual(received_messages, extracted_messages)
-
-    @timeout(0.1)
-    def test_reconnect(self):
-        """
-        In case of a connection error, the client should reconnect and
-        start receiving messages again without interruption
-        """
-        sample_messages1, extracted_messages1 = self.sample_messages("hi", 3)
-        sample_messages2, extracted_messages2 = self.sample_messages("world", 3)
-        sample_messages = sample_messages1 + [ConnectionError] + sample_messages2
-        self.reader.consumer.__iter__.return_value = sample_messages
-        received_messages = list(self.receive_messages())
-        self.assertEqual(received_messages, extracted_messages1 + extracted_messages2)
 
     def receive_messages(self):
         for message in self.reader.read():

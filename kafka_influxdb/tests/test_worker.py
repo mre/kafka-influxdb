@@ -3,6 +3,8 @@ from mock import Mock
 import random
 from kafka_influxdb.worker import Worker
 from kafka_influxdb.encoder import echo_encoder
+from kafka_influxdb.tests.helpers.timeout import timeout
+from kafka.common import ConnectionError
 
 
 class Config:
@@ -56,7 +58,7 @@ class FlakyReader(object):
         raise KeyboardInterrupt
 
 
-class TestKafkaInfluxDB(unittest.TestCase):
+class TestWorker(unittest.TestCase):
     """
     Tests for message worker.
     """
@@ -76,6 +78,7 @@ class TestKafkaInfluxDB(unittest.TestCase):
         self.assertTrue(self.writer.write.called)
         self.writer.write.assert_called_once_with(["bar"] * self.config.buffer_size)
 
+    @timeout(0.1)
     def test_reconnect(self):
         """
         The worker should reconnect when the connection is interrupted.
