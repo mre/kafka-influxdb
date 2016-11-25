@@ -1,5 +1,7 @@
 import unittest
 import mock
+import pytest
+import platform
 from kafka_influxdb.reader import confluent
 from kafka.common import ConnectionError
 from kafka_influxdb.tests.helpers.timeout import timeout
@@ -13,6 +15,9 @@ class KafkaError(object):
         self._PARTITION_EOF = 1
 
 
+@pytest.mark.skipif(platform.python_implementation() == "PyPy",
+                    reason="This reader uses a Python C-Extension for librdkafka, "
+                           "which is unsupported on PyPy.")
 class TestConfluentKafka(unittest.TestCase):
     def setUp(self):
         self.host = "myhost"

@@ -20,6 +20,8 @@ matrix:
     - python: "3.5-dev"
     - python: "nightly"
   fast_finish: true
+before_install:
+  - pip install --upgrade pip setuptools
 install:
   # Install librdkafka, which is needed for the high-performance confluent Kafka consumer.
   # PyPy has problems with librdkafka: "undefined symbol: PyUnicode_FromFormat". Skip for this platform.
