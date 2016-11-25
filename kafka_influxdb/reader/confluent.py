@@ -11,15 +11,22 @@ class Reader(ReaderAbstract):
     """
 
     def _subscribe(self):
+        """
+        Subscribe to Kafka topics.
+
+        A workaround for missing Zookeeper support in confluent-python is required here.
+        Automatic partition rebalancing is not working with Kafka Versions < 0.9.0.
+        Therefore we manually assign the partitions to the consumer for legacy Kafka versions.
+        """
         if self.broker_version < self.KAFKA_VERSION_ZOOKEEPER_OPTIONAL:
-            # A workaround for missing Zookeeper support in confluent-python.
-            # Automatic partition rebalancing is not working with Kafka Versions < 0.9.0.
-            # Therefore we manually assign the partitions to the consumer for legacy Kafka versions.
             self.consumer.assign([TopicPartition(self.topic, p) for p in range(0, 10)])
         else:
             self.consumer.subscribe([self.topic])
 
     def _setup_connection(self):
+        """
+        Confluent-Kafka configuration
+        """
         connection = {
             'bootstrap.servers': self.host + ":" + self.port,
             'group.id': self.group,
@@ -36,6 +43,9 @@ class Reader(ReaderAbstract):
         return connection
 
     def _connect(self):
+        """
+        Connect to Kafka and subscribe to the topic
+        """
         connection = self._setup_connection()
         logging.info("Connecting to Kafka with the following settings:\n %s...", connection)
         self.consumer = Consumer(**connection)
