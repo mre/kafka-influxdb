@@ -14,7 +14,6 @@ requires = [
     "certifi",
     "funcsigs",
     "influxdb",
-    "confluent_kafka",
     "kafka-python",
     "mock",
     "nose",
@@ -38,7 +37,10 @@ test_requires = [
 # ujson does not work with PyPy
 # See https://github.com/esnme/ultrajson/issues/98
 if not platform.python_implementation() == 'PyPy':
-    requires.append("ujson")
+    requires.extend([
+        "ujson",
+        "confluent_kafka"
+    ])
 
 setup(name='kafka_influxdb',
       version=__version__,
