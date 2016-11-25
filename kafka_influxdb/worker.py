@@ -47,7 +47,7 @@ class Worker(object):
                               self.config.reconnect_wait_time_ms)
                 time.sleep(self.config.reconnect_wait_time_ms / 1000.0)
             except KeyboardInterrupt:
-                logging.info("Shutdown. Flushing remaining messages in buffer.")
+                logging.info("Shutdown. Flushing remaining messages from buffer.")
                 self.flush()
                 break
 
