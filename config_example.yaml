@@ -4,7 +4,7 @@ kafka:
   port: 9092
   topic: "metrics"
   group: "kafka-influxdb"
-  reader: "kafka_influxdb.reader.confluent" # To use legacy consumer: kafka_influxdb.reader.python_kafka
+  reader: "kafka_influxdb.reader.confluent" # To use legacy consumer: kafka_influxdb.reader.kafka_python
 influxdb:
   host: "influxdb"
   port: 8086
