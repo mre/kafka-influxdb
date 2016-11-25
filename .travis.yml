@@ -9,12 +9,11 @@ sudo: required
 language: python
 python:
   - "2.7"
-  - "pypy"
   - "3.3"
   - "3.4"
   - "3.5"
   - "3.6-dev"
-  - "pypy3"
+  - "pypy-5.3.1"
   - "nightly"
 matrix:
   allow-failures:
@@ -23,7 +22,6 @@ matrix:
   fast_finish: true
 install:
   - git clone https://github.com/edenhill/librdkafka.git && cd librdkafka && ./configure --prefix=/usr && make && sudo make install && cd ../
-  - "pip install nose"
   - "pip install ."
 script:
   - python setup.py nosetests
