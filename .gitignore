@@ -61,3 +61,6 @@ tags
 .idea
 .vscode
 config_prod.yaml
+.noseids
+.tags
+xyz.py
