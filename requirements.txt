@@ -1,5 +1,4 @@
 certifi==2015.9.6.2
-confluent-kafka==0.9.2
 funcsigs==0.4
 influxdb==2.9.3
 kafka-python==0.9.4
