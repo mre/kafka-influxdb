@@ -21,7 +21,6 @@ matrix:
     - python: "nightly"
   fast_finish: true
 install:
-  - "echo PYTHON_VERSION: ${TRAVIS_PYTHON_VERSION}"
   # Install librdkafka, which is needed for the high-performance confluent Kafka consumer.
   # PyPy has problems with librdkafka: "undefined symbol: PyUnicode_FromFormat". Skip for this platform.
   - if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then git clone https://github.com/edenhill/librdkafka.git && cd librdkafka && ./configure --prefix=/usr && make && sudo make install && cd ../; fi
