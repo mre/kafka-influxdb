@@ -27,6 +27,7 @@ class Reader(ReaderAbstract):
         """
         Confluent-Kafka configuration
         """
+        # TODO: Test async commit handling (self.consumer.commit(async=False))
         connection = {
             'bootstrap.servers': self.host + ":" + self.port,
             'group.id': self.group,
@@ -66,11 +67,7 @@ class Reader(ReaderAbstract):
                 # Proper message
                 logging.debug('%s [%d] at offset %d with key %s:\n',
                               msg.topic(), msg.partition(), msg.offset(), str(msg.key()))
-                # TODO: Is this still needed?
-                # otherwise the # writer will add extra \n
-                # self.buffer.append(msg.value().rstrip('\n'))
-                # TODO: What about commit handling? self.consumer.commit(async=False)
-                yield msg.value()
+                yield msg.value().rstrip()
 
     @staticmethod
     def _handle_error(msg):
