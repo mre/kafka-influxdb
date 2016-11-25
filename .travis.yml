@@ -14,6 +14,7 @@ python:
   - "3.5"
   - "3.6-dev"
   - "pypy-5.3.1"
+     env: "TRAVIS_PYTHON_VERSION=pypy"
   - "nightly"
 matrix:
   allow-failures:
