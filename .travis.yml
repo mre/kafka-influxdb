@@ -28,8 +28,6 @@ install:
   - if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then git clone https://github.com/edenhill/librdkafka.git && cd librdkafka && ./configure --prefix=/usr && make && sudo make install && cd ../; fi
   - "python setup.py install"
 script:
-  - python setup.py nosetests
+  - coverage run --source=kafka_influxdb setup.py test
 after_success:
-  # python-coveralls doesn't like coverage 4.0 (see https://github.com/z4r/python-coveralls/issues/39)
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls coverage==3.7.1; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then python setup.py nosetests --with-coverage && coveralls; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then coveralls; fi

@@ -25,10 +25,11 @@ requires = [
 ]
 
 test_requires = [
-    "pytest"
-    'nose',
-    'nose-cover3',
-    'profilehooks'
+    "pytest",
+    "pytest-cov",
+    'profilehooks',
+    "coverage",
+    "coveralls"
 ]
 
 # Get an additional speedup with ujson,
