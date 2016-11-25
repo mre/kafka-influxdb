@@ -1,6 +1,6 @@
 import sys
 import logging
-from .worker import Worker
+from kafka_influxdb.worker import Worker
 from kafka_influxdb.writer import kafka_sample_writer, influxdb_writer
 from kafka_influxdb.encoder import load_encoder
 from kafka_influxdb.reader import load_reader
@@ -40,6 +40,7 @@ def show_version():
     from .version import __version__
     print("{} {}".format(__package__, __version__))
     sys.exit(0)
+
 
 
 def start_consumer(config):
