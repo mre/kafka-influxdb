@@ -52,7 +52,6 @@ class InfluxDBWriter(object):
 
         logging.info("Connecting to InfluxDB at %s:%s (SSL: %r, UDP: %r)", host, port, use_ssl, use_udp)
         self.client = self.create_client()
-        logging.info("Creating database %s if not exists", dbname)
 
     def create_client(self):
         """
