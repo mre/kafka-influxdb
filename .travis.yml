@@ -16,7 +16,7 @@ python:
   - "pypy-5.4"
   - "nightly"
 matrix:
-  allow-failures:
+  allow_failures:
     - python: "3.6-dev"
     - python: "nightly"
   fast_finish: true
