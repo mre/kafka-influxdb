@@ -28,8 +28,7 @@ test_requires = [
     "pytest",
     "pytest-cov",
     'profilehooks',
-    "coverage",
-    "coveralls"
+    "coverage"
 ]
 
 # Get an additional speedup with ujson,
