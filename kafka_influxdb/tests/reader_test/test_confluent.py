@@ -7,7 +7,14 @@ pytestmark = pytest.mark.skipif(platform.python_implementation() == "PyPy",
                                 reason="This reader uses a Python C-Extension for librdkafka, "
                                        "which is unsupported on PyPy.")
 
-from kafka_influxdb.reader import confluent
+try:
+    from kafka_influxdb.reader import confluent
+except ImportError as e:
+    if platform.python_implementation() == "PyPy":
+        # Confluent-Kafka is not built on PyPy. Ignore.
+        confluent = None
+    else:
+        raise e
 
 
 class KafkaError(object):
