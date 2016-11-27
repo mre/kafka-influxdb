@@ -26,8 +26,6 @@ DEFAULT_CONFIG = {
     'c': None,
     'statistics': False,
     's': False,
-    'benchmark': False,
-    'b': False,
     'verbose': 0,
     'v': 0
 }

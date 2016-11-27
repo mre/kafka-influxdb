@@ -18,6 +18,5 @@ influxdb:
   retention_policy: "autogen"
   time_precision: "s"
 encoder: "kafka_influxdb.encoder.collectd_graphite_encoder"
-benchmark: false
 buffer_size: 1000
 statistics: true

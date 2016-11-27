@@ -12,14 +12,6 @@ __license__ = 'Apache License 2.0'
 __copyright__ = 'Copyright 2015, Matthias Endler under Apache License, v2.0'
 
 
-def create_sample_messages(config):
-    logging.info(
-        "Writing sample messages for benchmark to topic: '%s'", config.kafka_topic)
-    benchmark = kafka_sample_writer.KafkaSampleWriter(
-        config.kafka_host, config.kafka_port, config.kafka_topic)
-    benchmark.produce_messages()
-
-
 def main():
     """
     Setup consumer
@@ -27,9 +19,6 @@ def main():
     config = loader.load_config()
     if config.version:
         show_version()
-    if config.benchmark:
-        print("Starting in benchmark mode. Stand by while creating sample messages.")
-        create_sample_messages(config)
     start_consumer(config)
 
 
@@ -40,7 +29,6 @@ def show_version():
     from .version import __version__
     print("{} {}".format(__package__, __version__))
     sys.exit(0)
-
 
 
 def start_consumer(config):
@@ -80,6 +68,7 @@ def create_writer(config):
                                           config.influxdb_use_udp,
                                           config.influxdb_retention_policy,
                                           config.influxdb_time_precision)
+
 
 if __name__ == '__main__':
     main()

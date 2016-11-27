@@ -135,8 +135,6 @@ def parse_args(args=sys.argv[1:]):
                         help="Configfile path (default: None)")
     parser.add_argument('-s', '--statistics', default=argparse.SUPPRESS, action="store_true",
                         help="Show performance statistics (default: True)")
-    parser.add_argument('-b', '--benchmark', default=argparse.SUPPRESS, action="store_true",
-                        help="Run benchmark (default: False)")
     parser.add_argument('-v', '--verbose', action='count', default=argparse.SUPPRESS,
                         help="Set verbosity level. Increase verbosity by adding a v: -v -vv -vvv (default: 0)")
     parser.add_argument('--version', action="store_true", help="Show version")
