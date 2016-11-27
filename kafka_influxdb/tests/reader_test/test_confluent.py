@@ -1,20 +1,8 @@
 import unittest
 import mock
 import pytest
-import platform
 
-pytestmark = pytest.mark.skipif(platform.python_implementation() == "PyPy",
-                                reason="This reader uses a Python C-Extension for librdkafka, "
-                                       "which is unsupported on PyPy.")
-
-try:
-    from kafka_influxdb.reader import confluent
-except ImportError as e:
-    if platform.python_implementation() == "PyPy":
-        # Confluent-Kafka is not built on PyPy. Ignore.
-        confluent = None
-    else:
-        raise e
+confluent = pytest.importorskip('kafka_influxdb.reader.confluent')
 
 
 class KafkaError(object):
