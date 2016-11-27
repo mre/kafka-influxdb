@@ -26,9 +26,7 @@ requires = [
 
 test_requires = [
     "pytest",
-    "pytest-cov",
-    'profilehooks',
-    "coverage"
+    'profilehooks'
 ]
 
 # Get an additional speedup with ujson,

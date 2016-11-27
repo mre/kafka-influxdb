@@ -30,4 +30,4 @@ install:
 script:
   - "python setup.py test"
 after_success:
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then py.test --cov=kafka_influxdb && bash <(curl -s https://codecov.io/bash); fi
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install pytest-cov && py.test --cov=kafka_influxdb && bash <(curl -s https://codecov.io/bash); fi
