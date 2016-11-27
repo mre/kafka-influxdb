@@ -19,7 +19,7 @@ services:
       KAFKA_CREATE_TOPICS: "metrics:1:1"
       KAFKA_ZOOKEEPER_CONNECT: "zk"
   influxdb:
-    image: tutum/influxdb:0.9
+    image: tutum/influxdb
     environment:
       PRE_CREATE_DB: "metrics"
     volumes:
