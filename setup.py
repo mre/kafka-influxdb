@@ -21,7 +21,8 @@ requires = [
     "PyYAML",
     "requests",
     "virtualenv",
-    "wheel"
+    "wheel",
+    "pytest-runner"
 ]
 
 test_requires = [
@@ -64,7 +65,6 @@ setup(name='kafka_influxdb',
       license='Apache',
       packages=find_packages(),
       install_requires=requires,
-      test_suite='nose.collector',
       tests_require=test_requires,
       entry_points={
           'console_scripts': ['kafka_influxdb=kafka_influxdb.__main__:main'],
