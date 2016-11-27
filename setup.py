@@ -30,7 +30,7 @@ test_requires = [
 ]
 
 # Get an additional speedup with ujson,
-# which is faster than the normal Python json module
+# which is faster than the normal Python json module.
 # ujson does not work with PyPy
 # See https://github.com/esnme/ultrajson/issues/98
 if not platform.python_implementation() == 'PyPy':
@@ -49,11 +49,12 @@ setup(name='kafka_influxdb',
           'Topic :: Utilities',
           "Programming Language :: Python",
           "Programming Language :: Python :: 2",
-          "Programming Language :: Python :: 2.6",
           "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: 3",
           "Programming Language :: Python :: 3.3",
           "Programming Language :: Python :: 3.4",
+          "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 3.6",
           "Programming Language :: Python :: Implementation :: PyPy",
       ],
       keywords='kafka influxdb metrics consumer',
