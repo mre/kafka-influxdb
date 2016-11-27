@@ -16,6 +16,7 @@
 * InfluxDB 1.x support
 * Deprecate Kafka sample message writer
 * Deprecate collectd message writer
+* Deprecate builtin benchmark functionality
 * Integrate kafkacat for sample message writing
 * Improve documentation
 * Fix formatting of README for PyPi (thanks @di)
