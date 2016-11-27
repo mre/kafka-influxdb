@@ -31,11 +31,15 @@ To run the tool from your local machine:
     kafka_influxdb -c config-example.yaml
 
 
-Benchmark
----------
+Performance
+-----------
 
-To see the tool in action, you can start a complete
-``CollectD -> Kafka -> kafka_influxdb -> Influxdb`` setup with the
+Running kafka-influxdb with Python 2.7 and Kafka inside a Docker container results in 11.000 messages/s on my 2014 Macbook.
+This is achieved on a Kafka topic with a single partition and no replicas.
+For even higher performance you can run kafka-influxdb on **PyPy3**. Currently this gives me **around 50.000 msgs/s in my benchmarks**.
+
+For a quick benchmark, you can start a complete
+``kafkacat -> Kafka -> kafka_influxdb -> Influxdb`` setup with the
 following command:
 
 ::
@@ -50,29 +54,6 @@ In this case 32785 is the port where you can reach it.
 Then go to ``http://<docker_host_ip>:<port>`` and type ``SHOW MEASUREMENTS``
 to see the output. (``<docker_host_ip>`` is probably ``localhost`` on Linux.
 On Mac you can find out with ``boot2docker ip`` or ``docker-machine ip``).
-
-By default this will write 1.000.000 sample messages into the
-``benchmark`` Kafka topic. After that it will consume the messages again
-to measure the throughput. Sample output using the above Docker setup
-inside a virtual machine:
-
-::
-
-    Flushing output buffer. 10811.29 messages/s
-    Flushing output buffer. 11375.65 messages/s
-    Flushing output buffer. 11930.45 messages/s
-    Flushing output buffer. 11970.28 messages/s
-    Flushing output buffer. 11016.74 messages/s
-    Flushing output buffer. 11852.67 messages/s
-    Flushing output buffer. 11833.07 messages/s
-    Flushing output buffer. 11599.32 messages/s
-    Flushing output buffer. 11800.12 messages/s
-    Flushing output buffer. 12026.89 messages/s
-    Flushing output buffer. 12287.26 messages/s
-    Flushing output buffer. 11538.44 messages/s
-
-For higher performance you can run kafka-influxdb on **PyPy3**. Currently this gives me **around 50.000 msgs/s in my benchmarks**.
-
 
 
 Supported formats
@@ -116,7 +97,7 @@ Input formats
 Output formats
 ~~~~~~~~~~~~~~
 
--  `InfluxDB 0.9.x line protocol format <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_:
+-  `InfluxDB 0.9.2+ line protocol format <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_:
 ::
 
    load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630
@@ -153,7 +134,6 @@ Option                                                    Description
 ``--buffer_size BUFFER_SIZE``                             Maximum number of messages that will be collected before flushing to the backend (default: 1000)
 ``-c CONFIGFILE``, ``--configfile CONFIGFILE``            Configfile path (default: None)
 ``-s``, ``--statistics``                                  Show performance statistics (default: True)
-``-b``, ``--benchmark``                                   Run benchmark (default: False)
 ``-v``, ``--verbose``                                     Set verbosity level. Increase verbosity by adding a v: -v -vv -vvv (default: 0)
 ``--version``                                             Show version
 ========================================================= =================================================================================================
@@ -186,8 +166,8 @@ Please send a Pull Request if you know of other tools that can be mentioned here
 
 .. |Build Status| image:: https://travis-ci.org/mre/kafka-influxdb.svg?branch=master
    :target: https://travis-ci.org/mre/kafka-influxdb
-.. |Coverage Status| image:: https://coveralls.io/repos/mre/kafka-influxdb/badge.svg?branch=master&service=github
-   :target: https://coveralls.io/github/mre/kafka-influxdb?branch=master
+.. |Coverage Status| image:: https://codecov.io/gh/mre/kafka-influxdb/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/mre/kafka-influxdb
 .. |Code Climate| image:: https://codeclimate.com/github/mre/kafka-influxdb/badges/gpa.svg
    :target: https://codeclimate.com/github/mre/kafka-influxdb
    :alt: Code Climate
