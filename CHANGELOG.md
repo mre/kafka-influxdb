@@ -3,7 +3,22 @@
 ### master (unreleased)
 
 * Update package requirements
-* Integration of Confluent Kafka Python client API (with librdkafka support)
+* Integrate Confluent Kafka Python client API (with librdkafka support)
+* Cleanup setuptools
+* Switch from nose to pytest
+* Extend travis CI configuration
+* Make writing Kafka Readers much more flexible
+* Improve error handling in Kafka Reader
+* Improve logging messages
+* General code cleanup
+* Python 3.5 support
+* PyPy 5.4 support
+* InfluxDB 1.x support
+* Deprecate Kafka sample message writer
+* Deprecate collectd message writer
+* Integrate kafkacat for sample message writing
+* Improve documentation
+* Fix formatting of README for PyPi (thanks @di)
 
 ### v0.7.3 (2016/10/14)
 
