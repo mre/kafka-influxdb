@@ -1,7 +1,7 @@
 Kafka-InfluxDB
 ==============
 
-|PyPi Version| |Build Status| |Coverage Status| |Code Climate| |Downloads| |Python Versions| |Scrutinizer|
+|PyPi Version| |Build Status| |Coverage Status| |Code Climate| |Python Versions| |Scrutinizer|
 
 
 | A Kafka consumer for InfluxDB written in Python.
@@ -14,7 +14,7 @@ Use cases
 ---------
 
 Kafka will serve as a buffer for your metric data during high load.
-Also it's useful for metrics from offshore data centers with unreliable connections to your monitoring backend.
+Also it's useful for sending metrics from offshore data centers with unreliable connections to your monitoring backend.
 
 .. figure:: https://raw.githubusercontent.com/mre/kafka-influxdb/master/assets/schema-small.png
    :alt: Usage example
@@ -23,7 +23,38 @@ Also it's useful for metrics from offshore data centers with unreliable connecti
 Quickstart
 ----------
 
-To run the tool from your local machine:
+For a quick test, run kafka-influxdb inside a container alongside Kafka and InfluxDB.
+Some sample messages are generated automatically on startup (using kafkacat).
+
+::
+
+    make
+    docker exec -it kafkainfluxdb
+    python -m kafka_influxdb -c config_example.yaml -s
+
+By default this is running on Python 2.
+You can also run on Python 3:
+
+::
+
+    make RUNTIME=py3
+    docker exec -it kafkainfluxdb
+    python -m kafka_influxdb -c config_example.yaml -s
+
+Additionally you can run it on PyPy3:
+
+::
+
+    make RUNTIME=pypy
+    docker exec -it kafkainfluxdb
+    pypy3 -m kafka_influxdb -c config_example.yaml -s --kafka_reader=kafka_influxdb.reader.kafka_python
+
+(Note that one additional flag is given: `--kafka_reader=kafka_influxdb.reader.kafka_python`. This is because
+PyPy is incompabile with the confluent kafka consumer (which is a C-extension to librdkafka).
+Therefore we use the kafka_python library here, which is compatible but a bit slower.
+
+Installation
+------------
 
 ::
 
@@ -173,9 +204,6 @@ Please send a Pull Request if you know of other tools that can be mentioned here
    :alt: Code Climate
 .. |PyPi Version| image:: https://badge.fury.io/py/kafka_influxdb.svg
    :target: https://badge.fury.io/py/kafka_influxdb
-.. |Downloads| image:: https://img.shields.io/pypi/dd/kafka-influxdb.svg
-   :target: https://pypi.python.org/pypi/kafka-influxdb/
-   :alt: pypi downloads per day
 .. |Python Versions| image:: https://img.shields.io/pypi/pyversions/kafka-influxdb.svg
    :target: https://pypi.python.org/pypi/coveralls/
    :alt: Supported Python Versions
