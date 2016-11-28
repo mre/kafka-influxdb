@@ -1,7 +1,7 @@
 import sys
 import logging
 from kafka_influxdb.worker import Worker
-from kafka_influxdb.writer import kafka_sample_writer, influxdb_writer
+from kafka_influxdb.writer import influxdb_writer
 from kafka_influxdb.encoder import load_encoder
 from kafka_influxdb.reader import load_reader
 from kafka_influxdb.config import loader
