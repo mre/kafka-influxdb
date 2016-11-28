@@ -19,7 +19,6 @@ RUN mkdir /logstash-plugins \
     && /opt/logstash/bin/plugin install /logstash-plugins/logstash-output-influxdb/logstash-output-influxdb-2.0.2.gem
 
 ADD contrib/logstash/config.conf /config/logstash-config.conf
-ADD contrib/kafka-benchmark/config.py /kafka-benchmark/config.py
 
 ADD run-logstash.sh run.sh
 RUN chmod +x run.sh
