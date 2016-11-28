@@ -26,5 +26,4 @@ do
   sleep 2
 done
 
-echo "Starting performance benchmark"
-cd /kafka-benchmark/ && python benchmark.py && logstash --config /config/logstash-config.conf
+logstash --config /config/logstash-config.conf

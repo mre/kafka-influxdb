@@ -34,8 +34,6 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    environment:
-      BENCHMARK: 1
     # Uncomment the following three lines for interactive mode:
     entrypoint: /bin/bash
     stdin_open: true

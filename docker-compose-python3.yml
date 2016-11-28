@@ -39,8 +39,6 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile-Python3
-    environment:
-      BENCHMARK: 1
     # Uncomment the following three lines for interactive mode:
     entrypoint: /bin/bash
     stdin_open: true

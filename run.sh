@@ -26,10 +26,5 @@ do
   sleep 2
 done
 
-if [ -z "$BENCHMARK" ]; then
-  echo "Starting to consume messages"
-  kafka_influxdb -v -c config_example.yaml
-else
-  echo "Starting performance benchmark"
-  kafka_influxdb -v -c config_example.yaml --benchmark
-fi
+echo "Starting to consume messages"
+kafka_influxdb -v -c config_example.yaml
