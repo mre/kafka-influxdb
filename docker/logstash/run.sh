@@ -26,4 +26,4 @@ do
   sleep 2
 done
 
-logstash --config /config/logstash-config.conf
+logstash -f config.conf

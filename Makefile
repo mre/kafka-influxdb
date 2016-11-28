@@ -18,6 +18,9 @@ down:
 logs:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml logs
 
+messages:
+	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml up kafkacat
+
 clean:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml kill
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml rm -f
@@ -29,4 +32,5 @@ help:
 	@echo "make stop                   docker-compose stop"
 	@echo "make down                   docker-compose down"
 	@echo "make clean                  docker-compose clean && docker-compose rm -f"
-	@echo "make <cmd> RUNTIME=<env>    Choose runtime environment (py2, py3 or pypy). Default: py2"
+	@echo "make messages               Create sample messages for benchmark"
+	@echo "make <cmd> RUNTIME=<env>    Choose runtime environment (py2, py3, pypy or logstash). Default: py2"
