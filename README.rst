@@ -75,16 +75,17 @@ following command:
 
 ::
 
-    docker-compose up
+    make
 
 This will immediately start reading messages from Kafka and write them
-into InfluxDB. To see the output, you can use the InfluxDB Admin Interface.
-Check on which port it is running with ``docker ps | grep tutum/influxdb``.
-There should be a mapping like 32785->8083/tcp or so.
-In this case 32785 is the port where you can reach it.
-Then go to ``http://<docker_host_ip>:<port>`` and type ``SHOW MEASUREMENTS``
-to see the output. (``<docker_host_ip>`` is probably ``localhost`` on Linux.
-On Mac you can find out with ``boot2docker ip`` or ``docker-machine ip``).
+into InfluxDB. To see the output, you can use the InfluxDB cli.
+
+::
+
+    docker exec -it docker_influxdb_1 bash # Double check your container name
+    influx
+    use metrics
+    show measurements
 
 
 Supported formats
