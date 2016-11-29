@@ -32,7 +32,7 @@ services:
     environment:
       PRE_CREATE_DB: "metrics"
     volumes:
-      - ./influxdb/config.toml:/config/config.toml
+      - ./influxdb:/config
     ports:
      - "2003"
      - "8083"
