@@ -64,3 +64,4 @@ config_prod.yaml
 .noseids
 .tags
 xyz.py
+.~*
