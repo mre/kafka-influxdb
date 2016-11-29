@@ -14,9 +14,7 @@ class ReaderAbstract(object):
     # The specific workarounds required are documented below.
     KAFKA_VERSION_ZOOKEEPER_OPTIONAL = "0.9.0"
 
-    # TODO: UNDO
-    # def __init__(self, host, port, group, topic, broker_version=KAFKA_VERSION_ZOOKEEPER_OPTIONAL):
-    def __init__(self, host, port, group, topic, broker_version="0.8.2"):
+    def __init__(self, host, port, group, topic, broker_version=KAFKA_VERSION_ZOOKEEPER_OPTIONAL):
         """
         Initialize Kafka reader
         """
@@ -52,7 +50,8 @@ class ReaderAbstract(object):
         Cleanup tasks (e.g. closing the Kafka connection).
         Can be overwritten by specific readers if required.
         """
-        self.consumer.close()
+        if self.consumer:
+            self.consumer.close()
 
     def _handle_read(self):
         """
