@@ -58,15 +58,17 @@ class Reader(ReaderAbstract):
         """
         while True:
             msg = self.consumer.poll(timeout=1.0)
-            logging.debug(msg)
+            if __debug__:
+                logging.debug(msg)
             if msg is None:
                 continue
             if msg.error():
                 self._handle_error(msg)
             else:
                 # Proper message
-                logging.debug('%s [%d] at offset %d with key %s:\n',
-                              msg.topic(), msg.partition(), msg.offset(), str(msg.key()))
+                if __debug__:
+                    logging.debug('%s [%d] at offset %d with key %s:\n',
+                                  msg.topic(), msg.partition(), msg.offset(), str(msg.key()))
                 yield msg.value().rstrip()
 
     @staticmethod
