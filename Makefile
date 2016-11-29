@@ -19,7 +19,7 @@ logs:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml logs
 
 messages:
-	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml up kafkacat
+	docker-compose -f docker/common-services.yml up kafkacat
 
 clean:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml kill
