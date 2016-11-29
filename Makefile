@@ -18,6 +18,9 @@ down:
 logs:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml logs
 
+stats:
+	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml logs kafkainfluxdb
+
 messages:
 	docker-compose -f docker/common-services.yml up kafkacat
 
@@ -31,6 +34,8 @@ help:
 	@echo "make up                     docker-compose up"
 	@echo "make stop                   docker-compose stop"
 	@echo "make down                   docker-compose down"
-	@echo "make clean                  docker-compose clean && docker-compose rm -f"
+	@echo "make logs                   docker-compose logs"
+	@echo "make stats                  docker-compose logs kafkainfluxdb"
 	@echo "make messages               Create sample messages for benchmark"
+	@echo "make clean                  docker-compose clean && docker-compose rm -f"
 	@echo "make <cmd> RUNTIME=<env>    Choose runtime environment (py2, py3, pypy or logstash). Default: py2"
