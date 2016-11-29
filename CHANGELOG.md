@@ -20,6 +20,8 @@
 * Integrate kafkacat for sample message writing
 * Improve documentation
 * Fix formatting of README for PyPi (thanks @di)
+* Update Docker-based benchmarks
+* Simplify testing by providing a Makefile-based environment
 
 ### v0.7.3 (2016/10/14)
 
