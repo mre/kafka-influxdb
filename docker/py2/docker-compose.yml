@@ -9,9 +9,9 @@ services:
       dockerfile: docker/py2/Dockerfile
     volumes:
       - ..:/kafka-influxdb
-    entrypoint: /bin/bash
-    stdin_open: true
-    tty: true
+    #entrypoint: /bin/bash
+    #stdin_open: true
+    #tty: true
     depends_on:
       - kafka
       - influxdb

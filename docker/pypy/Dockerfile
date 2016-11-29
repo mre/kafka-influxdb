@@ -4,4 +4,4 @@ MAINTAINER Matthias Endler <matthias-endler@gmx.net>
 ADD . /kafka-influxdb
 WORKDIR /kafka-influxdb
 RUN pypy3 setup.py install
-CMD ["./run.sh"]
+CMD ["./docker/run.sh"]
