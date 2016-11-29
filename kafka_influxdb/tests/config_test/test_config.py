@@ -37,7 +37,6 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(parsed_config["influxdb"]["use_udp"], False)
         self.assertEqual(parsed_config["influxdb"]["retention_policy"], "my_rp")
         self.assertEqual(parsed_config["encoder"], "collectd_graphite_encoder")
-        self.assertEqual(parsed_config["benchmark"], False)
         self.assertEqual(parsed_config["buffer_size"], 444)
         self.assertEqual(parsed_config["statistics"], True)
 
@@ -46,7 +45,6 @@ class TestConfig(unittest.TestCase):
             'influxdb_use_ssl',
             'influxdb_verify_ssl',
             'influxdb_use_udp',
-            'benchmark',
             'statistics'
         ]
         for flag in long_flags:
@@ -55,8 +53,6 @@ class TestConfig(unittest.TestCase):
 
         parsed = loader.parse_args(['-s'])
         self.assertEqual(parsed['statistics'], True)
-        parsed = loader.parse_args(['-b'])
-        self.assertEqual(parsed['benchmark'], True)
 
     def test_cli_overwrite(self):
         # Fake commandline arguments

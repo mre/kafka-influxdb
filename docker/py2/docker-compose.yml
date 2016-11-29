@@ -1,0 +1,18 @@
+version: "2"
+
+services:
+
+  kafkainfluxdb:
+    container_name: kafkainfluxdb
+    build:
+      context: ..
+      dockerfile: docker/py2/Dockerfile
+    volumes:
+      - ..:/kafka-influxdb
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    depends_on:
+      - kafka
+      - influxdb
+

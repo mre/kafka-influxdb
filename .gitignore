@@ -59,3 +59,9 @@ docs/_build/
 # Custom ignores
 tags
 .idea
+.vscode
+config_prod.yaml
+.noseids
+.tags
+xyz.py
+.~*

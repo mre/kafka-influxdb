@@ -1,12 +1,12 @@
 Kafka-InfluxDB
 ==============
 
-|PyPi Version| |Build Status| |Coverage Status| |Code Climate| |Downloads| |Python Versions| |Scrutinizer|
+|PyPi Version| |Build Status| |Coverage Status| |Code Climate| |Python Versions| |Scrutinizer|
 
 
 | A Kafka consumer for InfluxDB written in Python.
 | All messages sent to Kafka on a certain topic will be relayed to Influxdb.
-| Supports InfluxDB 0.9.x and up. For InfluxDB 0.8.x support,
+| Supports InfluxDB 0.9.x and up. For InfluxDB 0.8.x support, 
 | check out the `0.3.0 tag <https://github.com/mre/kafka-influxdb/tree/v0.3.0>`__.
 
 
@@ -14,7 +14,7 @@ Use cases
 ---------
 
 Kafka will serve as a buffer for your metric data during high load.
-Also it's useful for metrics from offshore data centers with unreliable connections to your monitoring backend.
+Also it's useful for sending metrics from offshore data centers with unreliable connections to your monitoring backend.
 
 .. figure:: https://raw.githubusercontent.com/mre/kafka-influxdb/master/assets/schema-small.png
    :alt: Usage example
@@ -23,7 +23,38 @@ Also it's useful for metrics from offshore data centers with unreliable connecti
 Quickstart
 ----------
 
-To run the tool from your local machine:
+For a quick test, run kafka-influxdb inside a container alongside Kafka and InfluxDB.
+Some sample messages are generated automatically on startup (using kafkacat).
+
+::
+
+    make
+    docker exec -it kafkainfluxdb
+    python -m kafka_influxdb -c config_example.yaml -s
+
+By default this is running on Python 2.
+You can also run on Python 3:
+
+::
+
+    make RUNTIME=py3
+    docker exec -it kafkainfluxdb
+    python -m kafka_influxdb -c config_example.yaml -s
+
+Additionally you can run it on PyPy3:
+
+::
+
+    make RUNTIME=pypy
+    docker exec -it kafkainfluxdb
+    pypy3 -m kafka_influxdb -c config_example.yaml -s --kafka_reader=kafka_influxdb.reader.kafka_python
+
+(Note that one additional flag is given: `--kafka_reader=kafka_influxdb.reader.kafka_python`. This is because
+PyPy is incompabile with the confluent kafka consumer (which is a C-extension to librdkafka).
+Therefore we use the kafka_python library here, which is compatible but a bit slower.
+
+Installation
+------------
 
 ::
 
@@ -31,11 +62,15 @@ To run the tool from your local machine:
     kafka_influxdb -c config-example.yaml
 
 
-Benchmark
----------
+Performance
+-----------
 
-To see the tool in action, you can start a complete
-``CollectD -> Kafka -> kafka_influxdb -> Influxdb`` setup with the
+Running kafka-influxdb with Python 2.7 and Kafka inside a Docker container results in 11.000 messages/s on my 2014 Macbook.
+This is achieved on a Kafka topic with a single partition and no replicas.
+For even higher performance you can run kafka-influxdb on **PyPy3**. Currently this gives me **around 50.000 msgs/s in my benchmarks**.
+
+For a quick benchmark, you can start a complete
+``kafkacat -> Kafka -> kafka_influxdb -> Influxdb`` setup with the
 following command:
 
 ::
@@ -51,29 +86,6 @@ Then go to ``http://<docker_host_ip>:<port>`` and type ``SHOW MEASUREMENTS``
 to see the output. (``<docker_host_ip>`` is probably ``localhost`` on Linux.
 On Mac you can find out with ``boot2docker ip`` or ``docker-machine ip``).
 
-By default this will write 1.000.000 sample messages into the
-``benchmark`` Kafka topic. After that it will consume the messages again
-to measure the throughput. Sample output using the above Docker setup
-inside a virtual machine:
-
-::
-
-    Flushing output buffer. 10811.29 messages/s
-    Flushing output buffer. 11375.65 messages/s
-    Flushing output buffer. 11930.45 messages/s
-    Flushing output buffer. 11970.28 messages/s
-    Flushing output buffer. 11016.74 messages/s
-    Flushing output buffer. 11852.67 messages/s
-    Flushing output buffer. 11833.07 messages/s
-    Flushing output buffer. 11599.32 messages/s
-    Flushing output buffer. 11800.12 messages/s
-    Flushing output buffer. 12026.89 messages/s
-    Flushing output buffer. 12287.26 messages/s
-    Flushing output buffer. 11538.44 messages/s
-
-For higher performance you can run kafka-influxdb on **PyPy3**. Currently this gives me **around 50.000 msgs/s in my benchmarks**.
-
-
 
 Supported formats
 -----------------
@@ -83,12 +95,12 @@ Supported formats
 Input formats
 ~~~~~~~~~~~~~
 
--  `Collectd Graphite ASCII format <https://collectd.org/wiki/index.php/Graphite>`_::
+-  `Collectd Graphite ASCII format <https://collectd.org/wiki/index.php/Graphite>`_:
+::
 
-    mydatacenter.myhost.load.load.shortterm 0.45 1436357630
+   mydatacenter.myhost.load.load.shortterm 0.45 1436357630
 
 -  `Collectd JSON format <https://collectd.org/wiki/index.php/JSON>`_:
-
 .. code-block:: json
 
   [{
@@ -116,9 +128,10 @@ Input formats
 Output formats
 ~~~~~~~~~~~~~~
 
--  `InfluxDB 0.9.x line protocol format <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_::
+-  `InfluxDB 0.9.2+ line protocol format <https://influxdb.com/docs/v0.9/write_protocols/line.html>`_:
+::
 
-    load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630
+   load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630
 
 -  `InfluxDB 0.8.x JSON format <https://influxdb.com/docs/v0.8/api/reading_and_writing_data.html#writing-data-through-http>`_ (deprecated)
 
@@ -152,7 +165,6 @@ Option                                                    Description
 ``--buffer_size BUFFER_SIZE``                             Maximum number of messages that will be collected before flushing to the backend (default: 1000)
 ``-c CONFIGFILE``, ``--configfile CONFIGFILE``            Configfile path (default: None)
 ``-s``, ``--statistics``                                  Show performance statistics (default: True)
-``-b``, ``--benchmark``                                   Run benchmark (default: False)
 ``-v``, ``--verbose``                                     Set verbosity level. Increase verbosity by adding a v: -v -vv -vvv (default: 0)
 ``--version``                                             Show version
 ========================================================= =================================================================================================
@@ -161,43 +173,31 @@ Option                                                    Description
 Alternatives
 ------------
 
-There is a Kafka input plugin and an InfluxDB output plugin for logstash.
-Currently InfluxDB 0.9 support is not part of the official logstash Influxdb output plugin
-(see `this issue <https://github.com/logstash-plugins/logstash-output-influxdb/issues/24>`__ and `this pull request <https://github.com/logstash-plugins/logstash-output-influxdb/pull/29>`__)
-
-There is a fork which supports Influxdb 0.9 and also allows us to set the InfluxDB measurement name from a field in the graphite string.
-We've achieved a message throughput of around 5000 messages/second with that setup. Check out the configuration at `contrib/logstash/config.conf`.
+There is a Kafka input plugin and an InfluxDB output plugin for logstash. It supports Influxdb 0.9+.
+We've achieved a message throughput of around 5000 messages/second with that setup. Check out the configuration at `docker/logstash/config.conf`.
 You can run the benchmark yourself:
 
 ::
 
-   # Start the logstash docker-compose setup
-   docker-compose -f docker-compose-logstash.yml up -d
-   # Open an interactive shell to the logstash container
-   docker exec -it kafkainfluxdb_logstash_1 bash
-   # Run the benchmark
-   ./run.sh
-
-
+    make RUNTIME=logstash
+    docker exec -it logstash
+    logstash -f config.conf
 
 Please send a Pull Request if you know of other tools that can be mentioned here.
 
 
 .. |Build Status| image:: https://travis-ci.org/mre/kafka-influxdb.svg?branch=master
    :target: https://travis-ci.org/mre/kafka-influxdb
-.. |Coverage Status| image:: https://coveralls.io/repos/mre/kafka-influxdb/badge.svg?branch=master&service=github
-   :target: https://coveralls.io/github/mre/kafka-influxdb?branch=master
+.. |Coverage Status| image:: https://codecov.io/gh/mre/kafka-influxdb/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/mre/kafka-influxdb
 .. |Code Climate| image:: https://codeclimate.com/github/mre/kafka-influxdb/badges/gpa.svg
    :target: https://codeclimate.com/github/mre/kafka-influxdb
    :alt: Code Climate
 .. |PyPi Version| image:: https://badge.fury.io/py/kafka_influxdb.svg
    :target: https://badge.fury.io/py/kafka_influxdb
-.. |Downloads| image:: https://img.shields.io/pypi/dd/kafka-influxdb.svg
-   :target: https://pypi.python.org/pypi/kafka-influxdb/
-   :alt: pypi downloads per day
 .. |Python Versions| image:: https://img.shields.io/pypi/pyversions/kafka-influxdb.svg
    :target: https://pypi.python.org/pypi/coveralls/
    :alt: Supported Python Versions
 .. |Scrutinizer| image:: https://scrutinizer-ci.com/g/mre/kafka-influxdb/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/mre/kafka-influxdb/?branch=master
-   :alt: Scrutinizer Code Quality
+   :alt: Scrutinizer Code Quality  

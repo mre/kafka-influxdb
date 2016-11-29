@@ -3,6 +3,25 @@
 ### master (unreleased)
 
 * Update package requirements
+* Integrate Confluent Kafka Python client API (with librdkafka support)
+* Cleanup setuptools
+* Switch from nose to pytest
+* Extend travis CI configuration
+* Make writing Kafka Readers much more flexible
+* Improve error handling in Kafka Reader
+* Improve logging messages
+* General code cleanup
+* Python 3.5 support
+* PyPy 5.4 support
+* InfluxDB 1.x support
+* Deprecate Kafka sample message writer
+* Deprecate collectd message writer
+* Deprecate builtin benchmark functionality
+* Integrate kafkacat for sample message writing
+* Improve documentation
+* Fix formatting of README for PyPi (thanks @di)
+* Update Docker-based benchmarks
+* Simplify testing by providing a Makefile-based environment
 
 ### v0.7.3 (2016/10/14)
 

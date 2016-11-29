@@ -7,6 +7,9 @@ import sys
 
 
 class ObjectView(object):
+    """
+    Creates an object out of a dictionary
+    """
     def __init__(self, d):
         self.__dict__ = d
 
@@ -95,6 +98,11 @@ def parse_args(args=sys.argv[1:]):
                         help="Topic for metrics (default: my_topic)")
     parser.add_argument('--kafka_group', type=str, default=argparse.SUPPRESS,
                         help="Kafka consumer group (default: my_group)")
+    parser.add_argument('--kafka_reconnect_wait_time_ms', type=int, default=argparse.SUPPRESS,
+                        help="Kafka reconnect wait time [ms] (default: 1000)")
+    parser.add_argument('--kafka_reader', type=str, default=argparse.SUPPRESS,
+                        help="Kafka client library to use (e.g. kafka_python or confluent)"
+                             "(default: kafka_influxdb.reader.confluent)")
     parser.add_argument('--influxdb_host', type=str, default=argparse.SUPPRESS,
                         help="InfluxDB hostname or IP (default: localhost)")
     parser.add_argument('--influxdb_port', type=int, default=argparse.SUPPRESS,
@@ -119,7 +127,7 @@ def parse_args(args=sys.argv[1:]):
                         help="Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u' (default: s)")
     parser.add_argument('--encoder', type=str, default=argparse.SUPPRESS,
                         help="Input encoder which converts an incoming message to dictionary "
-                             "(default: collectd_graphite_encoder)")
+                             "(default: kafka_influxdb.encoder.collectd_graphite_encoder)")
     parser.add_argument('--buffer_size', type=int, default=argparse.SUPPRESS,
                         help="Maximum number of messages that will be collected before flushing to the backend "
                              "(default: 1000)")
@@ -127,8 +135,6 @@ def parse_args(args=sys.argv[1:]):
                         help="Configfile path (default: None)")
     parser.add_argument('-s', '--statistics', default=argparse.SUPPRESS, action="store_true",
                         help="Show performance statistics (default: True)")
-    parser.add_argument('-b', '--benchmark', default=argparse.SUPPRESS, action="store_true",
-                        help="Run benchmark (default: False)")
     parser.add_argument('-v', '--verbose', action='count', default=argparse.SUPPRESS,
                         help="Set verbosity level. Increase verbosity by adding a v: -v -vv -vvv (default: 0)")
     parser.add_argument('--version', action="store_true", help="Show version")

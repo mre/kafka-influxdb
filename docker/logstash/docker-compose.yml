@@ -1,0 +1,17 @@
+version: "2"
+
+services:
+
+  logstash:
+    container_name: logstash
+    build:
+      context: logstash
+      dockerfile: Dockerfile
+    volumes:
+      - ./logstash:/logstash
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    depends_on:
+      - kafka
+      - influxdb

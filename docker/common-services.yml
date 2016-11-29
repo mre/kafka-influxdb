@@ -1,0 +1,39 @@
+version: "2"
+
+services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      KAFKA_CREATE_TOPICS: "metrics:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper"
+
+  kafkacat:
+    image: ryane/kafkacat
+    working_dir: /kafkacat
+    entrypoint: /bin/bash
+    command: ./run.sh messages_graphite.txt
+    volumes:
+      - ./kafkacat:/kafkacat
+    depends_on:
+      - kafka
+
+  influxdb:
+    image: tutum/influxdb
+    environment:
+      PRE_CREATE_DB: "metrics"
+    volumes:
+      - ./influxdb:/config
+    ports:
+     - "2003"
+     - "8083"
+     - "8086"

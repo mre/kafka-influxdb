@@ -16,6 +16,5 @@ influxdb:
   use_udp: False
   retention_policy: "my_rp"
 encoder: "collectd_graphite_encoder"
-benchmark: false
 buffer_size: 444
 statistics: true

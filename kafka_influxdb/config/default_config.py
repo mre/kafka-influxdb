@@ -3,7 +3,9 @@ DEFAULT_CONFIG = {
         'host': 'localhost',
         'port': '9092',
         'topic': 'my_topic',
-        'group': 'kafka-influxdb'
+        'group': 'kafka-influxdb',
+        'reconnect_wait_time_ms': 1000,
+        'reader': 'kafka_influxdb.reader.confluent',
     },
     'influxdb': {
         'host': 'localhost',
@@ -24,8 +26,6 @@ DEFAULT_CONFIG = {
     'c': None,
     'statistics': False,
     's': False,
-    'benchmark': False,
-    'b': False,
     'verbose': 0,
     'v': 0
 }

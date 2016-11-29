@@ -16,7 +16,7 @@ class TestCollectdGraphiteEncoder(unittest.TestCase):
 
         # The official documentation states that tags should be sorted for performance reasons.
         # As of now they will be sorted on the InfluxDB side anyway (which is probably faster).
-        # (See https://influxdb.com/docs/v0.9/write_protocols/line.html#key for more info)
+        # (See https://docs.influxdata.com/influxdb/v1.1/write_protocols/line_protocol_tutorial/#tag-set for more info)
         # So we don't sort the tags to make the encoder faster.
         # As a consequence they can appear in any order. Test for all combinations.
         expected1 = ['load_load_shortterm,datacenter=mydatacenter,host=myhost value=0.45 1436357630']

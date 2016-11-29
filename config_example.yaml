@@ -4,6 +4,8 @@ kafka:
   port: 9092
   topic: "metrics"
   group: "kafka-influxdb"
+  reader: "kafka_influxdb.reader.confluent"
+  #reader: "kafka_influxdb.reader.kafka_python" # Legacy consumer
 influxdb:
   host: "influxdb"
   port: 8086
@@ -17,6 +19,5 @@ influxdb:
   retention_policy: "autogen"
   time_precision: "s"
 encoder: "kafka_influxdb.encoder.collectd_graphite_encoder"
-benchmark: false
 buffer_size: 1000
 statistics: true

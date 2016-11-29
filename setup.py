@@ -15,29 +15,30 @@ requires = [
     "funcsigs",
     "influxdb",
     "kafka-python",
-    "mock",
-    "nose",
     "pbr",
     "python-dateutil",
     "pytz",
     "PyYAML",
     "requests",
     "virtualenv",
-    "wheel"
+    "wheel",
+    "pytest-runner"
 ]
 
 test_requires = [
-    'nose',
-    'nose-cover3',
+    "pytest",
     'profilehooks'
 ]
 
 # Get an additional speedup with ujson,
-# which is faster than the normal Python json module
+# which is faster than the normal Python json module.
 # ujson does not work with PyPy
 # See https://github.com/esnme/ultrajson/issues/98
 if not platform.python_implementation() == 'PyPy':
-    requires.append("ujson")
+    requires.extend([
+        "ujson",
+        "confluent_kafka"
+    ])
 
 setup(name='kafka_influxdb',
       version=__version__,
@@ -49,11 +50,12 @@ setup(name='kafka_influxdb',
           'Topic :: Utilities',
           "Programming Language :: Python",
           "Programming Language :: Python :: 2",
-          "Programming Language :: Python :: 2.6",
           "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: 3",
           "Programming Language :: Python :: 3.3",
           "Programming Language :: Python :: 3.4",
+          "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 3.6",
           "Programming Language :: Python :: Implementation :: PyPy",
       ],
       keywords='kafka influxdb metrics consumer',
@@ -63,7 +65,6 @@ setup(name='kafka_influxdb',
       license='Apache',
       packages=find_packages(),
       install_requires=requires,
-      test_suite='nose.collector',
       tests_require=test_requires,
       entry_points={
           'console_scripts': ['kafka_influxdb=kafka_influxdb.__main__:main'],

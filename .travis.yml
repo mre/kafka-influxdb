@@ -5,27 +5,29 @@ os:
 env:
   global:
     - NEWEST_PYTHON=3.5
+sudo: required
 language: python
 python:
   - "2.7"
-  - "pypy"
   - "3.3"
   - "3.4"
   - "3.5"
-  - "pypy3"
-  - "3.5-dev"
+  - "3.6-dev"
+  - "pypy-5.4"
   - "nightly"
 matrix:
-  allow-failures:
-    - python: "3.5-dev"
+  allow_failures:
+    - python: "3.6-dev"
     - python: "nightly"
   fast_finish: true
+before_install:
+  - pip install --upgrade pip setuptools
 install:
-  - "pip install nose"
-  - "pip install ."
+  # Install librdkafka, which is needed for the high-performance confluent Kafka consumer.
+  # PyPy has problems with librdkafka: "undefined symbol: PyUnicode_FromFormat". Skip for this platform.
+  - if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then git clone https://github.com/edenhill/librdkafka.git && cd librdkafka && ./configure --prefix=/usr && make && sudo make install && cd ../; fi
+  - "python setup.py install"
 script:
-  - python setup.py nosetests
+  - "python setup.py test"
 after_success:
-  # python-coveralls doesn't like coverage 4.0 (see https://github.com/z4r/python-coveralls/issues/39)
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install python-coveralls coverage==3.7.1; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then python setup.py nosetests --with-coverage && coveralls; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == $NEWEST_PYTHON ]]; then pip install pytest-cov && py.test --cov=kafka_influxdb && bash <(curl -s https://codecov.io/bash); fi
