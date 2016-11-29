@@ -1,3 +1,5 @@
+reporting-disabled=false
+
 [meta]
   dir = "/var/lib/influxdb/meta"
 
@@ -5,6 +7,9 @@
   dir = "/var/lib/influxdb/data"
   engine = "tsm1"
   wal-dir = "/var/lib/influxdb/wal"
+
+[http]
+  enabled = true
 
 [admin]
   enabled = true
