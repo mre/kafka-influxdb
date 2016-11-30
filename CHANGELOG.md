@@ -2,6 +2,8 @@
 
 ### master (unreleased)
 
+### v0.8.0 (2016/11/30)
+
 * Update package requirements
 * Integrate Confluent Kafka Python client API (with librdkafka support)
 * Cleanup setuptools
