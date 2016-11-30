@@ -12,7 +12,7 @@ try:
 
     long_description = pypandoc.convert('README.md',
                                         to='rst',
-                                        extra_args=["--wrap=preserve"],
+                                        extra_args=["--wrap=none", "--columns=200"],
                                         format='markdown_github')
     long_description = long_description.replace("\r", "")
 except OSError as e:

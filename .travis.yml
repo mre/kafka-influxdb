@@ -21,6 +21,7 @@ matrix:
     - python: "nightly"
   fast_finish: true
 before_install:
+  - pip install pypandoc # Required for README.md conversion to RestructuredText (used by pypi)
   - pip install --upgrade pip setuptools
 install:
   # Install librdkafka, which is needed for the high-performance confluent Kafka consumer.

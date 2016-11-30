@@ -61,7 +61,7 @@ The following graph shows the number of messages/s read from Kafka for various P
 This is testing against a Kafka topic with 10 partitions and five message brokers.
 As you can see the best performance is achieved on Python 3 using the `-O` flag for bytecode optimization in combination with the `confluent-kafka` reader (default setup). Note that encoding and sending the data to InfluxDB might lower this maximum performance although you should still see a significant performance boost compared to logstash.
 
-![Build Status](assets/benchmark.png)
+![Benchmark results](assets/benchmark.png)
 
 
 ## Benchmark
@@ -82,7 +82,7 @@ This will immediately start reading messages from Kafka and write them into Infl
 
 You can write a custom encoder to support any input and output format (even fancy things like Protobuf). Look at the examples inside the `encoder` directory to get started. The following formats are officially supported:
 
-### Input formats
+#### Input formats
 
 - [Collectd Graphite ASCII format](https://collectd.org/wiki/index.php/Graphite): :
 
@@ -115,7 +115,7 @@ mydatacenter.myhost.load.load.shortterm 0.45 1436357630
 
 -   [Raw InfluxDB line protocol (e.g. for Telegraf support)](https://github.com/mre/kafka-influxdb/issues/40):
 
-### Output formats
+#### Output formats
 
 - [InfluxDB 0.9.2+ line protocol format](https://influxdb.com/docs/v0.9/write_protocols/line.html): :
 
