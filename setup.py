@@ -5,10 +5,14 @@ import platform
 # since we can't import something we haven't built yet :)
 exec(open('kafka_influxdb/version.py').read())
 
+# Create reStructuredText README file for PyPi
+# http://stackoverflow.com/a/26737672/270334
+try:
+    import pypandoc
 
-def readme():
-    with open('README.rst') as readme_file:
-        return readme_file.read()
+    long_description = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    long_description = open('README.md').read()
 
 requires = [
     "certifi",
@@ -43,7 +47,7 @@ if not platform.python_implementation() == 'PyPy':
 setup(name='kafka_influxdb',
       version=__version__,
       description='A Kafka consumer for InfluxDB',
-      long_description=readme(),
+      long_description=long_description,
       classifiers=[
           'Development Status :: 4 - Beta',
           'License :: OSI Approved :: Apache Software License',
