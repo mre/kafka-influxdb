@@ -10,9 +10,18 @@ exec(open('kafka_influxdb/version.py').read())
 try:
     import pypandoc
 
-    long_description = pypandoc.convert('README.md', 'rst')
-except(IOError, ImportError):
-    long_description = open('README.md').read()
+    long_description = pypandoc.convert('README.md',
+                                        to='rst',
+                                        extra_args=["--wrap=preserve"],
+                                        format='markdown_github')
+    long_description = long_description.replace("\r", "")
+except OSError as e:
+    print("\n\n!!! pandoc not found, long_description is bad, don't upload this to PyPI !!!\n\n")
+    import io
+
+    # pandoc is not installed, fallback to using raw contents
+    with io.open('README.md', encoding="utf-8") as f:
+        long_description = f.read()
 
 requires = [
     "certifi",
