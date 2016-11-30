@@ -67,7 +67,7 @@ As you can see the best performance is achieved on Python 3 using the `-O` flag 
 ## Benchmark
 
 
-For a quick benchmark, you can start a complete `kafkacat -> Kafka -> kafka\_influxdb -> Influxdb` setup with the following command:
+For a quick benchmark, you can start a complete `kafkacat -> Kafka -> kafka_influxdb -> Influxdb` setup with the following command:
 
     make
 
