@@ -65,3 +65,4 @@ config_prod.yaml
 .tags
 xyz.py
 .~*
+.DS_Store

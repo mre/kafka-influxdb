@@ -36,7 +36,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(parsed_config["influxdb"]["timeout"], 9000)
         self.assertEqual(parsed_config["influxdb"]["use_udp"], False)
         self.assertEqual(parsed_config["influxdb"]["retention_policy"], "my_rp")
-        self.assertEqual(parsed_config["encoder"], "collectd_graphite_encoder")
+        self.assertEqual(parsed_config["encoder"], "")
         self.assertEqual(parsed_config["buffer_size"], 444)
         self.assertEqual(parsed_config["statistics"], True)
 

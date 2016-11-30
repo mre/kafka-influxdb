@@ -127,7 +127,7 @@ def parse_args(args=sys.argv[1:]):
                         help="Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u' (default: s)")
     parser.add_argument('--encoder', type=str, default=argparse.SUPPRESS,
                         help="Input encoder which converts an incoming message to dictionary "
-                             "(default: kafka_influxdb.encoder.collectd_graphite_encoder)")
+                             "(default: graphite)")
     parser.add_argument('--buffer_size', type=int, default=argparse.SUPPRESS,
                         help="Maximum number of messages that will be collected before flushing to the backend "
                              "(default: 1000)")

@@ -34,7 +34,7 @@ def show_version():
 def start_consumer(config):
     """
     Start metrics consumer
-    :param config:
+    :param config: Configuration parameters
     """
     logging.debug("Initializing Kafka Consumer")
     reader = load_reader(
@@ -48,7 +48,7 @@ def start_consumer(config):
                   config.influxdb_host, config.influxdb_port)
     writer = create_writer(config)
     logging.debug("Initializing message encoder: %s", config.encoder)
-    encoder = load_encoder(config.encoder)
+    encoder = load_encoder(config.encoder, config)
     client = Worker(reader, encoder, writer, config)
     client.consume()
 
@@ -56,18 +56,25 @@ def start_consumer(config):
 def create_writer(config):
     """
     Create InfluxDB writer
+    :param config: Configuration parameters
+    :return:
     """
-    return influxdb_writer.InfluxDBWriter(config.influxdb_host,
-                                          config.influxdb_port,
-                                          config.influxdb_user,
-                                          config.influxdb_password,
-                                          config.influxdb_dbname,
-                                          config.influxdb_use_ssl,
-                                          config.influxdb_verify_ssl,
-                                          config.influxdb_timeout,
-                                          config.influxdb_use_udp,
-                                          config.influxdb_retention_policy,
-                                          config.influxdb_time_precision)
+    logging.info("Connecting to InfluxDB at %s:%s", config.influxdb_host, config.influxdb_port)
+    try:
+        return influxdb_writer.InfluxDBWriter(config.influxdb_host,
+                                              config.influxdb_port,
+                                              config.influxdb_user,
+                                              config.influxdb_password,
+                                              config.influxdb_dbname,
+                                              config.influxdb_use_ssl,
+                                              config.influxdb_verify_ssl,
+                                              config.influxdb_timeout,
+                                              config.influxdb_use_udp,
+                                              config.influxdb_retention_policy,
+                                              config.influxdb_time_precision)
+    except Exception as e:
+        logging.error("The connection to InfluxDB can not be established: %s", e)
+        sys.exit(-2)
 
 
 if __name__ == '__main__':

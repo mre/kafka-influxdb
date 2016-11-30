@@ -149,7 +149,7 @@ You can overwrite the settings from the commandline. The following parameters ar
 | `--influxdb_use_udp`                                    | Use UDP connection for InfluxDB (default: False)                                                      |
 | `--influxdb_retention_policy INFLUXDB_RETENTION_POLICY` | Retention policy for incoming metrics (default: autogen)                                              |
 | `--influxdb_time_precision INFLUXDB_TIME_PRECISION`     | Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u' (default: s)                         |
-| `--encoder ENCODER`                                     | Input encoder which converts an incoming message to dictionary (default: collectd\_graphite\_encoder) |
+| `--encoder ENCODER`                                     | Input encoder which converts an incoming message to dictionary (default: graphite)                    |
 | `--buffer_size BUFFER_SIZE`                             | Maximum number of messages that will be collected before flushing to the backend (default: 1000)      |
 | `-c CONFIGFILE`, `--configfile CONFIGFILE`              | Configfile path (default: None)                                                                       |
 | `-s`, `--statistics`                                    | Show performance statistics (default: True)                                                           |

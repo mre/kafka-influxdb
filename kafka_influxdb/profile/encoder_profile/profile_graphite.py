@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 from profilehooks import profile
-from kafka_influxdb.encoder import collectd_graphite_encoder
+from kafka_influxdb.encoder import graphite
 
 
 class ProfileCollectdGraphiteEncoder:
 
     def __init__(self, num_messages=10000):
-        self.encoder = collectd_graphite_encoder.Encoder()
+        self.encoder = graphite.Encoder()
         self.sample_messages = b"""
             26f2fc918f50.load.load.shortterm 0.05 1436357630
             26f2fc918f50.load.load.midterm 0.05 1436357630
