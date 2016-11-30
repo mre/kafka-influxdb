@@ -22,6 +22,7 @@
 * Fix formatting of README for PyPi (thanks @di)
 * Update Docker-based benchmarks
 * Simplify testing by providing a Makefile-based environment
+* Start kafka-influxdb with Python optimization (-O flag) by default.
 
 ### v0.7.3 (2016/10/14)
 

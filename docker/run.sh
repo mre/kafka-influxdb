@@ -27,4 +27,4 @@ do
 done
 
 echo "Starting to consume messages"
-kafka_influxdb -v -c config_example.yaml
+kafka_influxdb -s -c config_example.yaml

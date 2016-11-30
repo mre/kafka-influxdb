@@ -14,5 +14,5 @@ do
   sleep 2
 done
 
-kafkacat -P -l -T -t ${KAFKA_TOPIC} -b ${KAFKA_HOST}:${KAFKA_PORT} "$@"
+kafkacat -P -l -t ${KAFKA_TOPIC} -b ${KAFKA_HOST}:${KAFKA_PORT} "$@"
 

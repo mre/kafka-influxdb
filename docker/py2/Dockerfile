@@ -24,4 +24,4 @@ RUN apt-get update \
 ADD . /kafka-influxdb
 WORKDIR /kafka-influxdb
 RUN python setup.py install
-CMD ["./run.sh"]
+CMD ["./docker/run.sh"]
