@@ -47,8 +47,8 @@ def start_consumer(config):
     logging.debug("Initializing connection to InfluxDB at %s:%s",
                   config.influxdb_host, config.influxdb_port)
     writer = create_writer(config)
-    logging.debug("Initializing message encoder: %s", config.encoder)
-    encoder = load_encoder(config.encoder, config)
+    logging.debug("Initializing message encoder: %s", config.encoding)
+    encoder = load_encoder(config.encoding, config)
     client = Worker(reader, encoder, writer, config)
     client.consume()
 

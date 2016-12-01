@@ -125,8 +125,8 @@ def parse_args(args=sys.argv[1:]):
                         help="Retention policy for incoming metrics (default: default)")
     parser.add_argument('--influxdb_time_precision', type=str, default=argparse.SUPPRESS,
                         help="Precision of incoming metrics. Can be one of 's', 'm', 'ms', 'u' (default: s)")
-    parser.add_argument('--encoder', type=str, default=argparse.SUPPRESS,
-                        help="Input encoder which converts an incoming message to dictionary "
+    parser.add_argument('--encoding', type=str, default=argparse.SUPPRESS,
+                        help="Input encoding of incoming messages"
                              "(default: graphite)")
     parser.add_argument('--buffer_size', type=int, default=argparse.SUPPRESS,
                         help="Maximum number of messages that will be collected before flushing to the backend "
