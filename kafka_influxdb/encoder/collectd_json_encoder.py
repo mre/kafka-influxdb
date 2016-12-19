@@ -74,7 +74,7 @@ class Encoder(object):
     # following methods are added to support customizing measurement name, tags much more flexible
     @staticmethod
     def compose_data(measurement, tags, value, time):
-        data = "%s,%s %s %s" % (measurement, tags, value, time)
+        data = "{0!s},{1!s} {2!s} {3!s}".format(measurement, tags, value, time)
         return data
 
     @staticmethod
@@ -94,7 +94,7 @@ class Encoder(object):
             if arg in entry:
                 # to avoid add None as tag value
                 if entry[arg] != '':
-                    tag.append("%s=%s" % (arg, entry[arg]))
+                    tag.append("{0!s}={1!s}".format(arg, entry[arg]))
         return ','.join(tag)
 
     @staticmethod
@@ -105,11 +105,11 @@ class Encoder(object):
     def format_value(entry):
         values = entry['values']
         if len(values) == 1:
-            return "value=%s" % entry['values'][0]
+            return "value={0!s}".format(entry['values'][0])
         else:
             # influxdb supports writing a record with multiple field values.
             # e.g: 'cpu_load_short,host=server01,region=us-west mem=0.1,cpu=0.2 1422568543702900257'
             field_pairs = []
             for key, value in zip(entry['dsnames'], values):
-                field_pairs.append("%s=%s" % (key, value))
+                field_pairs.append("{0!s}={1!s}".format(key, value))
             return ','.join(field_pairs)
