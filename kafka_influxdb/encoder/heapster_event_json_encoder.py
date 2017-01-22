@@ -101,7 +101,7 @@ class Encoder(object):
         tag.append("reason={0!s}".format(self.escape_tag(ev["reason"] )))
         
         tags = entry["EventTags"]
-        if tags.has_key("hostname"):
+        if tags.get("hostname"):
             tag.append('hostname="{0!s}"'.format(self.escape_tag(tags["hostname"])))
       
         tag_str = ','.join(tag) 
