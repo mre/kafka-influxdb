@@ -1,8 +1,3 @@
-'''
-Created on Jan 20, 2017
-
-@author: i041966
-'''
 try:
     import ujson as json
 except ImportError:
@@ -26,7 +21,7 @@ class Encoder(object):
     Sample events:
    {
                      
-   "    "EventValue": "{\n 
+      "EventValue": "{\n 
               \"metadata\":
                          {\n  \"name\": \"jslave-golang-1711858954-g9rbc.149b8219c4dd21de\",\n  
                          \"namespace\": \"kube-system\",\n  
@@ -68,23 +63,19 @@ class Encoder(object):
     def encode(self, msg):
         # type: (bytes) -> List[Text]
         measurements = []
-
-        for line in msg.decode().split("\n"):
-            try:
-                # Set flag for float precision to get the same
-                # results for Python 2 and 3.
-                entry = Encoder.parse_line(line)
-            except ValueError as e:
-                logging.debug("Error in encoder: %s", e)
-                continue
-            try:
-                measurement = "events"
-                tags_value = self.format_tags_value(entry)
-                time = self.format_time(entry)
-                measurements.append(self.compose_data(measurement, tags_value, time))
-            except Exception as e:
-                logging.debug("Error in input data: %s. Skipping.", e)
-                continue
+        try:
+            entry = Encoder.parse_line(msg.decode())
+        except ValueError as e:
+            logging.debug("Error in encoder: %s", e)
+            return measurements
+        
+        try:
+            measurement = "events"
+            tags_value = self.format_tags_value(entry)
+            time = self.format_time(entry)
+            measurements.append(self.compose_data(measurement, tags_value, time))
+        except Exception as e:
+            logging.debug("Error in input data: %s. Skipping.", e)
 
         return measurements
 

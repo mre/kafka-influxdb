@@ -1,8 +1,3 @@
-'''
-Created on Jan 20, 2017
-
-@author: i041966
-'''
 try:
     import ujson as json
 except ImportError:
@@ -49,23 +44,20 @@ class Encoder(object):
         # type: (bytes) -> List[Text]
         measurements = []
 
-        for line in msg.decode().split("\n"):
-            try:
-                # Set flag for float precision to get the same
-                # results for Python 2 and 3.
-                entry = self.parse_line(line)
-            except ValueError as e:
-                logging.debug("Error in encoder: %s", e)
-                continue
-            try:                    
-                measurement = entry["MetricsName"]
-                tags = self.format_tags(entry)
-                value = self.format_value(entry)
-                time = self.format_time(entry)
-                measurements.append(self.compose_data(measurement, tags, value, time))
-            except Exception as e:
-                logging.debug("Error in input data: %s. Skipping.", e)
-                continue
+        try:
+            entry = self.parse_line(msg.decode())
+        except ValueError as e:
+            logging.debug("Error in encoder: %s", e)
+            return measurements
+        
+        try:                    
+            measurement = entry["MetricsName"]
+            tags = self.format_tags(entry)
+            value = self.format_value(entry)
+            time = self.format_time(entry)
+            measurements.append(self.compose_data(measurement, tags, value, time))
+        except Exception as e:
+            logging.debug("Error in input data: %s. Skipping.", e)
 
         return measurements
 
