@@ -26,6 +26,7 @@ class Worker(object):
 
         # Field for time measurement
         self.start_time = None
+        self.last_flush_time = None
 
     def consume(self):
         """
@@ -35,12 +36,18 @@ class Worker(object):
         self.init_database()
 
         logging.info("Listening for messages on Kafka topic %s...", self.config.kafka_topic)
-        self.start_time = time.time()
+        self.start_time = self.last_flush_time = time.time()
         while True:
             try:
                 for index, raw_message in enumerate(self.reader.read(), 1):
-                    self.buffer.extend(self.encoder.encode(raw_message))
-                    if index % self.config.buffer_size == 0:
+                    if raw_message:
+                        self.buffer.extend(self.encoder.encode(raw_message))
+                        if index % self.config.buffer_size == 0:
+                            self.flush()
+                    elif (self.config.buffer_timeout and len(self.buffer) > 0 and
+                         (time.time() - self.last_flush_time) >= self.config.buffer_timeout):
+                        logging.debug("Buffer timeout %ss. Flushing remaining %s messages from buffer.",
+                                      self.config.buffer_timeout, len(self.buffer))
                         self.flush()
             except EncoderError:
                 logging.error("Encoder error. Trying to reconnect to %s:%s",
@@ -73,6 +80,7 @@ class Worker(object):
             # Don't do anything when buffer empty
             return
         try:
+            self.last_flush_time = time.time()
             self.writer.write(self.buffer)
             if self.config.statistics:
                 self.show_statistics()
