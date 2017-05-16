@@ -1,6 +1,7 @@
 import unittest
 from mock import Mock
 import random
+import time
 from kafka_influxdb.worker import Worker
 from kafka_influxdb.encoder import echo_encoder
 from kafka_influxdb.tests.helpers.timeout import timeout
@@ -11,8 +12,9 @@ class Config:
     """
     Dummy config with minimum settings to pass the tests
     """
-    def __init__(self, buffer_size):
+    def __init__(self, buffer_size, buffer_timeout):
         self.buffer_size = buffer_size
+        self.buffer_timeout = buffer_timeout
         self.kafka_topic = "test"
         self.influxdb_dbname = "mydb"
         self.statistics = False
@@ -32,6 +34,24 @@ class DummyReader(object):
         # Simulate keyboard interrupt by user to stop consuming
         raise KeyboardInterrupt
 
+class TimeoutReader(object):
+    """
+    A reader that writes half the messages then times out
+    """
+    def __init__(self, message, num_messages, timeout):
+        self.message = message
+        self.num_messages = num_messages
+        self.timeout = timeout
+
+    def read(self):
+        # Yield the first half of messages
+        for i in range(self.num_messages-1):
+            yield self.message
+        # Simulate no additional messages causing timeout
+        time.sleep(self.timeout)
+        yield False
+        # Simulate keyboard interrupt by user to stop consuming
+        raise KeyboardInterrupt
 
 class FlakyReader(object):
     """
@@ -63,7 +83,7 @@ class TestWorker(unittest.TestCase):
     Tests for message worker.
     """
     def setUp(self):
-        self.config = Config(10)
+        self.config = Config(10, 0.1)
         self.encoder = echo_encoder.Encoder()
         self.writer = Mock()
         self.writer.write.return_value = True
@@ -77,6 +97,16 @@ class TestWorker(unittest.TestCase):
         client.consume()
         self.assertTrue(self.writer.write.called)
         self.writer.write.assert_called_once_with(["bar"] * self.config.buffer_size)
+
+    def test_buffer_timeout(self):
+        """
+        If the buffer has timed out flush to the writer.
+        """
+        reader = TimeoutReader("bar", self.config.buffer_size, self.config.buffer_timeout)
+        client = Worker(reader, self.encoder, self.writer, self.config)
+        client.consume()
+        self.assertTrue(self.writer.write.called)
+        self.writer.write.assert_called_once_with(["bar"] * int(self.config.buffer_size-1))
 
     @timeout(0.1)
     def test_reconnect(self):
