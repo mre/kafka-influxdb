@@ -44,7 +44,6 @@ class TimeoutReader(object):
         self.timeout = timeout
 
     def read(self):
-        # Yield the first half of messages
         for i in range(self.num_messages-1):
             yield self.message
         # Simulate no additional messages causing timeout
