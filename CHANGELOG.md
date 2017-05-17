@@ -2,6 +2,12 @@
 
 ### master (unreleased)
 
+### v0.9.0 (2017/05/17)
+
+* Add timeout to flush buffer if last flush was longer than x seconds ago. (by @c0by)
+* Fix pip package
+* Support heapster/eventer JSON format (by @jerryjxj)
+
 ### v0.8.0 (2016/11/30)
 
 * Update package requirements
