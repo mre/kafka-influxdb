@@ -59,6 +59,8 @@ class Worker(object):
                 logging.info("Shutdown. Flushing remaining messages from buffer.")
                 self.flush()
                 break
+            except SystemExit:
+                break
 
     def init_database(self):
         """

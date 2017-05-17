@@ -49,8 +49,8 @@ class TimeoutReader(object):
         # Simulate no additional messages causing timeout
         time.sleep(self.timeout)
         yield False
-        # Simulate keyboard interrupt by user to stop consuming
-        raise KeyboardInterrupt
+        # Stop consuming
+        raise SystemExit
 
 class FlakyReader(object):
     """
