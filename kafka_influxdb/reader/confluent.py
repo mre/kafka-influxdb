@@ -61,6 +61,7 @@ class Reader(ReaderAbstract):
             if __debug__:
                 logging.debug(msg)
             if msg is None:
+                yield False
                 continue
             if msg.error():
                 self._handle_error(msg)
