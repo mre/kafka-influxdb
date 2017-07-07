@@ -3,7 +3,6 @@ A worker handles the connection to both, Kafka and InfluxDB and handles encoding
 """
 import logging
 import time
-import sys
 from requests.exceptions import ConnectionError
 from influxdb.exceptions import InfluxDBServerError, InfluxDBClientError
 from kafka_influxdb.encoder.errors import EncoderError
@@ -14,6 +13,7 @@ class Worker(object):
     Implementation of worker class that handles Kafka and InfluxDB
     connections and manages message encoding.
     """
+
     def __init__(self, reader, encoder, writer, config):
         """
         Setup
@@ -27,6 +27,7 @@ class Worker(object):
         # Field for time measurement
         self.start_time = None
         self.last_flush_time = None
+        self.db_create_delay = 1
 
     def consume(self):
         """
@@ -45,7 +46,7 @@ class Worker(object):
                         if index % self.config.buffer_size == 0:
                             self.flush()
                     elif (self.config.buffer_timeout and len(self.buffer) > 0 and
-                         (time.time() - self.last_flush_time) >= self.config.buffer_timeout):
+                                  (time.time() - self.last_flush_time) >= self.config.buffer_timeout):
                         logging.debug("Buffer timeout %ss. Flushing remaining %s messages from buffer.",
                                       self.config.buffer_timeout, len(self.buffer))
                         self.flush()
@@ -70,9 +71,12 @@ class Worker(object):
             logging.info("Creating InfluxDB database if not exists: %s",
                          self.config.influxdb_dbname)
             self.writer.create_database(self.config.influxdb_dbname)
-        except (ConnectionError, InfluxDBServerError, InfluxDBClientError) as error:
-            logging.error("Error while creating InfluxDB datbase: %s", error)
-            sys.exit(2)
+        except ConnectionError as error:
+            logging.error("Connection error while trying to create InfluxDB database: %s. Waiting for retry...", error)
+            time.sleep(self.db_create_delay)
+            self.init_database()
+        except (InfluxDBServerError, InfluxDBClientError) as error:
+            logging.warning("Could not create InfluxDB database. Assuming it already exists: %s", error)
 
     def flush(self):
         """
