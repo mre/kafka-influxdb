@@ -4,7 +4,7 @@
 
 ### v0.9.1 (2017/07/07)
 
-* Fix hard exit when InfluxDB could not be created (#51)
+* Fix hard exit when InfluxDB database could not be created (#51)
 
 ### v0.9.0 (2017/05/17)
 
