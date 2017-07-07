@@ -5,7 +5,8 @@ import time
 from kafka_influxdb.worker import Worker
 from kafka_influxdb.encoder import echo_encoder
 from kafka_influxdb.tests.helpers.timeout import timeout
-from kafka.common import ConnectionError
+from requests.exceptions import ConnectionError
+from influxdb.exceptions import InfluxDBServerError, InfluxDBClientError
 
 
 class Config:
@@ -86,6 +87,18 @@ class TestWorker(unittest.TestCase):
         self.encoder = echo_encoder.Encoder()
         self.writer = Mock()
         self.writer.write.return_value = True
+
+    def test_create_database(self):
+        """
+        Retry creating the InfluxDB database in case of a connection error
+        """
+        reader = DummyReader(["bar"], self.config.buffer_size)
+        writer_with_connection_error = Mock()
+        writer_with_connection_error.create_database = Mock(side_effect=[ConnectionError, None])
+
+        client = Worker(reader, self.encoder, writer_with_connection_error, self.config)
+        client.consume()
+        self.assertEqual(writer_with_connection_error.create_database.call_count, 2)
 
     def test_flush(self):
         """
