@@ -2,9 +2,13 @@
 
 ### master (unreleased)
 
-### v0.9.1 (2017/07/07)
+### v0.9.2 (2017/07/07)
 
 * Fix hard exit when InfluxDB database could not be created (#51)
+
+### v0.9.1 (2017/05/17)
+
+* Add missing build requirement
 
 ### v0.9.0 (2017/05/17)
 
