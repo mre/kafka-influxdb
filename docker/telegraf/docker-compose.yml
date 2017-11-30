@@ -1,0 +1,13 @@
+version: "2"
+
+services:
+  telegraf:
+    image: telegraf
+    working_dir: /telegraf
+    entrypoint: /bin/bash
+    command: ./run.sh
+    volumes:
+      - ./telegraf:/telegraf:ro
+    depends_on:
+      - kafka
+      - influxdb
