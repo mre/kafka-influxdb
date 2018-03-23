@@ -42,7 +42,8 @@ def start_consumer(config):
         config.kafka_host,
         config.kafka_port,
         config.kafka_group,
-        config.kafka_topic
+        config.kafka_topic,
+        config.kafka_offset
     )
     logging.debug("Initializing connection to InfluxDB at %s:%s",
                   config.influxdb_host, config.influxdb_port)

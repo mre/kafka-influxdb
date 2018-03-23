@@ -96,6 +96,8 @@ def parse_args(args=sys.argv[1:]):
                         help="Port of Kafka message broker (default: 9092)")
     parser.add_argument('--kafka_topic', type=str, default=argparse.SUPPRESS,
                         help="Topic for metrics (default: my_topic)")
+    parser.add_argument('--kafka_offset', type=str, default=argparse.SUPPRESS,
+                        help="Kafka offset (default: largest)")
     parser.add_argument('--kafka_group', type=str, default=argparse.SUPPRESS,
                         help="Kafka consumer group (default: my_group)")
     parser.add_argument('--kafka_reconnect_wait_time_ms', type=int, default=argparse.SUPPRESS,
