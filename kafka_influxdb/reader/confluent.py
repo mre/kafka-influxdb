@@ -10,9 +10,6 @@ class Reader(ReaderAbstract):
     See: https://github.com/confluentinc/confluent-kafka-python
     """
 
-    def __init__(self, host, port, group, topic, broker_version=KAFKA_VERSION_ZOOKEEPER_OPTIONAL):
-        super().__init__(host, port, group, topic, broker_version=KAFKA_VERSION_ZOOKEEPER_OPTIONAL)
-
     def _subscribe(self):
         """
         Subscribe to Kafka topics.
