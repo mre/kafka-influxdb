@@ -14,7 +14,7 @@ class ReaderAbstract(object):
     # The specific workarounds required are documented below.
     KAFKA_VERSION_ZOOKEEPER_OPTIONAL = "0.9.0"
 
-    def __init__(self, host, port, group, topic, broker_version=KAFKA_VERSION_ZOOKEEPER_OPTIONAL):
+    def __init__(self, host, port, group, topic, offset, broker_version=KAFKA_VERSION_ZOOKEEPER_OPTIONAL):
         """
         Initialize Kafka reader
         """
@@ -22,6 +22,7 @@ class ReaderAbstract(object):
         self.port = str(port)
         self.group = group
         self.topic = topic
+        self.offset = offset
         self.broker_version = broker_version
 
         # Initialized on read

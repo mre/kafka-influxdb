@@ -33,8 +33,9 @@ class Reader(ReaderAbstract):
             'group.id': self.group,
             'offset.store.method': 'broker',
             'default.topic.config': {
-                # TODO: Make this configurable
-                'auto.offset.reset': 'largest'  # smallest
+                # In newer Kafka versions, this can either be 'largest' or 'smallest'.
+                # See https://kafka.apache.org/documentation/
+                'auto.offset.reset': self.offset
             }
         }
         # Add additional flag based on the Kafka version.

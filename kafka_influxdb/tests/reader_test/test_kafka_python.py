@@ -10,6 +10,7 @@ class TestKafkaPython(unittest.TestCase):
         self.port = 1234
         self.group = "mygroup"
         self.topic = "mytopic"
+        self.offset = "largest"
         self.reconnect_wait_time = 0.01
         self.reader = self.create_reader()
 
@@ -17,7 +18,8 @@ class TestKafkaPython(unittest.TestCase):
         reader = kafka_python.Reader(self.host,
                                      self.port,
                                      self.group,
-                                     self.topic)
+                                     self.topic,
+                                     self.offset)
         reader.consumer = mock.MagicMock()
         return reader
 

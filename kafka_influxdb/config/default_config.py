@@ -6,6 +6,7 @@ DEFAULT_CONFIG = {
         'group': 'kafka-influxdb',
         'reconnect_wait_time_ms': 1000,
         'reader': 'kafka_influxdb.reader.confluent',
+        'offset': 'largest',
     },
     'influxdb': {
         'host': 'localhost',
@@ -18,7 +19,7 @@ DEFAULT_CONFIG = {
         'timeout': 5,
         'use_udp': False,
         'retention_policy': 'autogen',
-        'time_precision': 's'
+        'time_precision': 's',
     },
     'encoder': 'kafka_influxdb.encoder.collectd_graphite_encoder',
     'buffer_size': 1000,
