@@ -14,10 +14,11 @@ except:
 from datetime import datetime
 from kafka_influxdb.encoder.escape_functions import influxdb_tag_escaper
 
+
 class Encoder(object):
     """
     @see https://github.com/kubernetes/heapster/blob/master/metrics/sinks/kafka/driver.go
-    
+
     Sample measurements:
 
     {
@@ -28,7 +29,7 @@ class Encoder(object):
     }    
 
     or
-    
+
     {"MetricsName":"memory/usage",
     "MetricsValue":{"value":1036288},
     "MetricsTimestamp":"2017-01-19T17:26:00Z",
@@ -36,7 +37,7 @@ class Encoder(object):
             "labels":"k8s-app:kube-dns,pod-template-hash:4101612645","namespace_id":"a8bf368b-489b-11e6-91f3-005056923a7e","namespace_name":"kube-system","nodename":"10.58.9.96",
             "pod_id":"f7570b50-d637-11e6-bd3e-005056923a7e","pod_name":"kube-dns-4101612645-8pn6x","pod_namespace":"kube-system","type":"pod_container"}} 
     """
-    
+
     def __init__(self):
         self.escape_tag = influxdb_tag_escaper()
 
@@ -49,13 +50,14 @@ class Encoder(object):
         except ValueError as e:
             logging.debug("Error in encoder: %s", e)
             return measurements
-        
-        try:                    
+
+        try:
             measurement = entry["MetricsName"]
             tags = self.format_tags(entry)
             value = self.format_value(entry)
             time = self.format_time(entry)
-            measurements.append(self.compose_data(measurement, tags, value, time))
+            measurements.append(self.compose_data(
+                measurement, tags, value, time))
         except Exception as e:
             logging.debug("Error in input data: %s. Skipping.", e)
 
@@ -76,17 +78,18 @@ class Encoder(object):
         tags = entry["MetricsTags"]
         if tags == '':
             return ''
-                
+
         for kv in tags.items():
             # to avoid add None as tag value
             if kv[0] != '' and kv[1] != '':
-                tag.append("{0!s}={1!s}".format(self.escape_tag(kv[0]), self.escape_tag(kv[1])))
-                
+                tag.append("{0!s}={1!s}".format(
+                    self.escape_tag(kv[0]), self.escape_tag(kv[1])))
+
         return ','.join(tag)
 
     def format_time(self, entry):
         d = datetime.strptime(entry['MetricsTimestamp'], '%Y-%m-%dT%H:%M:%SZ')
-        return int((d-datetime(1970,1,1)).total_seconds())
+        return int((d-datetime(1970, 1, 1)).total_seconds())
 
     def format_value(self, entry):
         return "value={0!s}".format(entry['MetricsValue']["value"])

@@ -54,6 +54,15 @@ pip install kafka_influxdb
 kafka_influxdb -c config-example.yaml
 ```
 
+## Contributing
+
+If you like to contribute, please create a pull request with your change.  
+Please run the tests before you submit the pull request `make test`.  
+If you're unsure, whether a change will be accepted, you can also create an issue first, to discuss.  
+Or look at the already existing issues for inspiration.  
+
+Thanks for contributing!
+
 ## Performance
 
 

@@ -50,7 +50,8 @@ class InfluxDBWriter(object):
         if retention_policy:
             self.params['rp'] = retention_policy
 
-        logging.info("Connecting to InfluxDB at %s:%s (SSL: %r, UDP: %r)", host, port, use_ssl, use_udp)
+        logging.info("Connecting to InfluxDB at %s:%s (SSL: %r, UDP: %r)",
+                     host, port, use_ssl, use_udp)
         self.client = self.create_client()
 
     def create_client(self):

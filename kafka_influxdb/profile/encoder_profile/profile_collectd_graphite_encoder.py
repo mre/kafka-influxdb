@@ -26,7 +26,7 @@ class ProfileCollectdGraphiteEncoder:
     def profile_messages(self):
         self.encoder.encode(self.messages)
 
+
 if __name__ == '__main__':
     profiler = ProfileCollectdGraphiteEncoder()
     profiler.profile_messages()
-

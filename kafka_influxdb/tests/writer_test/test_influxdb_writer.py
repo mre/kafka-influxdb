@@ -39,7 +39,8 @@ class TestInfluxDBWriter(unittest.TestCase):
                                                       expected_response_code=204,
                                                       headers={'Content-type': 'application/octet-stream',
                                                                'Accept': 'text/plain'},
-                                                      params={'rp': 1234, 'db': 'mydb'},
+                                                      params={
+                                                          'rp': 1234, 'db': 'mydb'},
                                                       data='cpu,host=server01,region=uswest value=1.0 1434055562000\n'
                                                       'cpu,host=server02,region=uswest value=2.0 1434055562005',
                                                       method='POST')

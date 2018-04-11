@@ -1,8 +1,9 @@
 from functools import wraps
 from multiprocessing import Process
 
-#class TimeoutError(Exception):
+# class TimeoutError(Exception):
 #    pass
+
 
 def timeout(seconds=5):
     def decorator(func):

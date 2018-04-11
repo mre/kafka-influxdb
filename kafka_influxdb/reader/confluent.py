@@ -19,7 +19,8 @@ class Reader(ReaderAbstract):
         Therefore we manually assign the partitions to the consumer for legacy Kafka versions.
         """
         if self.broker_version < self.KAFKA_VERSION_ZOOKEEPER_OPTIONAL:
-            self.consumer.assign([TopicPartition(self.topic, p) for p in range(0, 10)])
+            self.consumer.assign([TopicPartition(self.topic, p)
+                                  for p in range(0, 10)])
         else:
             self.consumer.subscribe([self.topic])
 
@@ -49,7 +50,8 @@ class Reader(ReaderAbstract):
         Connect to Kafka and subscribe to the topic
         """
         connection = self._setup_connection()
-        logging.info("Connecting to Kafka with the following settings:\n %s...", connection)
+        logging.info(
+            "Connecting to Kafka with the following settings:\n %s...", connection)
         self.consumer = Consumer(**connection)
         self._subscribe()
 

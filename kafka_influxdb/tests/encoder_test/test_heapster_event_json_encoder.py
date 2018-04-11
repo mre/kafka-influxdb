@@ -2,6 +2,7 @@ import unittest
 
 from kafka_influxdb.encoder import heapster_event_json_encoder
 
+
 class TestHeapsterEventJsonEncoder(unittest.TestCase):
 
     def setUp(self):

@@ -1,33 +1,45 @@
-.PHONY: all up stop down clean help
 
 # e.g. make up RUNTIME (py2, py3 or pypy)
 RUNTIME=py2
 
+.PHONY: test
+test:
+	python setup.py test
+
+.PHONY: all
 all: clean up
 
+.PHONY: up
 up:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml build
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml up -d --force-recreate
 
+.PHONY: stop
 stop:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml stop
 
+.PHONY: down
 down:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml down
 
+.PHONY: logs
 logs:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml logs
 
+.PHONY: stats
 stats:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml logs kafkainfluxdb
 
+.PHONY: messages
 messages:
 	docker-compose -f docker/common-services.yml up kafkacat
 
+.PHONY: clean
 clean:
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml kill
 	docker-compose -f docker/common-services.yml -f docker/${RUNTIME}/docker-compose.yml rm -f
 
+.PHONY: help
 help:
 	@echo "Command                     Description"
 	@echo "make                        docker-compose up"

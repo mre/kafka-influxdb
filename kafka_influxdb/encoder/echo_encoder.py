@@ -4,6 +4,7 @@ try:
 except ImportError:
     pass
 
+
 class Encoder(object):
     @staticmethod
     def encode(msg):

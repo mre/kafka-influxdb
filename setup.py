@@ -26,12 +26,13 @@ requires = [
     "six",
     "virtualenv",
     "wheel",
-    "pytest-runner"
+    "pytest-runner",
 ]
 
 test_requires = [
     "pytest",
-    'profilehooks'
+    "profilehooks",
+    "mock",
 ]
 
 # Get an additional speedup with ujson,

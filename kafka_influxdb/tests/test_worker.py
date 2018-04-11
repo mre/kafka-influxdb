@@ -13,6 +13,7 @@ class Config:
     """
     Dummy config with minimum settings to pass the tests
     """
+
     def __init__(self, buffer_size, buffer_timeout):
         self.buffer_size = buffer_size
         self.buffer_timeout = buffer_timeout
@@ -25,6 +26,7 @@ class DummyReader(object):
     """
     A reader that yields dummy messages
     """
+
     def __init__(self, messages, num_messages):
         self.messages = messages
         self.num_messages = num_messages
@@ -35,10 +37,12 @@ class DummyReader(object):
         # Simulate keyboard interrupt by user to stop consuming
         raise KeyboardInterrupt
 
+
 class TimeoutReader(object):
     """
     A reader that writes half the messages then times out
     """
+
     def __init__(self, message, num_messages, timeout):
         self.message = message
         self.num_messages = num_messages
@@ -53,11 +57,13 @@ class TimeoutReader(object):
         # Stop consuming
         raise SystemExit
 
+
 class FlakyReader(object):
     """
     A fake reader that throws exceptions to simulate
     connection errors
     """
+
     def __init__(self, message, num_messages):
         self.message = message
         self.num_messages = num_messages
@@ -82,6 +88,7 @@ class TestWorker(unittest.TestCase):
     """
     Tests for message worker.
     """
+
     def setUp(self):
         self.config = Config(10, 0.1)
         self.encoder = echo_encoder.Encoder()
@@ -95,11 +102,14 @@ class TestWorker(unittest.TestCase):
         """
         reader = DummyReader(["bar"], self.config.buffer_size)
         writer_with_connection_error = Mock()
-        writer_with_connection_error.create_database = Mock(side_effect=[ConnectionError, None])
+        writer_with_connection_error.create_database = Mock(
+            side_effect=[ConnectionError, None])
 
-        client = Worker(reader, self.encoder, writer_with_connection_error, self.config)
+        client = Worker(reader, self.encoder,
+                        writer_with_connection_error, self.config)
         client.consume()
-        self.assertEqual(writer_with_connection_error.create_database.call_count, 2)
+        self.assertEqual(
+            writer_with_connection_error.create_database.call_count, 2)
 
     def test_flush(self):
         """
@@ -109,17 +119,20 @@ class TestWorker(unittest.TestCase):
         client = Worker(reader, self.encoder, self.writer, self.config)
         client.consume()
         self.assertTrue(self.writer.write.called)
-        self.writer.write.assert_called_once_with(["bar"] * self.config.buffer_size)
+        self.writer.write.assert_called_once_with(
+            ["bar"] * self.config.buffer_size)
 
     def test_buffer_timeout(self):
         """
         If the buffer has timed out flush to the writer.
         """
-        reader = TimeoutReader("bar", self.config.buffer_size, self.config.buffer_timeout)
+        reader = TimeoutReader(
+            "bar", self.config.buffer_size, self.config.buffer_timeout)
         client = Worker(reader, self.encoder, self.writer, self.config)
         client.consume()
         self.assertTrue(self.writer.write.called)
-        self.writer.write.assert_called_once_with(["bar"] * int(self.config.buffer_size-1))
+        self.writer.write.assert_called_once_with(
+            ["bar"] * int(self.config.buffer_size-1))
 
     @timeout(0.1)
     def test_reconnect(self):
@@ -130,4 +143,5 @@ class TestWorker(unittest.TestCase):
         client = Worker(reader, self.encoder, self.writer, self.config)
         client.consume()
         self.assertTrue(self.writer.write.called)
-        self.writer.write.assert_called_once_with(["baz"] * self.config.buffer_size)
+        self.writer.write.assert_called_once_with(
+            ["baz"] * self.config.buffer_size)

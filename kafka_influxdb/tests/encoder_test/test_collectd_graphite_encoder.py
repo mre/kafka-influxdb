@@ -19,8 +19,10 @@ class TestCollectdGraphiteEncoder(unittest.TestCase):
         # (See https://docs.influxdata.com/influxdb/v1.1/write_protocols/line_protocol_tutorial/#tag-set for more info)
         # So we don't sort the tags to make the encoder faster.
         # As a consequence they can appear in any order. Test for all combinations.
-        expected1 = ['load_load_shortterm,datacenter=mydatacenter,host=myhost value=0.45 1436357630']
-        expected2 = ['load_load_shortterm,host=myhost,datacenter=mydatacenter value=0.45 1436357630']
+        expected1 = [
+            'load_load_shortterm,datacenter=mydatacenter,host=myhost value=0.45 1436357630']
+        expected2 = [
+            'load_load_shortterm,host=myhost,datacenter=mydatacenter value=0.45 1436357630']
 
         if self.encoder.encode(msg, prefix="mydatacenter.", prefix_tag="datacenter") == expected1:
             return
@@ -42,4 +44,5 @@ class TestCollectdGraphiteEncoder(unittest.TestCase):
     def test_invalid_messages(self):
         invalid_messages = [b'', b'\n', b'bla', b'foo\nbar\nbaz']
         for msg in invalid_messages:
-            self.assertEqual(self.encoder.encode(msg, prefix="mydatacenter.", prefix_tag="datacenter"), [])
+            self.assertEqual(self.encoder.encode(
+                msg, prefix="mydatacenter.", prefix_tag="datacenter"), [])

@@ -7,6 +7,7 @@ try:
 except ImportError:
     pass
 
+
 class Encoder(object):
     """
     An encoder for the Collectd Graphite ASCII format
@@ -85,7 +86,8 @@ class Encoder(object):
             encoded = ''.join([
                 str(measurement),
                 ',',
-                ','.join('{}={}'.format(self.escape_tag(k), self.escape_tag(tags[k])) for k in tags),
+                ','.join('{}={}'.format(self.escape_tag(k),
+                                        self.escape_tag(tags[k])) for k in tags),
                 ' value=',
                 str(value),
                 ' ',

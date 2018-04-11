@@ -65,3 +65,5 @@ config_prod.yaml
 .tags
 xyz.py
 .~*
+
+.pytest_cache

@@ -35,7 +35,8 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(parsed_config["influxdb"]["verify_ssl"], True)
         self.assertEqual(parsed_config["influxdb"]["timeout"], 9000)
         self.assertEqual(parsed_config["influxdb"]["use_udp"], False)
-        self.assertEqual(parsed_config["influxdb"]["retention_policy"], "my_rp")
+        self.assertEqual(parsed_config["influxdb"]
+                         ["retention_policy"], "my_rp")
         self.assertEqual(parsed_config["encoder"], "collectd_graphite_encoder")
         self.assertEqual(parsed_config["buffer_size"], 444)
         self.assertEqual(parsed_config["statistics"], True)
@@ -62,7 +63,8 @@ class TestConfig(unittest.TestCase):
         argparse.ArgumentParser.parse_args = MagicMock(return_value=fake_args)
 
         # Fake default config
-        default_config.DEFAULT_CONFIG = MagicMock(return_value={'influxdb_use_ssl': True})
+        default_config.DEFAULT_CONFIG = MagicMock(
+            return_value={'influxdb_use_ssl': True})
         config = loader.load_config()
 
         # Check if the default setting got overwritten
@@ -70,7 +72,8 @@ class TestConfig(unittest.TestCase):
 
     def test_overwrite_default_config(self):
         default_config = {'kafka_host': 'defaulthost'}
-        config = loader.overwrite_config(default_config, {'kafka_host': 'otherhost'})
+        config = loader.overwrite_config(
+            default_config, {'kafka_host': 'otherhost'})
         self.assertEqual(config['kafka_host'], 'otherhost')
 
 

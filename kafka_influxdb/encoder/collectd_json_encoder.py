@@ -35,7 +35,7 @@ class Encoder(object):
          "type_instance":   "idle"
        }
     ]
-    
+
     The following measurement format is also supported, which has more than one value for each sample.
     [{"values":[0.2, 0.3],"dstypes":["derive"],"dsnames":["cpu_usage", "mem_usage"],"time":1436372292.412,"interval":10.000,"host":"26f2fc918f50","plugin":"cpu","plugin_instance":"1","type":"cpu","type_instance":"interrupt"}]
     """
@@ -55,11 +55,14 @@ class Encoder(object):
             for entry in json_object:
                 try:
                     # to set plugin, plugin_instance as the measurement name, just need pass ['plugin', 'plugin_instance']
-                    measurement = Encoder.format_measurement_name(entry, ['plugin', 'plugin_instance', 'type'])
-                    tags = Encoder.format_tags(entry, ['host', 'type_instance'])
+                    measurement = Encoder.format_measurement_name(
+                        entry, ['plugin', 'plugin_instance', 'type'])
+                    tags = Encoder.format_tags(
+                        entry, ['host', 'type_instance'])
                     value = Encoder.format_value(entry)
                     time = Encoder.format_time(entry)
-                    measurements.append(Encoder.compose_data(measurement, tags, value, time))
+                    measurements.append(Encoder.compose_data(
+                        measurement, tags, value, time))
                 except Exception as e:
                     logging.debug("Error in input data: %s. Skipping.", e)
                     continue

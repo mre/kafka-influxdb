@@ -74,7 +74,8 @@ class TestCollectdJsonEncoder(unittest.TestCase):
         msg = b"""
         [{"values":[0],"dstypes":["derive"],"dsnames":["value"],"time":1436372292.412,"interval":10.000,"host":"26f2fc918f50","plugin":"cpu","plugin_instance":"1","type":"cpu","type_instance":"interrupt"}]
             """
-        expected = ['cpu_1_cpu,host=26f2fc918f50,type_instance=interrupt value=0 1436372292']
+        expected = [
+            'cpu_1_cpu,host=26f2fc918f50,type_instance=interrupt value=0 1436372292']
         self.assertEqual(self.encoder.encode(msg), expected)
 
     def test_multiple_fields(self):
