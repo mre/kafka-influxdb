@@ -45,6 +45,18 @@ docker exec -it kafkainfluxdb
 pypy3 -m kafka_influxdb -c config_example.yaml -s --kafka_reader=kafka_influxdb.reader.kafka_python
 ```
 
+#### Docker:
+
+```
+docker run mre0/kafka-influxdb
+```
+
+or simply
+
+```
+make run
+```
+
 (Note that one additional flag is given: `--kafka_reader=kafka_influxdb.reader.kafka_python`. This is because PyPy is incompabile with the confluent kafka consumer which is a C-extension to librdkafka. Therefore we use the kafka\_python library here, which is compatible with PyPy but a bit slower.)
 
 ## Installation

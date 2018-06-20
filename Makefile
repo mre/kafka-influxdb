@@ -2,6 +2,18 @@
 # e.g. make up RUNTIME (py2, py3 or pypy)
 RUNTIME=py2
 
+.PHONY: build
+build:
+	docker build -t mre0/kafka-influxdb .
+
+.PHONY: push
+push:
+	docker push mre0/kafka-influxdb
+
+.PHONY: run
+run:
+	docker run mre0/kafka-influxdb
+
 .PHONY: test
 test:
 	python setup.py test
