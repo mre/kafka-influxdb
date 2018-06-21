@@ -63,7 +63,7 @@ make run
 
 ```
 pip install kafka_influxdb
-kafka_influxdb -c config-example.yaml
+kafka_influxdb -c config_example.yaml
 ```
 
 ## Contributing
