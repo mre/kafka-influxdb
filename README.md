@@ -1,6 +1,5 @@
 # Kafka-InfluxDB
 
-
 [![Build Status](https://travis-ci.org/mre/kafka-influxdb.svg?branch=master)](https://travis-ci.org/mre/kafka-influxdb)
 [![Coverage Status](https://codecov.io/gh/mre/kafka-influxdb/branch/master/graph/badge.svg)](https://codecov.io/gh/mre/kafka-influxdb)
 [![Code Climate](https://codeclimate.com/github/mre/kafka-influxdb/badges/gpa.svg)](https://codeclimate.com/github/mre/kafka-influxdb)
@@ -77,16 +76,13 @@ Thanks for contributing!
 
 ## Performance
 
-
 The following graph shows the number of messages/s read from Kafka for various Python versions and Kafka consumer plugins.  
 This is testing against a Kafka topic with 10 partitions and five message brokers.
 As you can see the best performance is achieved on Python 3 using the `-O` flag for bytecode optimization in combination with the `confluent-kafka` reader (default setup). Note that encoding and sending the data to InfluxDB might lower this maximum performance although you should still see a significant performance boost compared to logstash.
 
 ![Benchmark results](assets/benchmark.png)
 
-
 ## Benchmark
-
 
 For a quick benchmark, you can start a complete `kafkacat -> Kafka -> kafka_influxdb -> Influxdb` setup with the following command:
 
@@ -101,7 +97,7 @@ This will immediately start reading messages from Kafka and write them into Infl
 
 ## Supported formats
 
-You can write a custom encoder to support any input and output format (even fancy things like Protobuf). Look at the examples inside the `encoder` directory to get started. The following formats are officially supported:
+You can write a custom encoder to support any input and output format (even fancy things like Protobuf). Look at the examples inside the [`encoder`](./kafka_influxdb/encoder) directory to get started. The following formats are officially supported:
 
 #### Input formats
 
@@ -145,6 +141,25 @@ load_load_shortterm,datacenter=mydatacenter,host=myhost value="0.45" 1436357630
 ```
 
 -   [InfluxDB 0.8.x JSON format](https://influxdb.com/docs/v0.8/api/reading_and_writing_data.html#writing-data-through-http) (*deprecated*)
+
+#### Custom encoders
+
+If you are writing your custom encoder and you want to run it using the official docker image, you can simply mount it in the container:
+
+```
+docker run -v `pwd`/config.yaml:/usr/src/app/config.yaml -v `pwd`/myencoder.py:/usr/src/app/myencoder.py mre0/kafka-influxdb --encoder=myencoder
+```
+
+Another possibility is to create a custom Docker image that contains your encoder, for example:
+
+```
+FROM mre0/kafka-influxdb
+
+ADD myencoder.py /usr/src/app/myencoder.py
+ADD config.yaml /usr/src/app/
+
+CMD python -m kafka_influxdb -c config.yaml -v --encoder=myencoder
+```
 
 ## Configuration
 
