@@ -85,11 +85,10 @@ class InfluxDBWriter(object):
         See https://influxdb.com/docs/v0.9/write_protocols/line.html
         :param expected_response_code:
         :param params:
-        :param msg: msg is a list of bytes coming in
+        :param msg: List[Text]
         """
 
         # Since msg is a list of bytes snippets, we cast those to strings
-        decoded_msg = [m.decode('utf-8') for m in msg]
 
         if not params:
             # Use defaults
@@ -100,7 +99,7 @@ class InfluxDBWriter(object):
             self.client.request(url='write',
                                 method='POST',
                                 params=params,
-                                data="\n".join(decoded_msg),
+                                data="\n".join(msg),
                                 expected_response_code=expected_response_code,
                                 headers=self.headers
                                 )

@@ -8,9 +8,9 @@ except ImportError:
 class Encoder(object):
     @staticmethod
     def encode(msg):
-        # type: (bytes) -> List[bytes]
+        # type: (bytes) -> List[Text]
         """
         Don't change the message at all
         :param msg:
         """
-        return [msg]
+        return [msg.decode('utf-8')]
