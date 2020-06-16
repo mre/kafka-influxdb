@@ -9,6 +9,10 @@
 A Kafka consumer for InfluxDB written in Python.  
 Supports InfluxDB 0.9.x and up. For InfluxDB 0.8.x support, check out the [0.3.0 tag](https://github.com/mre/kafka-influxdb/tree/v0.3.0).
 
+:warning: The project should work as expected and bug fixes are very welcome, but activity on new functionality is quite low. 
+For newer projects I recommend [vector](https://vector.dev/) instead, which is both faster and more versatile.
+
+
 ## Use cases
 
 Kafka will serve as a buffer for your metric data during high load.  
