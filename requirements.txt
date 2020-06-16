@@ -26,7 +26,7 @@ pylint==1.8.4
 pytest-runner==4.2
 python-dateutil==2.6.1
 pytz==2018.4
-PyYAML==3.12
+PyYAML==5.1
 requests==2.18.4
 singledispatch==3.4.0.3
 six==1.15.0
