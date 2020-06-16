@@ -3,7 +3,7 @@ autopep8==1.5.3
 backports.functools-lru-cache==1.5
 certifi==2020.4.5.2
 chardet==3.0.4
-configparser==3.5.0
+configparser==5.0.0
 confluent-kafka==0.11.4
 data-hacks==0.3.1
 docopt==0.6.2
