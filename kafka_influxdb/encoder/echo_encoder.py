@@ -13,4 +13,4 @@ class Encoder(object):
         Don't change the message at all
         :param msg:
         """
-        return [msg]
+        return [msg.decode()]
