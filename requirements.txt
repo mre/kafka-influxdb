@@ -24,7 +24,7 @@ pycodestyle==2.4.0
 Pygments==2.2.0
 pylint==1.8.4
 pytest-runner==4.2
-python-dateutil==2.6.1
+python-dateutil==2.8.1
 PyYAML==5.1
 pytz==2020.1
 requests==2.20.0
