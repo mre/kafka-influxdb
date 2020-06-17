@@ -21,7 +21,7 @@ mdv==1.7.4
 mock==2.0.0
 pbr==4.0.2
 pycodestyle==2.4.0
-Pygments==2.2.0
+Pygments==2.6.1
 pylint==1.8.4
 pytest-runner==4.2
 python-dateutil==2.6.1
