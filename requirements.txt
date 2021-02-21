@@ -22,7 +22,7 @@ mock==2.0.0
 pbr==4.0.2
 pycodestyle==2.4.0
 Pygments==2.2.0
-pylint==1.8.4
+pylint==2.7.0
 pytest-runner==4.2
 python-dateutil==2.6.1
 PyYAML==5.1
