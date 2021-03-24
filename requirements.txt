@@ -1,6 +1,6 @@
 astroid==1.6.3
 autopep8==1.5.3
-backports.functools-lru-cache==1.5
+backports.functools-lru-cache==1.6.3
 certifi==2020.4.5.2
 chardet==3.0.4
 configparser==5.0.0
