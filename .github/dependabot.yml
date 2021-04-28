@@ -1,0 +1,32 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: backports-functools-lru-cache
+    versions:
+    - 1.6.1
+    - 1.6.2
+    - 1.6.3
+  - dependency-name: pylint
+    versions:
+    - 2.6.0
+    - 2.6.1
+    - 2.6.2
+    - 2.7.0
+    - 2.7.1
+    - 2.7.2
+  - dependency-name: confluent-kafka
+    versions:
+    - 1.5.0
+    - 1.6.0
+  - dependency-name: urllib3
+    versions:
+    - 1.26.3
+  - dependency-name: lazy-object-proxy
+    versions:
+    - 1.5.2
